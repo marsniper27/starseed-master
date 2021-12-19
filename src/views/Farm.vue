@@ -372,22 +372,13 @@ export default {
             }
         },
         async getPendingStar(pid){
-            const lpContractInstance = new this.$route.params.web3.eth.Contract(lpContractAbi, lpContractAddress);
             const masterChefContractInstance = new this.$route.params.web3.eth.Contract(masterChefContractAbi, masterChefContractAddress);
 
             try{
-                lpContractInstance.methods.pendingStar(pid,this.account).send({from: this.account}).then(
+                masterChefContractInstance.methods.pendingStar(pid,this.account).send({from: this.account}).then(
                     (receipt) => {
                         console.log(receipt);
                         this.starEarned = receipt
-                    })
-            }catch(error){
-                console.log("approval: " +error);
-            } try{
-                //const transactionHash = await ethereum.request({
-                masterChefContractInstance.methods.deposit(0,10).send({from: this.account}).then(
-                    (receipt) => {
-                        console.log(receipt);
                     })
             }catch(error){
                 console.log("approval: " +error);
