@@ -109,7 +109,7 @@
                                Total Minted : 
                             </div>
                             <div class="cont">
-                                
+                                {{totalMinted}}
                             </div>
                         </div>
                         <div class="grid">
@@ -202,6 +202,7 @@ export default {
             availStar:"Connect Wallet",
             starHarvest:"Connect Wallet",
             connected:false,
+            totalMinted:"111,111",
             contracts:{
                 "WMatic":{
                     address:"0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
