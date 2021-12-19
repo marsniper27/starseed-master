@@ -372,16 +372,16 @@ export default {
             }
         },
         async getPendingStar(pid){
-            const masterChefContractInstance = new this.$route.params.web3.eth.Contract(masterChefContractAbi, masterChefContractAddress);
+            const masterChefContractInstance = new this.$route.params.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
 
             try{
                 masterChefContractInstance.methods.pendingStar(pid,this.account).send({from: this.account}).then(
                     (receipt) => {
-                        console.log(receipt);
+                        console.log("pending star: " + receipt);
                         this.starEarned = receipt
                     })
             }catch(error){
-                console.log("approval: " +error);
+                console.log("Pending Star: " +error);
             }
         }
     }
