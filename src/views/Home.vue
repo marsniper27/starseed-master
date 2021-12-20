@@ -235,16 +235,16 @@ export default {
             console.log('MetaMask is installed!');
         }
         if(this.$route.params.web3 == null || this.$route.params.account == null){
+            console.log("account not set");
             console.log(this.$route.params.account)
             console.log(this.$route.params.web3)
             this.matics();
         }
         else{
+            console.log("account already set");
             this.account = this.$route.params.account;
+            this.web3 = this.$route.params.web3;
         }
-        // if(this.account = null){
-        //     this.matics();
-        // }
     },
     methods: {
         async matics(){
