@@ -195,8 +195,8 @@ export default {
     components: {},
     data() {
         return {
-           Announcement:Announcement,
-           logoMain:logoMain,
+            Announcement:Announcement,
+            logoMain:logoMain,
             account: "Not Connected",
             messages:false,
             availStar:"Connect Wallet",
