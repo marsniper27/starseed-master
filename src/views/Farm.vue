@@ -43,8 +43,8 @@
                                 {{matic.starEarned}}
                             </div>
                             <div class="cont">
-                                <button v-if="!connected" @click="compoundReward(matic)">Compound</button>
-                                <button v-if="!connected" @click="harvest(matic)">Harvest</button>
+                                <button v-if="connected" @click="compoundReward(matic)">Compound</button>
+                                <button v-if="connected" @click="harvest(matic)">Harvest</button>
                             </div>
                         </div>
                         <div class="grid">
@@ -277,15 +277,6 @@ export default {
                 this.showPops = true
             }
            
-        },
-        async stakeSelected(itm){
-            console.log("stakeSelect");
-            if(itm.address){
-                this.selectedABI = itm.ABI;
-                this.selectedContractAddress = itm.address;
-                this.selectedPid = itm.pid;
-                this.showStake = true;
-            }
         },
         async metaMaskWallet(){
             this.showPops = false
