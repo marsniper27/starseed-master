@@ -11,22 +11,22 @@ const routes = [
   },
   {
     path: '/farms',
-    name: 'farms',
+    name: 'Farms',
     component: () => import('../views/Farm.vue')
   },
   {
     path: '/pool',
-    name: 'pool',
+    name: 'Pool',
     component: () => import('../views/Pool.vue')
   },
   {
     path: '/bridge',
-    name: 'bridge',
+    name: 'Bridge',
     component: () => import('../views/Bridge.vue')
   },
   {
     path: '/operator',
-    name: 'operator',
+    name: 'Operator',
     component: () => import('../views/Operator.vue')
   },
   {
