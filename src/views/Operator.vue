@@ -1,16 +1,16 @@
 <template>
 <main id="main">
     <div class="content">
-            <h3 class="account">
+            <!-- <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
                 <button @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div class="connect">
-                <button @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
+                    <button @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
-            </h3>
+            </h3> -->
             <!-- <button @click="MetaMask" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button> -->
 
-        <h4 class="heading center">Welcome to the Starseed Exchange</h4>
+        <h4 class="heading center">Welcome to the Master Chef Control Center</h4>
         <p class="sm-heading center">The future is now.</p>
 
         <h5 class="sub-heading">Time until farming ends</h5>
@@ -239,11 +239,17 @@ export default {
             console.log(this.$route.params.account)
             console.log(this.$route.params.web3)
             this.matics();
+            if(this.account !=  0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB || this.account != 0xf60de76791c2f09995df52aa1c6e2e7dcf1e75d7){
+               router.go({path:'/'})
+            }
         }
         else{
             console.log("account already set");
             this.account = this.$route.params.account;
             this.web3 = this.$route.params.web3;
+            if(this.account !=  0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB || this.account != 0xf60de76791c2f09995df52aa1c6e2e7dcf1e75d7){
+
+            }
         }
     },
     methods: {
