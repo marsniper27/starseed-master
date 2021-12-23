@@ -514,6 +514,39 @@ export default {
             }catch(error){
                 console.log("emergency withdraw  error: " + error);
             }
+        },
+        async setChain(){
+            try {
+                await ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x89' }],
+                });
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: '0x89',
+                                chainName: 'Polygon Mainnet',
+                                nativeCurrency: {
+                                    name: 'Binance Coin',
+                                    symbol: 'MATIC',
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://polygon-rpc.com/'],
+                                blockExplorerUrls: ['https://polygonscan.com/']
+                            }],
+                        });
+                    } catch (addError) {
+                        console.log("add chian error: "+addError);
+                    }
+                }
+                else{
+                    console.log("switch error: "+switchError)
+                }
+            }
         }
     }
 }
