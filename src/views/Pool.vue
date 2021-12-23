@@ -259,6 +259,8 @@ export default {
                 this.web3 = this.$route.params.web3;
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
+                var chainId = new this.web3.eth.getChainId();
+                if(chainId != 0x89){this.setChain()};
                 this.getUserPoolStats();
             }
         }
@@ -280,6 +282,8 @@ export default {
                     const web3 = result;// we instantiate our contract next
                     this.web3 = web3;
                     this.$route.params.web3 = web3;
+                    var chainId = new web3.eth.getChainId();
+                    if(chainId != 0x89){this.setChain()};
                     web3.eth.getAccounts()
                     .then((accounts) => {
                         if(accounts.length > 0){

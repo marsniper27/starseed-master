@@ -3,7 +3,7 @@
     <div class="content">
             <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
-                <button @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!starAdded" @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div class="connect">
                 <button @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -203,6 +203,7 @@ export default {
             starHarvest:"Connect Wallet",
             connected:false,
             totalMinted:"111,111",
+            starAdded:false,
             contracts:{
                 "WMatic":{
                     address:"0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
@@ -244,6 +245,8 @@ export default {
             console.log("account already set");
             this.account = this.$route.params.account;
             this.web3 = this.$route.params.web3;
+            var chainId = new this.web3.eth.getChainId();
+            if(chainId != 0x89){this.setChain()};
         }
     },
     methods: {
@@ -251,6 +254,8 @@ export default {
             getWeb3().then((result) => {
                 const web3 = result;// we instantiate our contract next
                 this.$route.params.web3 = web3;
+                var chainId = new web3.eth.getChainId();
+                if(chainId != 0x89){this.setChain()};
                 console.log(web3);
                 web3.eth.getAccounts()
                     .then((accounts) => {
@@ -275,10 +280,10 @@ export default {
                                     (receipt) => {
                                         console.log(receipt)
                                         this.messages = " Successfull.";
-                                        this.availStar = receipt/10**18;
+                                        this.availStar = (receipt/10**18).toFixed(4);
                                     setTimeout(d=>{
                                             this.messages = false
-                                    },5000)
+                                    },1000)
                                 })
                             }catch (error) {
                                 console.log(error);
@@ -293,10 +298,10 @@ export default {
                                     .then((receipt) => {
                                         console.log(receipt)
                                         this.messages = " Successfull.";
-                                        this.starHarvest = receipt/10**18;
+                                        this.starHarvest = (receipt/10**18).toFixed(4);
                                         setTimeout(d=>{
                                             this.messages = false
-                                        },5000)
+                                        },1000)
                                 })
                             }catch (error) {
                                 console.log(error);
@@ -416,6 +421,39 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+            }
+        },
+        async setChain(){
+            try {
+                await ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x89' }],
+                });
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: '0x89',
+                                chainName: 'Polygon Mainnet',
+                                nativeCurrency: {
+                                    name: 'Binance Coin',
+                                    symbol: 'MATIC',
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://polygon-rpc.com/'],
+                                blockExplorerUrls: ['https://polygonscan.com/']
+                            }],
+                        });
+                    } catch (addError) {
+                        console.log("add chian error: "+addError);
+                    }
+                }
+                else{
+                    console.log("switch error: "+switchError)
+                }
             }
         }
     }
