@@ -134,6 +134,29 @@ body,html {
   margin-right: 10px;
 }
 
+.disconnect {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 9999;
+}
+
+.disconnect button {
+  background: #007510;
+  color: #fff;
+  border: none;
+  box-shadow: 0px 0px 7px -1px #000;
+  padding: 10px 20px;
+  border-radius: 9px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.disconnect button i {
+  margin-right: 10px;
+}
+
 .ele {
   position: fixed;
   bottom: 0;
