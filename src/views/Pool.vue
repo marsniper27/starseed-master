@@ -414,18 +414,19 @@ export default {
             this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
             var allowance = await this.lpContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("Staking LP. Balance is: " + itm.balance);
-            if(allowance < 10){
+            console.log("allowance is: " + allowance);
+            if(allowance < 10*10**18 || allowance < itm.amount*10**18){
                 this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
                 try{
                     console.log("setting stake approval");
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         try{
-                            receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,itm.amount*10**18).send({from: this.account})
+                            receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
                             console.log("staking: "+receipt);
                             this.getUserPoolStats(itm);
                         }catch(error){
-                            console.log("staking error: " +error);
+                            console.log("staking after approval error: " +error);
                         }
                 }catch(error){
                     console.log(" stake approval error: " +error);
@@ -433,7 +434,7 @@ export default {
             }
             else{
                 try{
-                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,itm.amount*10**18).send({from: this.account})
+                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
                     console.log("staking: "+receipt);
                     this.getUserPoolStats(itm);
                 }catch(error){
@@ -511,7 +512,7 @@ export default {
         async withdraw(itm){
             if(itm.stakedBalance > 0){
                 try{
-                    var receipt = await this.masterChefContractInstance.methods.withdraw(itm.pid,itm.withdrawAmount*10**18).send({from:this.account})
+                    var receipt = await this.masterChefContractInstance.methods.withdraw(itm.pid,ethers.utils.parseEther(itm.withdrawAmount.toString())).send({from:this.account})
                         console.log("withdraw tokens: " + receipt);
                         return(receipt);
                 }catch(error){
