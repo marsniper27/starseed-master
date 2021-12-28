@@ -471,10 +471,5 @@ export default {
         }
     }
 }
-ethereum.on('accountsChanged', (accounts) => {
-  // Handle the new accounts, or lack thereof.
-  // "accounts" will always be an array, but it can be empty.
-  default.account = accounts[0];
-});
 </script>
 

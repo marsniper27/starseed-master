@@ -83,6 +83,17 @@
                             </div>
                             <button v-if="connected" @click="StakeLP(matic)">Stake</button>
                         </div>
+                        <div v-if="matic.stakedBalance>0">
+                            <div class="grid">
+                                <div class="label colored">
+                                    <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
+                                    <div class="cont sm-text">
+                                        <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button v-if="connected" @click="withdraw(matic)">Withdraw</button>
+                        </div>
                         <hr>
                         <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
                         <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
@@ -201,6 +212,7 @@ export default {
                     stakedBalance: "--",
                     balance:"--",
                     amount:null,
+                    withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--"
                 },
@@ -216,6 +228,7 @@ export default {
                     stakedBalance: "--",
                     balance:"--",
                     amount:null,
+                    withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--"
                 },
@@ -231,6 +244,7 @@ export default {
                     stakedBalance: "--",
                     balance:"--",
                     amount:null,
+                    withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--"
                 }, 
@@ -246,6 +260,7 @@ export default {
                     stakedBalance: "--",
                     balance:"--",
                     amount:null,
+                    withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--"
                 },
@@ -261,6 +276,7 @@ export default {
                     stakedBalance: "--",
                     balance:"--",
                     amount:null,
+                    withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--"
                 }
@@ -519,6 +535,17 @@ export default {
                     }
                 }catch(error){
                     console.log("can harvest error: " + error);
+                }
+            }
+        },
+        async withdraw(itm){
+            if(itm.stakedBalance > 0){
+                try{
+                    var receipt = await this.masterChefContractInstance.methods.withdraw(itm.pid,itm.withdrawAmount*10**18).send({from:this.account})
+                        console.log("withdraw tokens: " + receipt);
+                        return(receipt);
+                }catch(error){
+                    console.log("withdraw error: " + error);
                 }
             }
         },
