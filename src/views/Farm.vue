@@ -118,6 +118,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="grid" v-if="matic.stakedBalance>0">
+                                <div class="label colored">
+                                    <div class="cont sm-text">
+                                        Get LP tokens from quickswap.
+                                        <button v-if="connected" @click="getLp(matic)">Get LP Tokens</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div v-html="matic.url" v-if="matic.type" style="width:100%;height:100%;"></div>
@@ -143,7 +151,7 @@
         </ul>
     </div>
     <div v-if="messages" class="messages">
-            <h4>Transaction  {{messages}}</h4>
+            <h4>{{messages}}</h4>
     </div>
     <script type="text/x-template" id="modal-template">
         <div class="modal-mask">
@@ -214,7 +222,9 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--",
+                    pool: "https://quickswap.exchange/#/add/ETH/0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741"
                 },
                 {
                     name: "STAR ETH",
@@ -230,7 +240,9 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--",
+                    pool: "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741"
                 },
                 {
                     name: "STAR DHV",
@@ -246,7 +258,9 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--",
+                    pool: "https://quickswap.exchange/#/add/0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26/0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741"
                 }, 
                 {
                     name: "STAR USDC",
@@ -262,7 +276,9 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--",
+                    pool: "https://quickswap.exchange/#/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741"
                 },
                 {
                     name: "STAR-WBTC",
@@ -278,7 +294,9 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--",
+                    pool: "https://quickswap.exchange/#/add/0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6/0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741"
                 }
             ],
             web3:false,
@@ -508,15 +526,33 @@ export default {
             }
         },
         async compoundReward(itm){
-            if(itm.starEarned !="--"){
+            if(itm.starEarned > 0){
                 try{
-                    this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
-                        (receipt) => {
-                            console.log("comnpound rewards: " + receipt)
-                            return receipt;
-                        })
+                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    if(!harvest){
+                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                        var date = new Date(userinfo.nextHarvestUntil * 1000);
+                        console.log("compound next harvest time: " + date)
+                        this.messages = "Compound not available until: "+ date;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }
+                    console.log("can harvest: " + harvest);
+                    
+                    if(harvest){
+                        try{
+                            this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
+                                (receipt) => {
+                                    console.log("compound rewards: " + receipt)
+                                    return receipt;
+                                })
+                        }catch(error){
+                            console.log("compound reward error: " + error);
+                        }
+                    }
                 }catch(error){
-                    console.log("compound reward error: " + error);
+                    console.log("compound can harvest error: " + error);
                 }
             }
         },
@@ -524,6 +560,15 @@ export default {
             if(itm.starEarned > 0){
                 try{
                     var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    if(!harvest){
+                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                        var date = new Date(userinfo.nextHarvestUntil * 1000);
+                        console.log("compound next harvest time: " + date)
+                        this.messages = "Compound not available until: "+ date;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }
                     console.log("can harvest: " + harvest);
                     if(harvest){
                         try{
@@ -624,6 +669,9 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
+        },
+        getLp(itm){
+            location.href = itm.pool;
         }
     }
 }

@@ -13,9 +13,6 @@
             </h3>
 
         <h4 class="heading center">Yield Farming</h4>
-        <p class="sm-heading center">Stake Tokens to earn STAR</p>
-        <h6> Stake tokens to earn STAR <br> 50% of the Deposit Fee will be used to buyback STAR and Burn the Tokens<br> Burn Time: Everyday 14:00 UTC<br> 50% of the Deposit Fee will be sent to treasury wallet for Future Development (example, for Jungle pools)<br> Farms and Pools are live<br></h6>
-        
         <div class="cards">
             <div class="container">
                 <div class="card" v-for="matic in starSeed" v-bind:class="{'larger':matic.type}">
@@ -144,7 +141,7 @@
         </ul>
     </div>
     <div v-if="messages" class="messages">
-            <h4>Transaction  {{messages}}</h4>
+            <h4>{{messages}}</h4>
     </div>
     <script type="text/x-template" id="modal-template">
         <div class="modal-mask">
@@ -208,7 +205,8 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--"
                 },
                 {
                     name: "STAR",
@@ -224,7 +222,8 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--"
                 },
                 {
                     name: "WETH",
@@ -240,7 +239,8 @@ export default {
                     amount:null,
                     withdrawAmount:null,
                     starEarned:"--",
-                    totalLiquidity: "--"
+                    totalLiquidity: "--",
+                    harvestTime:"--"
                 }
             ],
             connected:false,
@@ -478,15 +478,34 @@ export default {
             }
         },
         async compoundReward(itm){
-            if(itm.starEarned !="--"){
+            if(itm.starEarned > 0){
                 try{
-                    this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
-                        (receipt) => {
-                            console.log("comnpound rewards: " + receipt)
-                            return receipt;
-                        })
+                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    console.log("can harvest: " + harvest);
+                    if(!harvest){
+                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                        var date = new Date(userinfo.nextHarvestUntil * 1000);
+                        console.log("compound next harvest time: " + date)
+                        this.messages = "Compound not available until: "+ date;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }
+                    console.log("can harvest: " + harvest);
+                    
+                    if(harvest){
+                        try{
+                            this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
+                                (receipt) => {
+                                    console.log("compound rewards: " + receipt)
+                                    return receipt;
+                                })
+                        }catch(error){
+                            console.log("compound reward error: " + error);
+                        }
+                    }
                 }catch(error){
-                    console.log("compound reward error: " + error);
+                    console.log("compound can harvest error: " + error);
                 }
             }
         },
@@ -494,6 +513,15 @@ export default {
             if(itm.starEarned > 0){
                 try{
                     var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    if(!harvest){
+                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                        var date = new Date(userinfo.nextHarvestUntil * 1000);
+                        console.log("compound next harvest time: " + date)
+                        this.messages = "Compound not available until: "+ date;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }
                     console.log("can harvest: " + harvest);
                     if(harvest){
                         try{
