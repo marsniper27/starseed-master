@@ -54,7 +54,7 @@
                                 <div class="label colored">
                                     {{matic.starEarned}}
                                 </div>
-                                <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
+                                <!-- <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button> -->
                                 <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
                             </div>
                         </div>
@@ -470,12 +470,14 @@ export default {
                     console.log("setting stake approval");
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
                         console.log("stake approval: " +receipt);
-                        try{
-                            receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
-                            console.log("staking: "+receipt);
-                            this.getUserPoolStats(itm);
-                        }catch(error){
-                            console.log("staking error after approve: " +error);
+                        if(receipt){
+                            try{
+                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                                console.log("staking: "+receipt);
+                                this.getUserPoolStats(itm);
+                            }catch(error){
+                                console.log("staking error after approve: " +error);
+                            }
                         }
                 }catch(error){
                     console.log(" stake approval error: " +error);
@@ -526,37 +528,37 @@ export default {
                 console.log("staked lp error: " + error);
             }
         },
-        async compoundReward(itm){
-            if(itm.starEarned > 0){
-                try{
-                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
-                    if(!harvest){
-                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
-                        var date = new Date(userinfo.nextHarvestUntil * 1000);
-                        console.log("compound next harvest time: " + date)
-                        this.messages = "Compound not available until: "+ date;
-                        setTimeout(d=>{
-                            this.messages = false
-                        },5000)
-                    }
-                    console.log("can harvest: " + harvest);
+        // async compoundReward(itm){
+        //     if(itm.starEarned > 0){
+        //         try{
+        //             var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+        //             if(!harvest){
+        //                 var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+        //                 var date = new Date(userinfo.nextHarvestUntil * 1000);
+        //                 console.log("compound next harvest time: " + date)
+        //                 this.messages = "Compound not available until: "+ date;
+        //                 setTimeout(d=>{
+        //                     this.messages = false
+        //                 },5000)
+        //             }
+        //             console.log("can harvest: " + harvest);
                     
-                    if(harvest){
-                        try{
-                            this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
-                                (receipt) => {
-                                    console.log("compound rewards: " + receipt)
-                                    return receipt;
-                                })
-                        }catch(error){
-                            console.log("compound reward error: " + error);
-                        }
-                    }
-                }catch(error){
-                    console.log("compound can harvest error: " + error);
-                }
-            }
-        },
+        //             if(harvest){
+        //                 try{
+        //                     this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
+        //                         (receipt) => {
+        //                             console.log("compound rewards: " + receipt)
+        //                             return receipt;
+        //                         })
+        //                 }catch(error){
+        //                     console.log("compound reward error: " + error);
+        //                 }
+        //             }
+        //         }catch(error){
+        //             console.log("compound can harvest error: " + error);
+        //         }
+        //     }
+        // },
         async harvest(itm){
             if(itm.starEarned > 0){
                 try{
