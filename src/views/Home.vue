@@ -288,6 +288,7 @@ export default {
                                     setTimeout(d=>{
                                             this.messages = false
                                     },1000)
+                                    //this.$router.go();
                                 })
                             }catch (error) {
                                 console.log(error);
@@ -306,6 +307,7 @@ export default {
                                         setTimeout(d=>{
                                             this.messages = false
                                         },1000)
+                                    //this.$router.go();
                                 })
                             }catch (error) {
                                 console.log(error);

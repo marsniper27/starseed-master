@@ -319,6 +319,7 @@ export default {
                             this.messages = false;
                             for( const itm of this.starSeed){
                                 this.getUserPoolStats(itm);
+                                //this.$router.go();
                             }
                         }else{
                             this.messages = "No account Connected"

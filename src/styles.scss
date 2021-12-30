@@ -380,6 +380,9 @@ canvas{
       margin-right: 10px;
     }
   }
+  .input{
+    text-align: center;
+  }
   .grid{
     color:#fff;
     display: flex;
@@ -390,7 +393,7 @@ canvas{
       font-size: 15px;
     }
     .colored{
-      color:magenta;
+      color:rgb(255, 255, 255);
       font-size: 20px;
     }
     .large-text{

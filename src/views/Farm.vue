@@ -373,6 +373,7 @@ export default {
                             this.messages = false;
                             for( const itm of this.starSeed){
                                 this.getUserPoolStats(itm);
+                                //this.$router.go();
                             }
                         }else{
                             this.messages = "No account Connected"
@@ -627,10 +628,14 @@ export default {
         },
         async setChain(){
             try {
-                await ethereum.request({
+                var chainSet = await ethereum.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: '0x89' }],
                 });
+                if(chainSet){
+                    this.$router.go();
+                    chainSet = fasle;
+                }
             } catch (switchError) {
                 // This error code indicates that the chain has not been added to MetaMask.
                 if (switchError.code === 4902) {
@@ -650,6 +655,7 @@ export default {
                             }],
                         });
                         this.CustomToken();
+                        this.$router.go();
                     } catch (addError) {
                         console.log("add chian error: "+addError);
                     }

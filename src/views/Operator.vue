@@ -20,31 +20,38 @@
                         <div class="icon">
                             <h2>Fund MasterChef</h2>
                         </div>
-                        <input v-model="fundAmount" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                        <div class="input">
+                            <input v-model="fundAmount" placeholder="Amount to fund" />
+                        </div>
+                        <button @click="fund()">Fund</button>;
                     </div>
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div class="icon">
                         <h2>Update Emmision Rate </h2>
                     </div>
-                        <input v-model="emmisionAmount" placeholder="New Emmsion Rate" />
-                        <button>Fund</button>;
+                    <div class="input">
+                        <input class="input" v-model="emmisionAmount" placeholder="New Emmsion Rate" />
+                    </div>
+                        <button @click="emmission()">Update Emmission</button>;
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div class="icon">
                         <h2>Update Pool Allocation Points </h2>
                     </div>
-                        <input v-model="poolPid" placeholder="Pool Index" />
-                        <input v-model="allocationAmount" placeholder="New Allocation amount" />
-                        <button>Fund</button>;
+                    <div class="input">
+                        <input class="input" v-model="allocationAmount" placeholder="New Allocation amount" />
+                    </div>
+                        <button @click="allocation()">Update Pool</button>;
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div class="icon">
                         <h2>Transfer Operator </h2>
                     </div>
+                    <div class="input">
                         <input v-model="operator" placeholder="New Operator Address" />
-                        <button>Fund</button>;
+                    </div>
+                        <button @click="operator()">Transfer Operator</button>;
                 </div>
             </div>
             <h1 class="sub-heading">Owner Functions</h1>
@@ -54,8 +61,10 @@
                         <div class="icon">
                             <h2>Add Pool</h2>
                         </div>
+                    <div class="input">
                         <input v-model="fundAmount" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                    </div>
+                        <button @click="addPool()">Add Pool</button>;
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -63,8 +72,10 @@
                         <div class="icon">
                             <h2>Set Pool Values</h2>
                         </div>
+                    <div class="input">
                         <input v-model="fundAmount" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                    </div>
+                        <button @click="updatePool()">Update Pool</button>;
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -72,8 +83,10 @@
                         <div class="icon">
                             <h2>Set Bonus Multiplier</h2>
                         </div>
-                        <input v-model="fundAmount" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                    <div class="input">
+                        <input class="input" v-model="fundAmount" placeholder="New Bonus Multiplier" />
+                    </div>
+                        <button @click="multiplier()">Set Multiplier</button>;
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -81,24 +94,28 @@
                         <div class="icon">
                             <h2>Collect Fees</h2>
                         </div>
-                        <input v-model="fundAmount" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                    <div class="input">
+                        <input class="input" v-model="fundAmount" placeholder="Amount ot collect" />
+                    </div>
+                        <button @click="collect()">Collect Fees</button>;
                     </div>
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div>
                         <div class="icon">
-                            <h2>transfer out</h2>
+                            <h2>Transfer out</h2>
                         </div>
-                        <input v-model="transferOut" placeholder="Amount to fund" />
-                        <button>Fund</button>;
+                    <div class="input">
+                        <input v-model="transferOutAmount" placeholder="Amount to trasnfer out" />
+                    </div>
+                        <button @click="trasnferOut()">Trasnfer out funds</button>;
                     </div>
                 </div>
             </div>
         </div>        
     </div>
     <div v-if="messages" class="messages">
-            <h4>Transaction  {{messages}}</h4>
+            <h4>{{messages}}</h4>
         </div>
 </main>
 </template>
@@ -135,7 +152,8 @@ export default {
             emmisionAmount: null,
             allocationAmount: null,
             poolPid:null,
-            operator:null
+            operator:null,
+            transferOutAmount:null
         }
     },
     watch: {
@@ -299,7 +317,6 @@ export default {
             }
         },
         async transferOut(){
-            
             lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
                 try{
                     var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
