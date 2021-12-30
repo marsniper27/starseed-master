@@ -15,17 +15,17 @@ const routes = [
     component: () => import('../views/Farm.vue')
   },
   {
-    path: '/pool',
+    path: '/#/pool',
     name: 'Pool',
     component: () => import('../views/Pool.vue')
   },
   {
-    path: '/bridge',
+    path: '/#/bridge',
     name: 'Bridge',
     component: () => import('../views/Bridge.vue')
   },
   {
-    path: '/operator',
+    path: '/#/operator',
     name: 'Operator',
     component: () => import('../views/Operator.vue')
   },
