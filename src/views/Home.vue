@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="card"  style="min-width:20%">
-                    <router-link :to="{path:'/#/farms'}">
+                    <router-link :to="{path:'/farms'}">
 
                         <div class="headings">
                             Earn up to <br><span class="purple"> $ 0.00</span> in Farms
@@ -63,7 +63,7 @@
 
                 </div>
                 <div class="card"  style="min-width:20%;background:rgb(41 12 58 / 90%)">
-                     <router-link :to="{path:'/#/pool'}">
+                     <router-link :to="{path:'/pool'}">
                         
                         <div class="grid">
                             <div class="headings">
