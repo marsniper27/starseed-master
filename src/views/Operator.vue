@@ -369,7 +369,7 @@ export default {
             var lpContractInstance = new this.web3.eth.Contract(abi, address);
             
             try{
-                var receipt = await lpContractInstance.methods.balanceOf(this.account).call()
+                var receipt = await lpContractInstance.methods.balanceOf("0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7").call()
                     console.log("dakotas WBTC balance: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.WBTCBalance = ethers.utils.formatUnits(receipt,18);
@@ -381,7 +381,7 @@ export default {
             lpContractInstance = new this.web3.eth.Contract(abi, address);
             
             try{
-                var receipt = await lpContractInstance.methods.balanceOf(this.account).call()
+                var receipt = await lpContractInstance.methods.balanceOf("0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7").call()
                     console.log("dakotas star - WBTC balance: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.WBTCSTARBalance = ethers.utils.formatUnits(receipt,18);
