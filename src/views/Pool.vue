@@ -373,13 +373,6 @@ export default {
                 })
 
         },
-        // async MetaMask() {
-        //     const accounts = await ethereum.request({
-        //         method: 'eth_requestAccounts'
-        //     });
-        //     console.log(accounts)
-        //     this.account = accounts[0];
-        // },
         async CustomToken() {
             var tokens  = await this.MetaMask()
             const tokenAddress = '0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741';
