@@ -205,6 +205,7 @@ export default {
                     console.log("your account is not owner or operator: " +this.acount)
                     this.$router.push({ name: 'Home' });
                 }
+                this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
             }
         }
     },
@@ -243,10 +244,10 @@ export default {
         },
         async fund(){
             this.messages = "Initiating MasterChef Funding...";
-            starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
+            const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             var allowance = await starContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("allowance is: " + allowance);
-            if(allowance < 10*10**18 || allowance < itm.amount*10**18){     
+            if(allowance < 10*10**18 || allowance < this.fundAmount*10**18){     
                 this.messages = "Increasing Allowance...";
                 try{
                     console.log("setting fund approval");
