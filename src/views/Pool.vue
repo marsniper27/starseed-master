@@ -578,7 +578,14 @@ export default {
         async withdraw(itm){
             if(itm.stakedBalance > 0){
                 try{
-                    var receipt = await this.masterChefContractInstance.methods.withdraw(itm.pid,ethers.utils.parseEther(itm.withdrawAmount.toString())).send({from:this.account})
+                    var convertedAmount;
+                    if(itm.name =="WBTC"){
+                        convertedAmount = parseUnits(itm.withdrawAmount.toString(), 8);
+                    }
+                    else{
+                        convertedAmount = itm.pid,ethers.utils.parseEther(itm.withdrawAmount.toString());
+                    }
+                    var receipt = await this.masterChefContractInstance.methods.withdraw(convertedAmount).send({from:this.account})
                         console.log("withdraw tokens: " + receipt);
                         return(receipt);
                 }catch(error){
@@ -593,7 +600,12 @@ export default {
                 var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call()
                     console.log("get balance: " + receipt)
                     if(receipt == undefined){receipt = 0;}
-                    return ethers.utils.formatUnits(receipt,18);
+                    if(itm.name == "WBTC"){
+                        return ethers.utils.formatUnits(receipt,8);
+                    }
+                    else{
+                        return ethers.utils.formatUnits(receipt,18);
+                    }
             }catch(error){
                 console.log("get balance error: " + error);
             }
