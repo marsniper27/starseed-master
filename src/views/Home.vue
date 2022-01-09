@@ -249,8 +249,6 @@ export default {
         if(this.$route.params.web3 == null || this.$route.params.account == null){
             console.log("account not set");
             this.matics();
-            this.getBurnedStar();
-            this.getTotalSupply();
         }
         else{
             console.log("account already set");
@@ -332,7 +330,10 @@ export default {
                             setTimeout(d=>{
                                 this.messages = false
                             },5000)
-                        }                
+                        }
+                        
+                        this.getBurnedStar();
+                        this.getTotalSupply();                
                     })
             })
             
