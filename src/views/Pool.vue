@@ -213,7 +213,8 @@ export default {
                     withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--",
-                    harvestTime:"--"
+                    harvestTime:"--",
+                    decimals:8
                 },
                 {
                     name: "STAR",
@@ -230,7 +231,8 @@ export default {
                     withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--",
-                    harvestTime:"--"
+                    harvestTime:"--",
+                    decimals:18
                 },
                 {
                     name: "WETH",
@@ -247,7 +249,8 @@ export default {
                     withdrawAmount:null,
                     starEarned:"--",
                     totalLiquidity: "--",
-                    harvestTime:"--"
+                    harvestTime:"--",
+                    decimals:18
                  }
                  //,
                 // {
@@ -451,15 +454,15 @@ export default {
             var allowance = await this.lpContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("Staking LP. Balance is: " + itm.balance);
             console.log("allowance is: " + allowance);
-            if(allowance < 10*10**18 || allowance < itm.amount*10**18){
+            if(allowance < 10*10**itm.decimals || allowance < itm.amount*10**itm.decimals){
                 this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
                 try{
                     console.log("setting stake approval");
-                    var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
+                    var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals)).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
                             try{
-                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                                 console.log("staking: "+receipt);
                                 this.getUserPoolStats(itm);
                             }catch(error){
@@ -472,7 +475,7 @@ export default {
             }
             else{
                 try{
-                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                     console.log("staking: "+receipt);
                     this.getUserPoolStats(itm);
                 }catch(error){
@@ -578,16 +581,9 @@ export default {
         async withdraw(itm){
             if(itm.stakedBalance > 0){
                 try{
-                    var convertedAmount;
-                    if(itm.name =="WBTC"){
-                        convertedAmount = parseUnits(itm.withdrawAmount.toString(), 8);
-                    }
-                    else{
-                        convertedAmount = itm.pid,ethers.utils.parseEther(itm.withdrawAmount.toString());
-                    }
-                    var receipt = await this.masterChefContractInstance.methods.withdraw(convertedAmount).send({from:this.account})
-                        console.log("withdraw tokens: " + receipt);
-                        return(receipt);
+                    var receipt = await this.masterChefContractInstance.methods.withdraw(parseUnits(itm.withdrawAmount.toString(), itm.decimals)).send({from:this.account})
+                    console.log("withdraw tokens: " + receipt);
+                    return(receipt);
                 }catch(error){
                     console.log("withdraw error: " + error);
                 }
@@ -600,12 +596,7 @@ export default {
                 var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call()
                     console.log("get balance: " + receipt)
                     if(receipt == undefined){receipt = 0;}
-                    if(itm.name == "WBTC"){
-                        return ethers.utils.formatUnits(receipt,8);
-                    }
-                    else{
-                        return ethers.utils.formatUnits(receipt,18);
-                    }
+                    return ethers.utils.formatUnits(receipt,itm.decimals);
             }catch(error){
                 console.log("get balance error: " + error);
             }
