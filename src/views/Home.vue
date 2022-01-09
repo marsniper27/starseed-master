@@ -207,7 +207,7 @@ export default {
             connected:false,
             totalMinted:null,
             starAdded:false,
-            burnedStar:"--",
+            burnedStar:null,
             currentSupply: null,
             burnValue:null,
             starValue:0,
@@ -259,6 +259,7 @@ export default {
             if(chainId != 0x89){this.setChain()};
             this.getBurnedStar();
             this.getTotalSupply();
+            setTimeout(()=>{this.getCurrentSupply()}, 1000);
         }
     },
     methods: {
@@ -333,7 +334,8 @@ export default {
                         }
                         
                         this.getBurnedStar();
-                        this.getTotalSupply();                
+                        this.getTotalSupply();
+                        setTimeout(()=>{this.getCurrentSupply()}, 1000);
                     })
             })
             
@@ -460,6 +462,7 @@ export default {
                     if(receipt == undefined){receipt = 0;}
                     this.burnedStar = ethers.utils.formatUnits(receipt,18);
                     this.burnValue = ethers.utils.formatUnits((receipt*this.starValue),18);
+                    return(true);
             }catch(error){
                 console.log("get burned star error: " + error);
                 }
@@ -470,11 +473,14 @@ export default {
                     console.log("get total supply: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.totalMinted = ethers.utils.formatUnits(receipt,18);
-                    this.currentSupply = (this.totalMinted) - (this.burnedStar);
-                    console.log("currentsupply :" +this.currentSupply);
+                    return(true);
             }catch(error){
                 console.log("get total supply error: " + error);
                 }
+        },
+        getCurrentSupply(){            
+            this.currentSupply = (+this.totalMinted) - (+this.burnedStar);
+            console.log("currentsupply : " +this.currentSupply);
         },
         getStar(){
             location.href = "https://quickswap.exchange/#/swap?outputCurrency=0xc6e2e8395a671ee3f6f55177f8fe5984d5da7741";
