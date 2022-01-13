@@ -461,16 +461,15 @@ export default {
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals)).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
-                           setTimeout(()=>{
-                                try{
-                                    console.log("pid: "+itm.pid+" stake amount: " + ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
-                                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
-                                    console.log("staking: "+receipt);
-                                    this.getUserPoolStats(itm);
-                                }catch(error){
-                                    console.log("staking after approval error: " +error);
-                                }
-                            }, 5000);
+                            await sleep(5000);
+                            try{
+                                console.log("pid: "+itm.pid+" stake amount: " + ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
+                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
+                                console.log("staking: "+receipt);
+                                this.getUserPoolStats(itm);
+                            }catch(error){
+                                console.log("staking after approval error: " +error);
+                            }
                         }
                 }catch(error){
                     console.log(" stake approval error: " +error);
@@ -678,6 +677,11 @@ export default {
         },
         viewExplorer(itm){            
             location.href = "https://polygonscan.com/token/" + itm.address;
+        },
+        sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            });
         }
     }
 }

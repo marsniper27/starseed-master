@@ -470,15 +470,14 @@ export default {
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
-                           setTimeout(()=>{
-                                try{
-                                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
-                                    console.log("staking: "+receipt);
-                                    this.getUserPoolStats(itm);
-                                }catch(error){
-                                    console.log("staking error after approve: " +error);
-                                }
-                            }, 5000);
+                            await sleep(5000);
+                            try{
+                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                                console.log("staking: "+receipt);
+                                this.getUserPoolStats(itm);
+                            }catch(error){
+                                console.log("staking error after approve: " +error);
+                            }
                         }
                 }catch(error){
                     console.log(" stake approval error: " +error);
@@ -684,6 +683,11 @@ export default {
         },
         viewExplorer(itm){            
             location.href = "https://polygonscan.com/token/" + itm.address;
+        },
+        sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            });
         }
     }
 }
