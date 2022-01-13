@@ -75,7 +75,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-100);">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-0.00000001);">MAX</button>
                                     </div>
                                 </div>
                             </div>
@@ -215,6 +215,7 @@ export default {
                     totalLiquidity: "--",
                     harvestTime:"--",
                     decimals:8,
+                    stakedLP:null,
                     apr: null
                 },
                 {
@@ -234,6 +235,7 @@ export default {
                     totalLiquidity: "--",
                     harvestTime:"--",
                     decimals:18,
+                    stakedLP:null,
                     apr: null
                 },
                 {
@@ -253,6 +255,7 @@ export default {
                     totalLiquidity: "--",
                     harvestTime:"--",
                     decimals:18,
+                    stakedLP:null,
                     apr: null
                  }
                  ,
@@ -273,6 +276,7 @@ export default {
                     totalLiquidity: "--",
                     harvestTime:"--",
                     decimals:18,
+                    stakedLP:null,
                     apr: null
                 },
                 {
@@ -292,6 +296,7 @@ export default {
                     totalLiquidity: "--",
                     harvestTime:"--",
                     decimals:18,
+                    stakedLP:null,
                     apr: null
                 }
             ],
@@ -461,6 +466,7 @@ export default {
         },
         async StakeLP(itm){
             this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
+            console.log("created instance for: " + itm.name);
             var allowance = await this.lpContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("Staking LP. Balance is: " + itm.balance);
             console.log("allowance is: " + allowance);
@@ -620,7 +626,8 @@ export default {
                 if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                 console.log("total liquidity: " + (receipt.totalLp));
                 itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,18);
-                itm.apr = receipt.allocPoint;
+                itm.stakedLP = receipt.totalLp;
+                itm.apr =(((10*(receipt.allocPoint/this.totalAllocation))*11)/(receipt.totalLp*0.01)*100);
             }catch(error){
                 console.log("get pool total liquidity  error: " + error);
             }
