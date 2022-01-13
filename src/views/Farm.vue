@@ -222,7 +222,7 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/ETH/0x1fB241da53e3B550A3E70fc66fC79C40F0499445"
+                    pool: "https://quickswap.exchange/#/add/ETH/0x8440178087C4fd348D43d0205F4574e0348a06F0"
                 },
                 {
                     name: "STAR - ETH",
@@ -240,7 +240,7 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x1fB241da53e3B550A3E70fc66fC79C40F0499445"
+                    pool: "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x8440178087C4fd348D43d0205F4574e0348a06F0"
                 },
                 {
                     name: "STAR - DHV",
@@ -258,7 +258,7 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26/0x1fB241da53e3B550A3E70fc66fC79C40F0499445"
+                    pool: "https://quickswap.exchange/#/add/0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26/0x8440178087C4fd348D43d0205F4574e0348a06F0"
                 }, 
                 {
                     name: "STAR - MAI",
@@ -276,7 +276,7 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0xa3Fa99A148fA48D14Ed51d610c367C61876997F1/0x1fB241da53e3B550A3E70fc66fC79C40F0499445"
+                    pool: "https://quickswap.exchange/#/add/0xa3Fa99A148fA48D14Ed51d610c367C61876997F1/0x8440178087C4fd348D43d0205F4574e0348a06F0"
                 }
                 ,
                 {
@@ -295,7 +295,7 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6/0x1fB241da53e3B550A3E70fc66fC79C40F0499445"
+                    pool: "https://quickswap.exchange/#/add/0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6/0x8440178087C4fd348D43d0205F4574e0348a06F0"
                 }
             ],
             web3:false,
@@ -429,7 +429,7 @@ export default {
         },
         async CustomToken() {
             var tokens  = await this.MetaMask()
-            const tokenAddress = '0x1fB241da53e3B550A3E70fc66fC79C40F0499445';
+            const tokenAddress = '0x8440178087C4fd348D43d0205F4574e0348a06F0';
             const tokenSymbol = 'STAR';
             const tokenDecimals = 18;
             const tokenImage = 'https://upwork-usw2-prod-file-storage-wp1.s3.us-west-2.amazonaws.com/workplace/attachment/fa082a5b2e94bf1e76ca0f9b5fc23411?response-content-disposition=inline%3B%20filename%3D%22Starseed-Dimension1.jpg%22%3B%20filename%2A%3Dutf-8%27%27Starseed-Dimension1.jpg&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGAaCXVzLXdlc3QtMiJHMEUCIGw2APTHGT%2BDzrP4FrawkgDvU5hD%2Fr2hbDHPVM074KpkAiEAw3sFP5RDbQn1YefTCH8FISnhl724N4UQ0KBQPmIKouAq1gQIyP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw3Mzk5MzkxNzM4MTkiDAImma6YwmGQI3Wu3SqqBIuFEDzBiTY5AOjndBtNhTUDamknRsuB4AX8IDsrm6bMNu8sVHOhQFMJ7UiFK155cMYs%2FM6IfhxFJUqzZuAZsks4dLdKMe%2FVpe10XlmbulaYyJXKY577ULBsuhh56ba3Jx4UVWydotee0NMbjZOb%2FBuHXlogYtBvmk258j8mqjuVVxsgdo8slUfw85os%2Bzmk7%2F%2B3onTI2vl2BdTmI3oD1cpCz334mNvsxMLsAwTSl8f2A7L12W3MWuNAQtvNh%2By7Q5LSPn9cyqb1raUIoF2jS%2FRvH%2BaulGp2bhn733qJGqzwUNLYmi9pQyVnpJg66V5dPjF1t168QLbbSjEx9t7fp%2FWidZK08yL0%2FAy1doNH2FzNkPKmrhmiPAYqoohEgLlIeBqACzy70MLA9YJcsL%2Fe5Xh%2F7tkmYUdPk%2BtfKbMVo9fOxsibrmYaZ0vOr%2F5VdpckU%2FW%2FE2VUS%2BJwi21h%2Bee7UXXSsdSQBIBisOPhRj4dEn6skev41s49kmtHgsQvzCNvCzMc4kAteI87c7WnUb9CQjDVPxgpcMuLrR8xzh9Hd1PpOhB5aObvxaWJpCiAbDt8NgpcxUNWAr0HTxHmCRNV4iRz4GxwODTx9OHTv8xpkWsOlBMGw0%2BKgwZ9KKD1BvFu%2BsktKg2pLg3lkU0Er0%2FZe1fo%2Bs2STOPpoax8%2BlXU1w11R5XaC34KnJW0zz%2BUx6twfOy%2F7cFI4CF1Qsj%2BVD0%2BhLjJYu0%2BTKFJFo3SMNPp04oGOqcB%2Bg0mDvadqMC65u%2FMo3EWEkRwlPAByx8QTbIbNLPzVOcY5lqCEVhQVBYoXs2%2FbsNhKdUH3y5FjRewUPsk0grVBvanllaDyu6wHbCWcjcclKm8TmSKCOFFqCszfbqOU6nvOhnTL6sawLSx7f%2FGQI1FuYgqJIBTnuujPxGYrmq55XnVg%2Fdi30ijaSDj9VhpHqwukthXwNAlUUQnTsFvqzwOdkG6G2JvNSQ%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210930T001840Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIA2YR6PYW54ATYNRN4%2F20210930%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=b071723508914fffe021f4069504334a80e996e73e3079cc6b01ea48879aa57a';
@@ -470,13 +470,15 @@ export default {
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
-                            try{
-                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
-                                console.log("staking: "+receipt);
-                                this.getUserPoolStats(itm);
-                            }catch(error){
-                                console.log("staking error after approve: " +error);
-                            }
+                           setTimeout(()=>{
+                                try{
+                                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                                    console.log("staking: "+receipt);
+                                    this.getUserPoolStats(itm);
+                                }catch(error){
+                                    console.log("staking error after approve: " +error);
+                                }
+                            }, 5000);
                         }
                 }catch(error){
                     console.log(" stake approval error: " +error);
