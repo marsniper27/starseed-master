@@ -128,6 +128,7 @@
                         </div>
                         <button @click="getWBTCBalance()">Get WBTC amount</button>;
                     </div>
+                        <button @click="getPrice()">test quickswap price</button>;
                 </div>
                 
                 <button @click="changeMxTxAmount()">change max tc amount</button>;
@@ -154,6 +155,7 @@ import Web3 from "web3"
 import Matic from "maticjs"
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
+import { ChainId, Token, WETH, Fetcher, Route } from "quickswap-sdk";
 
 export default {
     components: {},
@@ -401,8 +403,29 @@ export default {
             }catch(error){
                 console.log("change mx tx amount error: " + error);
             }
+        },
+        async getPrice(){
+            const NODE_URL = "https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
+            const provider = new ethers.providers.JsonRpcProvider(NODE_URL);
+
+            const STAR = new Token(
+                ChainId.MATIC,
+                "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+                18
+                );
+
+                console.log("setup pair");
+                // note that you may want/need to handle this async code differently,
+                // for example if top-level await is not an option
+                const pair = await Fetcher.fetchPairData(DAI, WETH[DAI.chainId],provider);
+                console.log("setup route");
+
+                const route = new Route([pair], WETH[DAI.chainId]);
+
+                console.log(route.midPrice.toSignificant(6)); // 201.306
+                console.log(route.midPrice.invert().toSignificant(6)); // 0.00496756
         }
     }
+    
 }
 </script>
-

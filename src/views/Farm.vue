@@ -27,7 +27,7 @@
                                 APR :
                             </div>
                             <div class="cont">
-                                NaN%
+                                {{matic.apr}}
                             </div>
                         </div>
                         <div class="grid">
@@ -77,7 +77,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = matic.balance;">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-0.00000001);">MAX</button>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +222,11 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/ETH/0x8440178087C4fd348D43d0205F4574e0348a06F0"
+                    pool: "https://quickswap.exchange/#/add/ETH/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                    supply: null,
+                    decimals:18,
+                    stakedLP:null,
+                    apr: null
                 },
                 {
                     name: "STAR - ETH",
@@ -240,7 +244,11 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x8440178087C4fd348D43d0205F4574e0348a06F0"
+                    pool: "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                    supply: null,
+                    decimals:18,
+                    stakedLP:null,
+                    apr: null
                 },
                 {
                     name: "STAR - DHV",
@@ -258,7 +266,11 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26/0x8440178087C4fd348D43d0205F4574e0348a06F0"
+                    pool: "https://quickswap.exchange/#/add/0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                    supply: null,
+                    decimals:18,
+                    stakedLP:null,
+                    apr: null
                 }, 
                 {
                     name: "STAR - MAI",
@@ -276,7 +288,11 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0xa3Fa99A148fA48D14Ed51d610c367C61876997F1/0x8440178087C4fd348D43d0205F4574e0348a06F0"
+                    pool: "https://quickswap.exchange/#/add/0xa3Fa99A148fA48D14Ed51d610c367C61876997F1/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                    supply: null,
+                    decimals:18,
+                    stakedLP:null,
+                    apr: null
                 }
                 ,
                 {
@@ -295,7 +311,11 @@ export default {
                     starEarned:"--",
                     totalLiquidity: "--",
                     harvestTime:"--",
-                    pool: "https://quickswap.exchange/#/add/0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6/0x8440178087C4fd348D43d0205F4574e0348a06F0"
+                    pool: "https://quickswap.exchange/#/add/0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                    supply: null,
+                    decimals:18,
+                    stakedLP:null,
+                    apr: null
                 }
             ],
             web3:false,
@@ -313,7 +333,8 @@ export default {
             lpContractInstance : false,
             masterChefContractAbi : [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"BonusMupltiplier","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"EmissionRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBalance","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOperator","type":"address"},{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amountLockedUp","type":"uint256"}],"name":"RewardLockedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_DEPOSIT_FEE_RATE","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_HARVEST_INTERVAL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_STAR_PER_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"canHarvest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"collectFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"compound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"fundMasterChef","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getDepositFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvestStar","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingStar","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accStarPerShare","type":"uint256"},{"internalType":"uint16","name":"depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"harvestInterval","type":"uint256"},{"internalType":"uint256","name":"totalLp","type":"uint256"},{"internalType":"uint256","name":"depositFees","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"remainingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_devAddress","type":"address"}],"name":"setDevAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"setStarId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"setstarContractAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"star","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"starPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startFarming","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocation","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLockedUpRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStarInPools","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOperator","type":"address"}],"name":"transferOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"updateAllocPoint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bonus","type":"uint256"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_starPerBlock","type":"uint256"}],"name":"updateEmissionRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"rewardLockedUp","type":"uint256"},{"internalType":"uint256","name":"nextHarvestUntil","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}],
             masterChefContractAddress : "0x16E76500f1E6C943FEd150bF56403d91A91dCD55",
-            masterChefContractInstance : false
+            masterChefContractInstance : false,
+            totalAllocation:null
         }
     },
     watch: {
@@ -338,6 +359,7 @@ export default {
                 this.connected = true;
                 var chainId = new this.web3.eth.getChainId();
                 if(chainId != 0x89){this.setChain()};
+                this.getTotalAllocation();
                 this.getUserPoolStats();
             }
         }
@@ -370,6 +392,7 @@ export default {
                             this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                             console.log(this.account);
                             this.messages = false;
+                            this.getTotalAllocation();
                             for( const itm of this.starSeed){
                                 this.getUserPoolStats(itm);
                                 //this.$router.go();
@@ -463,16 +486,16 @@ export default {
             var allowance = await this.lpContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("Staking LP. Balance is: " + itm.balance);
             console.log("allowance is: " + allowance);
-            if(allowance < 10*10**18 || allowance < itm.amount*10**18){
+            if(allowance < 10*10**itm.decimals || allowance < itm.amount*10**itm.decimals){
                 this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
                 try{
                     console.log("setting stake approval");
-                    var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
+                    var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals)).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
                             await sleep(5000);
                             try{
-                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                                receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                                 console.log("staking: "+receipt);
                                 this.getUserPoolStats(itm);
                             }catch(error){
@@ -485,7 +508,7 @@ export default {
             }
             else{
                 try{
-                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseEther(itm.amount.toString())).send({from: this.account})
+                    receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                     console.log("staking: "+receipt);
                     this.getUserPoolStats(itm);
                 }catch(error){
@@ -494,19 +517,19 @@ export default {
             }
         },
         async getUserPoolStats(itm){
+                this.getPoolInfo(itm);
                 console.log("getting stats for:" + itm.name);
                 itm.starEarned =  await this.getPendingStar(itm.pid);
                 itm.starEarned = (+itm.starEarned);
                 console.log("star earned :"+ itm.starEarned);
                 console.log("getting staked LP");
-                itm.stakedBalance =  await this.getStakedLp(itm.pid);
+                itm.stakedBalance =  await this.getStakedLp(itm);
                 console.log("staked LP :"+ itm.stakedBalance);
                 console.log("getting token balance");
                 var bal = await this.getBalance(itm);
                 console.log("bal: "+bal);
                 itm.balance = (+bal);
                 console.log("token balance: " + itm.balance);
-                this.getPoolInfo(itm);
         },
         async getPendingStar(pid){
             console.log("getting earned star for:" +pid)
@@ -518,12 +541,12 @@ export default {
                 console.log("Pending Star error: " + error);
             }
         },
-        async getStakedLp(pid){
-            console.log("getting staked lp for:" +pid)
+        async getStakedLp(itm){
+            console.log("getting staked lp for:" +itm.pid)
             try{
-                var receipt = await this.masterChefContractInstance.methods.userInfo(pid,this.account).call()
+                var receipt = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
                 console.log("staked lp: " + receipt.amount);
-                return ethers.utils.formatEther(receipt.amount);
+                return ethers.utils.formatUnits(receipt.amount,itm.decimals);
             }catch(error){
                 console.log("staked lp error: " + error);
             }
@@ -590,9 +613,9 @@ export default {
         async withdraw(itm){
             if(itm.stakedBalance > 0){
                 try{
-                    var receipt = await this.masterChefContractInstance.methods.withdraw(itm.pid,ethers.utils.parseEther(itm.withdrawAmount.toString())).send({from:this.account})
-                        console.log("withdraw tokens: " + receipt);
-                        return(receipt);
+                    var receipt = await this.masterChefContractInstance.methods.withdraw(parseUnits(itm.withdrawAmount.toString(), itm.decimals)).send({from:this.account})
+                    console.log("withdraw tokens: " + receipt);
+                    return(receipt);
                 }catch(error){
                     console.log("withdraw error: " + error);
                 }
@@ -600,12 +623,19 @@ export default {
         },
         async getBalance(itm){
             this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
-            
             try{
-                var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call()
-                    console.log("get balance: " + receipt)
+                var receipt = await this.lpContractInstance.methods.totalSupply().call();
+                    console.log("get totalsupply: " + receipt);
                     if(receipt == undefined){receipt = 0;}
-                    return ethers.utils.formatUnits(receipt,18);
+                    itm.supply = receipt;
+            }catch(error){
+                console.log("get totalsupply error: " + error);
+            }
+            try{
+                var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call();
+                    console.log("get balance: " + receipt);
+                    if(receipt == undefined){receipt = 0;}
+                    return ethers.utils.formatUnits(receipt,itm.decimals);
             }catch(error){
                 console.log("get balance error: " + error);
             }
@@ -615,7 +645,9 @@ export default {
                 var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
                 if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                 console.log("total liquidity: " + (receipt.totalLp));
-                itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,18);
+                itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
+                itm.stakedLP = receipt.totalLp;
+                itm.apr =(((((10*(receipt.allocPoint/this.totalAllocation))*11)/(receipt.totalLp*0.01)*100)*365).toFixed(4)).toString()+"%";
             }catch(error){
                 console.log("get pool total liquidity  error: " + error);
             }
@@ -677,6 +709,15 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
+        },
+        async getTotalAllocation(){
+            try{
+                var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
+                console.log("total allocation: " + receipt);
+                this.totalAllocation = receipt;
+            }catch(error){
+                console.log("get total allocation  error: " + error);
+            }
         },
         getLp(itm){
             location.href = itm.pool;
