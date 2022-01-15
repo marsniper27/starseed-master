@@ -9,7 +9,6 @@
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
     "@maticnetwork/walletconnect-provider": "0.0.1-beta.1",
-    "@uniswap/sdk": "^3.0.3",
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
