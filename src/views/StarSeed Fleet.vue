@@ -53,12 +53,12 @@ We will only have two planets for now, on the left automated planet on the right
                             <div class="icon">
                                 <h2>StarShips</h2>
                                 <h3> Send your fleet into the Interdimensinal Rifts to collect STAR Cryptocurrency</h3>
-                                <!-- <video controls width="400" height="400"
+                               <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../assets/videos/square-Space junker.mp4" type="video/mp4">
+                                    <source src="https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/square-Space junker.mp4" type="video/mp4">
                                 </video>
-                                <video controls width="400" height="400"
+                                <!--  <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
                                     <source src="..\/assets/videos/Arcturian Battleship.mp4" type="video/mp4">
