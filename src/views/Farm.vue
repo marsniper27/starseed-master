@@ -355,11 +355,11 @@ export default {
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
-                console.log("account not set");
+                console.log("account not set farm");
                 this.metaMaskWallet();
             }
             else{
-                console.log("account already set");
+                console.log("account already set farm");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
@@ -400,10 +400,7 @@ export default {
                             console.log(this.account);
                             this.messages = false;
                             this.getTotalAllocation();
-                            for( const itm of this.starSeed){
-                                this.getUserPoolStats(itm);
-                                //this.$router.go();
-                            }
+                            this.getUserPoolStats();
                         }else{
                             this.messages = "No account Connected"
                             console.log("no account connected")
@@ -504,7 +501,7 @@ export default {
                             try{
                                 receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                                 console.log("staking: "+receipt);
-                                this.getUserPoolStats(itm);
+                                this.getUserPoolStats();
                             }catch(error){
                                 console.log("staking error after approve: " +error);
                             }
@@ -517,13 +514,14 @@ export default {
                 try{
                     receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                     console.log("staking: "+receipt);
-                    this.getUserPoolStats(itm);
+                    this.getUserPoolStats();
                 }catch(error){
                     console.log("staking error: " +error);
                 }
             }
         },
-        async getUserPoolStats(itm){
+        async getUserPoolStats(){
+            for( const itm of this.starSeed){
                 this.getPoolInfo(itm);
                 //console.log("getting stats for:" + itm.name);
                 itm.starEarned =  await this.getPendingStar(itm.pid);
@@ -537,6 +535,7 @@ export default {
                 console.log(itm.name +" bal: "+bal);
                 itm.balance = (+bal);
                 console.log("token balance: " + itm.balance);
+            }
         },
         async getPendingStar(pid){
             console.log("getting earned star for:" +pid)
