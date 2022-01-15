@@ -53,27 +53,27 @@ We will only have two planets for now, on the left automated planet on the right
                             <div class="icon">
                                 <h2>StarShips</h2>
                                 <h3> Send your fleet into the Interdimensinal Rifts to collect STAR Cryptocurrency</h3>
-                                <!-- <video controls width="400" height="400"
+                                <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../\assets\videos\square-Space junker.mp4" type="video/mp4">
+                                    <source src="..\assets\videos\square-Space junker.mp4" type="video/mp4">
                                 </video>
                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../\assets\videos\Arcturian Battleship.mp4" type="video/mp4">
+                                    <source src="..\assets\videos\Arcturian Battleship.mp4" type="video/mp4">
                                 </video>
                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../\assets\videos\Martian Destroyer NFT compressed(1).mp4" type="video/mp4">
+                                    <source src="..\assets\videos\Martian Destroyer NFT compressed(1).mp4" type="video/mp4">
                                 </video>
                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../\assets\videos\Atlantean Mothership.mp4" type="video/mp4">
-                                </video> -->
-                                <!-- <video src="../\assets\videos\Arcturian Battleship.mp4"/> -->
+                                    <source src="..\assets\videos\Atlantean Mothership.mp4" type="video/mp4">
+                                </video>
+                                <!-- <video src="..\assets\videos\Arcturian Battleship.mp4"/> -->
                             </div>
                     </div>
                 </div>
