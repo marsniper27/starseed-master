@@ -509,24 +509,24 @@ export default {
         },
         async getUserPoolStats(itm){
                 this.getPoolInfo(itm);
-                console.log("getting stats for:" + itm.name);
+                //console.log("getting stats for:" + itm.name);
                 itm.starEarned =  await this.getPendingStar(itm.pid);
                 itm.starEarned = (+itm.starEarned);
-                console.log("star earned :"+ itm.starEarned);
-                console.log("getting staked LP");
+                //console.log("star earned :"+ itm.starEarned);
+                //console.log("getting staked LP");
                 itm.stakedBalance =  await this.getStakedLp(itm);
-                console.log("staked LP :"+ itm.stakedBalance);
+                //console.log("staked LP :"+ itm.stakedBalance);
                 console.log("getting token balance");
                 var bal = await this.getBalance(itm);
-                console.log("bal: "+bal);
-                 itm.balance = (+bal);
+                console.log(itm.name +" bal: "+bal);
+                itm.balance = (+bal);
                 console.log("token balance: " + itm.balance);
         },
         async getPendingStar(pid){
             console.log("getting earned star for:" +pid)
             try{
                 var receipt = await this.masterChefContractInstance.methods.pendingStar(pid,this.account).call()
-                console.log("pending star: " + receipt);
+                //console.log("pending star: " + receipt);
                 return ethers.utils.formatEther(receipt);
             }catch(error){
                 console.log("PID: " + pid + "Pending Star error: " + error);
@@ -536,7 +536,7 @@ export default {
             console.log("getting staked lp for:" +itm.pid)
             try{
                 var receipt = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
-                console.log("staked lp: " + receipt.amount);
+                //console.log("staked lp: " + receipt.amount);
                 return ethers.utils.formatUnits(receipt.amount,itm.decimals);
             }catch(error){
                 console.log("staked lp error: " + error);
@@ -617,7 +617,7 @@ export default {
             this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
             try{
                 var receipt = await this.lpContractInstance.methods.totalSupply().call();
-                    console.log("get totalsupply: " + receipt);
+                    //console.log("get totalsupply: " + receipt);
                     if(receipt == undefined){receipt = 0;}
                     itm.supply = receipt;
             }catch(error){
@@ -625,18 +625,19 @@ export default {
             }            
             try{
                 var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call();
-                    console.log("get balance: " + receipt);
+                    console.log(itm.name +" get balance: " + receipt);
                     if(receipt == undefined){receipt = 0;}
                     return ethers.utils.formatUnits(receipt,itm.decimals);
             }catch(error){
                 console.log("get balance error: " + error);
             }
+            this.lpContractInstance =null;
         },
         async getPoolInfo(itm){
             try{
                 var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
                 if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-                console.log("total liquidity: " + (receipt.totalLp));
+                //console.log("total liquidity: " + (receipt.totalLp));
                 itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
                 itm.stakedLP = receipt.totalLp;
                 itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice)/((receipt.totalLp/10**itm.decimals)*itm.price))*100*365).toFixed(4)).toString()+"%";
@@ -705,7 +706,7 @@ export default {
         async getTotalAllocation(){
             try{
                 var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
-                console.log("total allocation: " + receipt);
+                //console.log("total allocation: " + receipt);
                 this.totalAllocation = receipt;
             }catch(error){
                 console.log("get total allocation  error: " + error);
