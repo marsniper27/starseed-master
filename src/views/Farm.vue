@@ -320,7 +320,7 @@ export default {
                     decimals:18,
                     stakedLP:null,
                     apr: null,
-                    price:0
+                    price:145291437.4769140000
                 }
             ],
             web3:false,
