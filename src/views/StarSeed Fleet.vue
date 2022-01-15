@@ -58,22 +58,22 @@ We will only have two planets for now, on the left automated planet on the right
                                         poster="poster.png">
                                     <source src="https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/square-Space junker.mp4" type="video/mp4">
                                 </video>
-                                <!--  <video controls width="400" height="400"
+                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="..\/assets/videos/Arcturian Battleship.mp4" type="video/mp4">
+                                    <source src="https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/Arcturian Battleship.mp4" type="video/mp4">
                                 </video>
                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../assets/videos/Martian Destroyer NFT compressed(1).mp4" type="video/mp4">
+                                    <source src="https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/Martian Destroyer NFT compressed(1).mp4" type="video/mp4">
                                 </video>
                                 <video controls width="400" height="400"
                                         autoplay loop muted preload="auto"
                                         poster="poster.png">
-                                    <source src="../assets/videos/Atlantean Mothership.mp4" type="video/mp4">
-                                </video> -->
-                                <!-- <video src="..\assets\videos\Arcturian Battleship.mp4"/> -->
+                                    <source src="https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/Arcturian Battleship.mp4" type="video/mp4">
+                                </video>
+                                
                             </div>
                     </div>
                 </div>
