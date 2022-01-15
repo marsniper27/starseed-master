@@ -97,7 +97,6 @@ import Web3 from "web3"
 import Matic from "maticjs"
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
-import { ChainId, Token, WETH, Fetcher, Route } from "quickswap-sdk";
 
 export default {
     components: {},
