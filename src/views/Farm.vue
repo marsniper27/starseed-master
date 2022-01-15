@@ -655,7 +655,6 @@ export default {
                 itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
                 itm.stakedLP = receipt.totalLp;
                 itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice)/(receipt.totalLp*itm.price))*100*365).toFixed(4)).toString()+"%";
-                console.log(itm.name + " apr: " + itm.apr);
             }catch(error){
                 console.log("get pool total liquidity  error: " + error);
             }
