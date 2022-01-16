@@ -725,10 +725,19 @@ export default {
             }
         },
         getLp(itm){
-            location.href = itm.pool;
+            window.open(
+                itm.pool,
+                '_blank' // <- This is what makes it open in a new window.
+            );
+            //location.href = itm.pool;
         },
-        viewExplorer(itm){            
-            location.href = "https://polygonscan.com/token/" + itm.address;
+        viewExplorer(itm){
+            window.open(
+                'https://polygonscan.com/token/' + itm.address,
+                '_blank' // <- This is what makes it open in a new window.
+            );
+            return;                       
+            //location.href = "https://polygonscan.com/token/" + itm.address;
         },
         sleep(ms) {
             return new Promise((resolve) => {

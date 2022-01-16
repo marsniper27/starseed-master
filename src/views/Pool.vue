@@ -502,7 +502,6 @@ export default {
             }
         },
         async getUserPoolStats(){
-            console.log(this.pools.length);
             for( const itm of this.pools){
                 this.getPoolInfo(itm);
                 //console.log("getting stats for:" + itm.name);
@@ -711,10 +710,18 @@ export default {
             }
         },
         getLp(itm){
-            location.href = itm.pool;
+            window.open(
+                itm.pool,
+                '_blank' // <- This is what makes it open in a new window.
+            );         
+            //location.href = itm.pool;
         },
-        viewExplorer(itm){            
-            location.href = "https://polygonscan.com/token/" + itm.address;
+        viewExplorer(itm){ 
+            window.open(
+                'https://polygonscan.com/token/' + itm.address,
+                '_blank' // <- This is what makes it open in a new window.
+            );           
+            //location.href = "https://polygonscan.com/token/" + itm.address;
         },
         sleep(ms) {
             return new Promise((resolve) => {
