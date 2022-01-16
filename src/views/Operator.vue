@@ -408,24 +408,48 @@ export default {
             const NODE_URL = "https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
             const provider = new ethers.providers.JsonRpcProvider(NODE_URL);
 
-            const STAR = new Token(
-                ChainId.MATIC,
-                "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-                18
-                );
+            const options = {
+                address: "0x8440178087C4fd348D43d0205F4574e0348a06F0",
+                chain: "polygon",
+                exchange: "quickswap"
+            };
+            const price = await Moralis.Web3API.token.getTokenPrice(options);
+            console.log("Star Price: " +price.usdPrice)
 
-                console.log("setup pair");
-                // note that you may want/need to handle this async code differently,
-                // for example if top-level await is not an option
-                const pair = await Fetcher.fetchPairData(DAI, WETH[DAI.chainId],provider);
-                console.log("setup route");
+            // const STAR = new Token(
+            //     ChainId.MATIC,
+            //     "0x8440178087C4fd348D43d0205F4574e0348a06F0",
+            //     18
+            //     );
 
-                const route = new Route([pair], WETH[DAI.chainId]);
+            //     console.log("setup pair");
+            //     // note that you may want/need to handle this async code differently,
+            //     // for example if top-level await is not an option
+            //     const pair = await Fetcher.fetchPairData(STAR, WETH[STAR.chainId],provider);
+            //     console.log("setup route");
 
-                console.log(route.midPrice.toSignificant(6)); // 201.306
-                console.log(route.midPrice.invert().toSignificant(6)); // 0.00496756
+            //     const route = new Route([pair], WETH[STAR.chainId]);
+
+            //     console.log(route.midPrice.toSignificant(6)); // 201.306
+            //     console.log(route.midPrice.invert().toSignificant(6)); // 0.00496756
         }
     }
-    
 }
 </script>
+/*
+@app.route("/request-price", methods=["POST"])
+def request_price():
+    req = request.get_json()
+    response = moralis_query(req["erc20_address"],'CHAIN','CHAINNAME') #CHAINS - eth, bsc, polygon; CHAINNAME - for this project use mainnet
+    res = make_response(response, 200)
+    return res
+
+
+maralis_url = f"https://deep-index.moralis.io/api/token/ERC20/"0x8440178087C4fd348D43d0205F4574e0348a06F0"/price?chian="polygon"&chain_name="mainnet"";
+
+def moralis_query(_address,_chain,_chain_name):
+    moralis_url=f"https://deep-index.moralis.io/api/token/ERC20/{_address}/price?chain={_chain}&chain_name={_chain_name}"
+    h_values = {'X-API-KEY':os.environ['API_KEY']}
+    r = requests.get(moralis_url, headers=h_values) 
+    return  r.json()
+*/
