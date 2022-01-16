@@ -95,7 +95,9 @@
                                 STAR Price :
                             </div>
                             <div class="cont">
-                                 ${{(+starValue).toFixed(4)}}
+                                <a href="https://swap.arken.finance/tokens/polygon/0x8440178087c4fd348d43d0205f4574e0348a06f0" target="_new">
+                                    ${{(+starValue).toFixed(4)}};
+                                </a>
                             </div>
                         </div>
                         <div class="grid">
@@ -135,7 +137,7 @@
                                 Burn Value
                             </div>
                             <div class="cont">
-                                ${{(+burnValue).toFixed(4)}}
+                                    ${{(+burnValue).toFixed(4)}}
                             </div>
                         </div>
                         <div class="grid">
