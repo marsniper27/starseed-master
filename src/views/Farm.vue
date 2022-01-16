@@ -77,7 +77,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-0.00000001);">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-(1/(10**(matic.decimals - 2))));">MAX</button>
                                     </div>
                                 </div>
                             </div>
@@ -495,7 +495,7 @@ export default {
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals)).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
-                            await sleep(5000);
+                            await this.sleep(5000);
                             try{
                                 receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                                 console.log("staking: "+receipt);
