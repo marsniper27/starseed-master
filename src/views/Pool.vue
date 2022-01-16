@@ -15,7 +15,7 @@
         <h4 class="heading center">Yield Farming</h4>
         <div class="cards">
             <div class="container">
-                <div class="card" v-for="matic in starSeed" v-bind:class="{'larger':matic.type}">
+                <div class="card" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
                     <div v-if="!matic.type">
                          <div class="icon">
                             <img :src="matic.img"> {{matic.name}}
@@ -197,8 +197,7 @@ export default {
     components: {},
     data() {
         return {
-            starSeed: [
-                {
+            pools: [{
                     name: "WBTC",
                     color: "blue",
                     img: btcMatic,
@@ -503,7 +502,8 @@ export default {
             }
         },
         async getUserPoolStats(){
-            for( const itm of this.starSeed){
+            console.log(this.pools.length);
+            for( const itm of this.pools){
                 this.getPoolInfo(itm);
                 //console.log("getting stats for:" + itm.name);
                 itm.starEarned =  await this.getPendingStar(itm.pid);
@@ -517,7 +517,6 @@ export default {
                 console.log(itm.name +" bal: "+bal);
                 itm.balance = (+bal);
                 console.log("token balance: " + itm.balance);
-                return(true);
             }
         },
         async getPendingStar(pid){
