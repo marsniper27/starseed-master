@@ -185,14 +185,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import moment from "moment"
-import matic from "../assets/matic.png"
 import btcMatic from "../assets/btc-matic.png"
 import ethMatic from "../assets/eth-matic.png"
 import dhv from "../assets/DHV.png"
-import ethBtc from "../assets/eth-btc.png"
-import maticUSD from "../assets/matic-usd.png"
 import logoMain from '../assets/logo.png';
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
@@ -734,9 +729,9 @@ export default {
          },
         confirm(matic) {
             if(matic.amount == null){return}
-            if(confirm("Minimum Stake Time is 8 Hours")){
+           // if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
-            }
+            //}
         }
 //,
         // calcApr(){

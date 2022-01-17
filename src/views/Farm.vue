@@ -187,15 +187,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-import moment from "moment"
 import matic from "../assets/matic.png"
 import btcMatic from "../assets/btc-matic.png"
 import ethMatic from "../assets/eth-matic.png"
 import mai from "../assets/mai.png"
 import dhv from "../assets/DHV.png"
-import maticUSD from "../assets/matic-usd.png"
-import logoMain from '../assets/logo-3.png';
 
 import WalletConnectProvider from "@maticnetwork/walletconnect-provider"
 
@@ -750,9 +746,9 @@ export default {
         },
         confirm(matic) {
             if(matic.amount == null){return}
-            if(confirm("Minimum Stake Time is 8 Hours")){
+            //if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
-            }
+            //}
         }
     }
 }

@@ -142,14 +142,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import moment from "moment"
 
 import logoMain from '../assets/logo-3.png';
 import Announcement from '../assets/loudspeaker.png';
-import Earn from '../assets/salary.png';
-
-import WalletConnectProvider from "@maticnetwork/walletconnect-provider"
 
 import Web3 from "web3"
 import Matic from "maticjs"
