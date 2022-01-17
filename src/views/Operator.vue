@@ -155,6 +155,7 @@ import Web3 from "web3"
 import Matic from "maticjs"
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
+import Moralis from "moralis";
 // import { ChainId, Token, WETH, Fetcher, Route } from "quickswap-sdk";
 
 export default {
@@ -211,6 +212,7 @@ export default {
                 // }
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
             }
+            /* TODO: Add Moralis Authentication code */
         }
     },
     methods: {

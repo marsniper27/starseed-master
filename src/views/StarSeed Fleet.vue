@@ -42,13 +42,14 @@
             
             <div class="cards">
                 <h1 class="sub-heading">An NFT MMO Space game that awards cryptocurrency for playing</h1>
+                <h1 class="sub-heading">Coming Soon!</h1>
                 <div class="container">
                     <div class="grid">
-                        <div class="card" style="min-width:40%">
+                        <!-- <div class="card" style="min-width:40%">
                                 <a href = "https://starseed-e7eb2.web.app/" target="_new">    
                                         <button @click="viewExplorer()">Play Now</button>;
                                 </a>
-                        </div>
+                        </div> -->
                         <div class="card2" style="min-width:75%">
                             <div class="icon">
                                 <h2>StarShips</h2>
