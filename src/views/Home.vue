@@ -39,9 +39,7 @@
                                 {{availStar}}
                             </div>
                         </div>
-
                         <button v-if="!connected" @click="matics">Unlock Wallet</button>
-
                     </div>
                 </div>
                 <div class="card"  style="min-width:40%">
@@ -55,11 +53,12 @@
                     <router-link :to="{path:'/farm'}">
 
                         <div class="headings">
-                            Earn up to <br><span class="purple"> $ 0.00</span> in Farms
+                            Earn up to <br>
+                            <span class="purple"> $ {{emissionValue}}</span>
+                            <br> 
+                            in Farms & Pools
                         </div>
-
                     </router-link>
-
                 </div>
                 <div class="card"  style="min-width:20%;background:rgb(41 12 58 / 90%)">
                      <router-link :to="{path:'/pool'}">
@@ -145,7 +144,7 @@
                                 Market Cap :
                             </div>
                             <div class="cont">
-                                $0
+                                ${{marketCap}}
                             </div>
                         </div>
                         <div class="grid">
@@ -153,7 +152,7 @@
                                 Emitted STAR/block :
                             </div>
                             <div class="cont">
-                                {{emmsionRate}}
+                                {{emissionRate}}
                             </div>
                         </div>
 
@@ -186,7 +185,7 @@
 import axios from 'axios'
 import moment from "moment"
 
-import logoMain from '../assets/logo-3.png';
+import logoMain from '../assets/logo.png';
 import Announcement from '../assets/loudspeaker.png';
 import Earn from '../assets/salary.png';
 
@@ -197,6 +196,7 @@ import Matic from "maticjs"
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
 import Moralis from "moralis";
+import { commify } from '@ethersproject/units';
 export default {
     components: {},
     data() {
@@ -204,6 +204,7 @@ export default {
             Announcement:Announcement,
             logoMain:logoMain,
             account: "Not Connected",
+            web3:null,
             messages:false,
             availStar:"Connect Wallet",
             starHarvest:"Connect Wallet",
@@ -213,8 +214,10 @@ export default {
             burnedStar:null,
             currentSupply: null,
             burnValue:null,
-            starValue:0,
-            emmsionRate: null,
+            starValue:null,
+            emissionRate: null,
+            emissionValue:null,
+            marketCap:null,
             starContractInstance:null,
             starContractAbi :[ { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" } ], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "bool", "name": "enabled", "type": "bool" } ], "name": "BuyBackEnabledUpdated", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "tokenAmount", "type": "uint256" } ], "name": "RewardLiquidityProviders", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "tokensSwapped", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "ethReceived", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "tokensIntoLiqudity", "type": "uint256" } ], "name": "SwapAndLiquify", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "bool", "name": "enabled", "type": "bool" } ], "name": "SwapAndLiquifyEnabledUpdated", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "indexed": false, "internalType": "address[]", "name": "path", "type": "address[]" } ], "name": "SwapETHForTokens", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "indexed": false, "internalType": "address[]", "name": "path", "type": "address[]" } ], "name": "SwapTokensForETH", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" } ], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "newRate", "type": "uint256" } ], "name": "UpdateDevFee", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "newRate", "type": "uint256" } ], "name": "UpdateFundOrBurnFee", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "newRate", "type": "uint256" } ], "name": "UpdateLiquidityFee", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "newAmount", "type": "uint256" } ], "name": "UpdateMaxTxAmount", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "newRate", "type": "uint256" } ], "name": "UpdateTaxFee", "type": "event" }, { "inputs": [], "name": "MAX_DEV_FEE", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MAX_FUND_OR_BURN_FEE", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MAX_LIQUIDITY_FEE", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MAX_TAX_FEE", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MIN_TX_AMOUNT_HARD_CAP", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_devFee", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_fundOrBurnFee", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_liquidityFee", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_maxTxAmount", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_taxFee", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" } ], "name": "allowance", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "approve", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "balanceOf", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "buyBackAndBurn", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "buyBackEnabled", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "buyBackUpperLimitAmount", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "deadAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [ { "internalType": "uint8", "name": "", "type": "uint8" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "subtractedValue", "type": "uint256" } ], "name": "decreaseAllowance", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "excludeFromFee", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "excludeFromReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "includeInFee", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "includeInReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "addedValue", "type": "uint256" } ], "name": "increaseAllowance", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_account", "type": "address" } ], "name": "isExcludedFromAntiWhale", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isExcludedFromFee", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isExcludedFromReward", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_address", "type": "address" } ], "name": "isIncludedInStarLpList", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "minimumBalanceRequired", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "minimumSellOrderAmount", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "minimumTokensBeforeSwapAmount", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "tAmount", "type": "uint256" }, { "internalType": "bool", "name": "deductTransferFee", "type": "bool" } ], "name": "reflectionFromToken", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "bool", "name": "_enabled", "type": "bool" } ], "name": "setBuyBackEnabled", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "buyBackLimit", "type": "uint256" } ], "name": "setBuybackUpperLimit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "devFee", "type": "uint256" } ], "name": "setDevFeePercent", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_account", "type": "address" }, { "internalType": "bool", "name": "_isExcludedOrNot", "type": "bool" } ], "name": "setExcludedFromAntiWhale", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "fundorBurnFee", "type": "uint256" } ], "name": "setFundOrBurnFeePercent", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_address", "type": "address" }, { "internalType": "bool", "name": "_isIncludedOrNot", "type": "bool" } ], "name": "setIncludeInStarLpList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "liquidityFee", "type": "uint256" } ], "name": "setLiquidityFeePercent", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "maxTxAmount", "type": "uint256" } ], "name": "setMaxTxAmount", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_newAmount", "type": "uint256" } ], "name": "setMinimumBalanceRequired", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_newAmount", "type": "uint256" } ], "name": "setMinimumSellOrderAmount", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_minimumTokensBeforeSwap", "type": "uint256" } ], "name": "setNumTokensSellToAddToLiquidity", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "bool", "name": "_enabled", "type": "bool" } ], "name": "setSwapAndLiquifyEnabled", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "taxFee", "type": "uint256" } ], "name": "setTaxFeePercent", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "swapAndLiquifyEnabled", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "rAmount", "type": "uint256" } ], "name": "tokenFromReflection", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalFees", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "transfer", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "uniswapV2Pair", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "uniswapV2Router", "outputs": [ { "internalType": "contract IUniswapV2Router02", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "stateMutability": "payable", "type": "receive" } ],
             starContractAddress : "0x8440178087C4fd348D43d0205F4574e0348a06F0", 
@@ -252,19 +255,21 @@ export default {
     async created() {
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
-        
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
                 this.matics();
             }
             else{
                 console.log("account already set");
+                this.connected= true;
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 var chainId = new this.web3.eth.getChainId();
                 this.starContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 if(chainId != 0x89){this.setChain()};
+                this.getBalance();
+                this.getPendingStar()
             }
         
             /* Moralis init code */
@@ -274,7 +279,7 @@ export default {
             this.starValue =  await this.getPrice();
             this.getBurnedStar();
             this.getTotalSupply();
-            this.getEmmsionRate();
+            this.getEmissionRate();
             setTimeout(()=>{this.getCurrentSupply()}, 1000);
         }
     },
@@ -300,45 +305,11 @@ export default {
                         this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
 
                         this.messages = " Pending..."
-                        try{
-                            this.starContractInstance.methods.balanceOf(this.account).call()
-                            .then (
-                                (receipt) => {
-                                    console.log(receipt)
-                                    this.messages = "Trasnaction Successfull.";
-                                    this.availStar = (receipt/10**18).toFixed(4);
-                                setTimeout(d=>{
-                                        this.messages = false
-                                },1000)
-                                //this.$router.go();
-                            })
-                        }catch (error) {
-                            console.log(error);
-                            this.messages = "Get balance: " +error
-                            setTimeout(d=>{
-                                this.messages = false
-                            },5000)
-                        }
-                        try{
-                            this.messages = "Getting star ready for harvest";
-                            masterChefContractInstance.methods.pendingStar(0,this.account).call()
-                                .then((receipt) => {
-                                    console.log(receipt)
-                                    this.messages = "Transaction Successfull.";
-                                    this.starHarvest = (receipt/10**18).toFixed(4);
-                                    setTimeout(d=>{
-                                        this.messages = false
-                                    },1000)
-                                //this.$router.go();
-                            })
-                        }catch (error) {
-                            console.log(error);
-                            this.messages = "get star harvest: " +error
-                            setTimeout(d=>{
-                                this.messages = false
-                            },5000)
-                        }
+                        
+                        this.getBalance();
+                        this.getPendingStar();
                     }
+                        
                     else{
                         this.messages = "No account Connected"
                         setTimeout(d=>{
@@ -421,6 +392,48 @@ export default {
             this.availStar="Connect Wallet";
             this.starHarvest="Connect Wallet";
         },
+        async getBalance(){
+            try{
+                this.starContractInstance.methods.balanceOf(this.account).call()
+                .then (
+                    (receipt) => {
+                        console.log("balance: "+receipt)
+                        this.messages = "Transaction Successfull.";
+                        this.availStar = (receipt/10**18).toFixed(4);
+                    setTimeout(d=>{
+                            this.messages = false
+                    },1000)
+                    //this.$router.go();
+                })
+            }catch (error) {
+                console.log(error);
+                this.messages = "Get balance: " +error
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
+        async getPendingStar(){
+            try{
+                this.messages = "Getting star ready for harvest";
+                this.masterChefContractInstance.methods.pendingStar(0,this.account).call()
+                    .then((receipt) => {
+                        console.log("pending Star: "+receipt)
+                        this.messages = "Transaction Successfull.";
+                        this.starHarvest = (receipt/10**18).toFixed(4);
+                        setTimeout(d=>{
+                            this.messages = false
+                        },1000)
+                    //this.$router.go();
+                })
+            }catch (error) {
+                console.log(error);
+                this.messages = "get star harvest: " +error
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
         async getBurnedStar(){
             try{
                 var receipt = await this.starContractInstance.methods.balanceOf("0x000000000000000000000000000000000000dEaD").call()
@@ -428,7 +441,6 @@ export default {
                     if(receipt == undefined){receipt = 0;}
                     this.burnedStar = ethers.utils.formatUnits(receipt,18);
                     this.burnValue = this.burnedStar*this.starValue;
-                    return(true);
             }catch(error){
                 console.log("get burned star error: " + error);
                 }
@@ -439,24 +451,25 @@ export default {
                     console.log("get total supply: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.totalMinted = ethers.utils.formatUnits(receipt,18);
-                    return(true);
             }catch(error){
                 console.log("get total supply error: " + error);
             }
         },
         getCurrentSupply(){            
             this.currentSupply = (+this.totalMinted) - (+this.burnedStar);
+            this.marketCap = commify((this.currentSupply*this.starValue).toFixed(4));
             console.log("currentsupply : " +this.currentSupply);
         },
         getStar(){
             location.href = "https://quickswap.exchange/#/swap?outputCurrency=0x8440178087C4fd348D43d0205F4574e0348a06F0";
         },
-        async getEmmsionRate(){
+        async getEmissionRate(){
             try{
                 var receipt = await this.masterChefContractInstance.methods.starPerBlock().call()
                     console.log("get star per block: " + receipt)
                     if(receipt == undefined){receipt = 0;}
-                    this.emmsionRate = ethers.utils.formatUnits(receipt,18);
+                    this.emissionRate = ethers.utils.formatUnits(receipt,18);
+                    this.emissionValue = (this.emissionRate*this.starValue*38400).toFixed(2);
             }catch(error){
                 console.log("get star per block error: " + error);
             }
@@ -469,7 +482,6 @@ export default {
                 exchange: "quickswap"
             };
             const price = await Moralis.Web3API.token.getTokenPrice(options);
-           // this.burnValue = this.starValue*this.burnedStar;
             console.log("Star Price: " +price.usdPrice)
             return(price.usdPrice);
         }
