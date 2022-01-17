@@ -27,7 +27,7 @@
                                 APR :
                             </div>
                             <div class="cont">
-                                {{matic.apr}}
+                                {{matic.apr}}%
                             </div>
                         </div>
                         <div class="grid">
@@ -299,7 +299,7 @@ export default {
                     decimals:18,
                     stakedLP:null,
                     apr: null,
-                    price:6.78754739336492
+                    price:7.11
                 }
                 ,
                 {
@@ -342,7 +342,7 @@ export default {
             masterChefContractAddress : "0x16E76500f1E6C943FEd150bF56403d91A91dCD55",
             masterChefContractInstance : false,
             totalAllocation:null,
-            dailyEmission: 10,
+            dailyEmission: 182.9059829,
             starPrice:11
         }
     },
@@ -656,7 +656,7 @@ export default {
                 //console.log("total liquidity: " + (receipt.totalLp));
                 itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
                 itm.stakedLP = receipt.totalLp;
-                itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice)/((receipt.totalLp/10**itm.decimals)*itm.price))*100*365).toFixed(4)).toString()+"%";
+                itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
             }catch(error){
                 console.log("get pool total liquidity  error: " + error);
             }
@@ -722,7 +722,7 @@ export default {
         async getTotalAllocation(){
             try{
                 var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
-                //console.log("master total allocation: " + receipt);
+                console.log("master total allocation: " + receipt);
                 this.totalAllocation = receipt;
             }catch(error){
                 console.log("get master total allocation  error: " + error);

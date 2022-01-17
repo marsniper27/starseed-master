@@ -25,7 +25,7 @@
                                 APR :
                             </div>
                             <div class="cont">
-                                {{matic.apr}}
+                                {{matic.apr}}%
                             </div>
                         </div>
                         <div class="grid">
@@ -78,7 +78,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-0.00000001);">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-(1/(10**(matic.decimals - 2))));">MAX</button>
                                     </div>
                                 </div>
                             </div>
@@ -324,7 +324,7 @@ export default {
             masterChefContractAddress : "0x16E76500f1E6C943FEd150bF56403d91A91dCD55",
             masterChefContractInstance : false,
             totalAllocation:null,
-            dailyEmission: 10,
+            dailyEmission: 182.9059829,
             starPrice:11
         }
     },
@@ -482,7 +482,7 @@ export default {
                     var receipt = await this.lpContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals)).send({from: this.account})
                         console.log("stake approval: " +receipt);
                         if(receipt){
-                            await sleep(5000);
+                            await this.sleep(5000);
                             try{
                                 receipt = await  this.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from: this.account})
                                 console.log("staking: "+receipt);
@@ -641,7 +641,7 @@ export default {
                 //console.log("total liquidity: " + (receipt.totalLp));
                 itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
                 itm.stakedLP = receipt.totalLp;
-                itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice)/((receipt.totalLp/10**itm.decimals)*itm.price))*100*365).toFixed(4)).toString()+"%";
+                itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
             }catch(error){
                 console.log("get pool total liquidity  error: " + error);
             }
