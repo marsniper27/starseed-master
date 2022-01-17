@@ -80,11 +80,11 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-(1/(10**(matic.decimals - 2))));">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-(1/(10**(matic.decimals - 2)))).toFixed(matic.decimals);">MAX</button>
                                     </div>
                                 </div>
                             </div>
-                            <button v-if="connected" @click="StakeLP(matic)">Stake</button>
+                            <button v-if="connected" @click="confirm(matic)">Stake</button>
                         </div>
                         <div v-if="matic.stakedBalance>0">
                             <div class="grid">
@@ -230,7 +230,7 @@ export default {
                     decimals:18,
                     stakedLP:null,
                     apr: null,
-                    price:10.82210868555504
+                    price:10.6
                 },
                 {
                     name: "STAR - ETH",
@@ -535,7 +535,7 @@ export default {
                 console.log("getting token balance");
                 var bal = await this.getBalance(itm);
                 console.log(itm.name +" bal: "+bal);
-                itm.balance = (+bal);
+                itm.balance = (bal);
                 console.log("token balance: " + itm.balance);
             }
         },
@@ -747,6 +747,12 @@ export default {
             return new Promise((resolve) => {
                 setTimeout(resolve, ms);
             });
+        },
+        confirm(matic) {
+            if(matic.amount == null){return}
+            if(confirm("Minimum Stake Time is 8 Hours")){
+                this.StakeLP(matic);
+            }
         }
     }
 }
