@@ -228,6 +228,11 @@ body,html {
 .sideBar .active {
   border-left: 4px solid purple;
 }
+
+.telegram{
+  color:#2196f3;
+}
+
 a:hover{
   color: purple;
   fill: purple;
@@ -242,6 +247,7 @@ a:hover{
   margin-right: 10px;
   filter: grayscale(100%);
 }
+
 .earning{
   position: fixed;
   bottom: 0;
@@ -274,9 +280,11 @@ a:hover{
     fill: purple;
   }
 }
+
 .earning div:nth-child(1){
   font-size: 14px;
 }
+
 #scene,
 .fw,
 #app {
