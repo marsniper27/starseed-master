@@ -50,11 +50,29 @@
                         <h2>Transfer Operator </h2>
                     </div>
                     <div class="input">
-                        <input v-model="operator" placeholder="New Operator Address" />
+                        <input v-model="operatorAddress" placeholder="New Operator Address" />
                     </div>
                         <button @click="operator()">Transfer Operator</button>;
                 </div>
+                <div class="card"  style="min-width:40%">
+                    <div class="icon">
+                        <h2>Mass update Pools </h2>
+                    </div>
+                        <button @click="massUpdate()">Mass update Pools</button>;
+                </div>
+                <div class="card"  style="min-width:40%">
+                    <div class="icon">
+                        <h2>Update Pool </h2>
+                    </div>
+                    <div class="input">
+                        <input v-model="updatePID" placeholder="Pool ID" />
+                    </div>
+                        <button @click="updatePool()">update pool</button>;
+                </div>
             </div>
+
+
+
             <h1 class="sub-heading">Owner Functions</h1>
             <div class="container">           
                 <div class="card"  style="min-width:40%">
@@ -155,13 +173,14 @@ export default {
             emmisionAmount: null,
             allocationAmount: null,
             poolPid:null,
-            operator:null,
             transferOutAmount:null,
             allocationPid:null,
             multiplier: null,
             WBTCBalance:"--",
             WBTCSTARBalance:"--",
             collectPID:null,
+            updatePID:null,
+            operatorAddress:null
         }
     },
     watch: {
@@ -277,6 +296,22 @@ export default {
                 }
             }
         },
+        async emmission(){
+            this.messages = "Updating Emission rate...";
+            try{updateBonus
+                var result = await this.masterChefContractInstance.methods.updateEmissionRate(this.emmisionAmount).send({from: this.account});
+                this.messages = "Updating Emission was " +result;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }catch(error){
+                console.log("Updating Emissionr error: " + error);
+                this.meassages = "Updating Emission error: " + error;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
         async allocation(){
             this.messages = "Updating Pool Allocation...";
             try{
@@ -295,6 +330,22 @@ export default {
             }catch(error){
                 console.log("allocation error: " + error);
                 this.meassages = "Allocation error: " + error;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
+        async operator(){
+            this.messages = "Updating Operator rate...";
+            try{updateBonus
+                var result = await this.masterChefContractInstance.methods.transferOperator(this.operatorAddress).send({from: this.account});
+                this.messages = "Updating Operator was " +result;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }catch(error){
+                console.log("Updating Operator error: " + error);
+                this.meassages = "Updating Operator error: " + error;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -344,7 +395,39 @@ export default {
                 },5000)
             }catch(error){
                 console.log("collecting fees error: " + error);
-                this.messages = "Collecting feeds error: " + error;
+                this.messages = "Collecting fees error: " + error;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
+        async massUpdate(){
+            this.messages = "collecting fees...";
+            try{
+                var result = await this.masterChefContractInstance.methods.massUpdatePools().send({from: this.account});
+                this.messages = "mass update pools was " +result;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }catch(error){
+                console.log("mass update pools error: " + error);
+                this.messages = "mass update pools error: " + error;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
+        },
+        async updatePool(){
+            this.messages = "collecting fees...";
+            try{
+                var result = await this.masterChefContractInstance.methods.updatePool(this.updatePID).send({from: this.account});
+                this.messages = "updatePool was " +result;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }catch(error){
+                console.log("updatePool error: " + error);
+                this.messages = "updatePool error: " + error;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -369,7 +452,7 @@ export default {
                 exchange: "quickswap"
             };
             const price = await Moralis.Web3API.token.getTokenPrice(options);
-            console.log("Star Price: " +price.usdPrice)
+            console.log("Star Price: " + price.usdPrice)
 
             // const STAR = new Token(
             //     ChainId.MATIC,
