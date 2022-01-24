@@ -79,7 +79,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-(1/(10**(matic.decimals - 2)))).toFixed(matic.decimals);">MAX</button>
+                                        <button v-if="connected" @click="matic.amount = (matic.balance-(4/(10**(matic.decimals - 4)))).toFixed(matic.decimals);">MAX</button>
                                     </div>
                                 </div>
                             </div>
