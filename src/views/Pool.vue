@@ -3,7 +3,7 @@
     <div class="content">
             <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
-                <button  @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="metaMaskWallet" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -152,43 +152,10 @@
     <div v-if="messages" class="messages">
             <h4>{{messages}}</h4>
     </div>
-    <!-- <script type="text/x-template" id="modal-template">
-        <div class="modal-mask">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-
-            <div class="modal-header">
-                <slot name="header">
-                default header
-                </slot>
-            </div>
-
-            <div class="modal-body">
-                <slot name="body">
-                default body
-                </slot>
-            </div>
-
-            <div class="modal-footer">
-                <slot name="footer">
-                default footer
-                <button class="modal-default-button" @click="$emit('close');StakeLP()">
-                    Stake
-                </button>
-                </slot>
-            </div>
-            </div>
-        </div>
-        </div>
-    </script> -->
 </main>
 </template>
 
 <script>
-import btcMatic from "../assets/btc-matic.png"
-import ethMatic from "../assets/eth-matic.png"
-import dhv from "../assets/DHV.png"
-import logoMain from '../assets/logo.png';
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
 import * as Pools from "./pools.js";
@@ -198,7 +165,9 @@ export default {
     components: {},
     data() {
         return {
+            Functions:Functions,
             pools:Pools.tokenPools,
+            starAdded:false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -240,7 +209,7 @@ export default {
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
                 var chainId = new this.web3.eth.getChainId();
-                if(chainId != 0x89){this.setChain()};
+                if(chainId != 0x89){Functions.setChain()};
                 this.getTotalAllocation();
                 this.getUserPoolStats();
             }
@@ -264,7 +233,7 @@ export default {
                     this.web3 = web3;
                     this.$route.params.web3 = web3;
                     var chainId = new web3.eth.getChainId();
-                    if(chainId != 0x89){this.setChain()};
+                    if(chainId != 0x89){Functions.setChain()};
                     web3.eth.getAccounts()
                     .then((accounts) => {
                         if(accounts.length > 0){
@@ -362,7 +331,6 @@ export default {
         },
         async StakeLP(itm){
             this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
-            console.log("created instance for: " + itm.name);
             var allowance = await this.lpContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
             console.log("Staking LP. Balance is: " + itm.balance);
             console.log("allowance is: " + allowance);
@@ -409,59 +377,81 @@ export default {
                 console.log("getting token balance");
                 var bal = await this.getBalance(itm);
                 console.log(itm.name +" bal: "+bal);
-                itm.balance = (+bal);
+                itm.balance = (bal);
                 console.log("token balance: " + itm.balance);
             }
         },
-        // async getPendingStar(pid){
-        //     //console.log("getting earned star for:" +pid)
-        //     try{
-        //         var receipt = await this.masterChefContractInstance.methods.pendingStar(pid,this.account).call()
-        //         //console.log("pending star: " + receipt);
-        //         return ethers.utils.formatEther(receipt);
-        //     }catch(error){
-        //         console.log("PID: " + pid + "Pending Star error: " + error);
-        //     }
-        // },
-        // async getStakedLp(itm){
-        //     //console.log("getting staked lp for:" +itm.name)
-        //     try{
-        //         var receipt = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
-        //         //console.log("staked lp: " + receipt.amount);
-        //         return ethers.utils.formatUnits(receipt.amount,itm.decimals);
-        //     }catch(error){
-        //         console.log("staked lp error: " + error);
-        //     }
-        // },
         async compoundReward(itm){
             if(itm.starEarned > 0){
                 try{
-                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
-                    console.log("can harvest: " + harvest);
-                    if(!harvest){
-                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
-                        var date = new Date(userinfo.nextHarvestUntil * 1000);
-                        console.log("compound next harvest time: " + date)
-                        this.messages = "Compound not available until: "+ date;
+                    var result = await Functions.compoundReward(itm,this.web3,this.account);
+                    console.log(result)
+                    switch(result[0]){
+                        case 0:
+                            this.messages = "Compound not available until: "+ result[1];
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 1:
+                            this.messages = "Compound rewards error: "+ result[1];
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 2:
+                            this.messages = "EIP-1559: "+ result[1];
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 3:
+                            this.messages = "Compound can harvest error: "+ result[1].message;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                    }
+                    // var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    // console.log("can harvest: " + harvest);
+                    // if(!harvest){
+                    //     var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                    //     var date = new Date(userinfo.nextHarvestUntil * 1000);
+                    //     console.log("compound next harvest time: " + date)
+                    //     this.messages = "Compound not available until: "+ date;
+                    //     setTimeout(d=>{
+                    //         this.messages = false
+                    //     },5000)
+                    // }
+                    
+                    // if(harvest){
+                    //     try{
+                    //         this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
+                    //             (receipt) => {
+                    //                 console.log("compound rewards: " + receipt);
+                    //                 if(receipt.code == -32602){
+                    //                     this.messages = "EIP-1559: "+ error;
+                    //                     setTimeout(d=>{
+                    //                         this.messages = false
+                    //                     },5000)
+                    //                 }
+                    //             })
+                    //     }catch(error){
+                    //         console.log("compound reward error: " + error);
+                    //         if(error.code == -32602){
+                    //             this.messages = "EIP-1559: "+ error;
+                    //             setTimeout(d=>{
+                    //                 this.messages = false
+                    //             },5000)
+                    //         }
+                    //     }
+                    // }
+                }catch(error){
+                    this.messages = "Compound failed: "+ error.message;
                         setTimeout(d=>{
                             this.messages = false
                         },5000)
-                    }
-                    console.log("can harvest: " + harvest);
-                    
-                    if(harvest){
-                        try{
-                            this.masterChefContractInstance.methods.compound(itm.pid).send({from:this.account}).then(
-                                (receipt) => {
-                                    console.log("compound rewards: " + receipt)
-                                    return receipt;
-                                })
-                        }catch(error){
-                            console.log("compound reward error: " + error);
-                        }
-                    }
-                }catch(error){
-                    console.log("compound can harvest error: " + error);
+                    console.log("first compound can harvest error: " + error.message);
                 }
             }
         },
@@ -518,7 +508,6 @@ export default {
                 var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call();
                     console.log(itm.name +" get balance: " + receipt);
                     if(receipt == undefined){receipt = 0;}
-                    this.lpContractInstance =null;
                     return ethers.utils.formatUnits(receipt,itm.decimals);
             }catch(error){
                 console.log("get balance error: " + error);
@@ -545,45 +534,6 @@ export default {
                 console.log("emergency withdraw  error: " + error);
             }
         },
-        async setChain(){
-            try {
-                    var chainSet = await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x89' }],
-                });
-                if(chainSet){
-                    this.$router.go();
-                    chainSet = fasle;
-                }
-            } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
-                if (switchError.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x89',
-                                chainName: 'Polygon Mainnet',
-                                nativeCurrency: {
-                                    name: 'Binance Coin',
-                                    symbol: 'MATIC',
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://polygon-rpc.com/'],
-                                blockExplorerUrls: ['https://polygonscan.com/']
-                            }],
-                        });
-                        this.CustomToken();
-                        this.$router.go();
-                    } catch (addError) {
-                        console.log("add chian error: "+addError);
-                    }
-                }
-                else{
-                    console.log("switch error: "+switchError)
-                }
-            }
-        },
         async disconnect(){
             this.account = "Not Connected";
             this.$route.params.account = null;
@@ -598,10 +548,10 @@ export default {
         async getTotalAllocation(){
             try{
                 var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
-                console.log("total allocation: " + receipt);
+                console.log("master total allocation: " + receipt);
                 this.totalAllocation = receipt;
             }catch(error){
-                console.log("get total allocation  error: " + error);
+                console.log("get master total allocation  error: " + error);
             }
         },
         getLp(itm){
@@ -616,7 +566,6 @@ export default {
                 'https://polygonscan.com/token/' + itm.address,
                 '_blank' // <- This is what makes it open in a new window.
             );           
-            //location.href = "https://polygonscan.com/token/" + itm.address;
         },
         sleep(ms) {
             return new Promise((resolve) => {

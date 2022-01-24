@@ -3,7 +3,7 @@
     <div class="content">
             <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
-                <button  @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="metaMaskWallet" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -14,7 +14,6 @@
 
         <h4 class="heading center">Yield Farming</h4>
         <p class="sm-heading center">Stake LP Tokens to Earn STAR</p>
-         
         <div class="cards">
             <div class="container">
                 <div class="card" v-for="matic in lpPools" v-bind:class="{'larger':matic.type}">
@@ -154,59 +153,25 @@
     <div v-if="messages" class="messages">
             <h4>{{messages}}</h4>
     </div>
-    <script type="text/x-template" id="modal-template">
-        <div class="modal-mask">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-
-            <div class="modal-header">
-                <slot name="header">
-                default header
-                </slot>
-            </div>
-
-            <div class="modal-body">
-                <slot name="body">
-                default body
-                </slot>
-            </div>
-
-            <div class="modal-footer">
-                <slot name="footer">
-                default footer
-                <button class="modal-default-button" @click="$emit('close');StakeLP()">
-                    Stake
-                </button>
-                </slot>
-            </div>
-            </div>
-        </div>
-        </div>
-    </script>
 </main>
 </template>
 
 <script>
-import matic from "../assets/matic.png"
-import btcMatic from "../assets/btc-matic.png"
-import ethMatic from "../assets/eth-matic.png"
-import mai from "../assets/mai.png"
-import dhv from "../assets/DHV.png"
-
 import WalletConnectProvider from "@maticnetwork/walletconnect-provider"
 
 import Web3 from "web3"
-import Matic from "maticjs"
 import getWeb3 from './web3.js';
-import pools from "./pools.js";
 import {ethers} from "ethers";
 import * as Pools from "./pools.js";
+import * as Functions from "../components/functions.js";
 
 export default {
     components: {},
     data() {
         return {
+            Functions:Functions,
             lpPools: Pools.lpPools,
+            starAdded:false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -248,7 +213,7 @@ export default {
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
                 var chainId = new this.web3.eth.getChainId();
-                if(chainId != 0x89){this.setChain()};
+                if(chainId != 0x89){Functions.setChain()};
                 this.getTotalAllocation();
                 this.getUserPoolStats();
             }
@@ -272,7 +237,7 @@ export default {
                     this.web3 = web3;
                     this.$route.params.web3 = web3;
                     var chainId = new web3.eth.getChainId();
-                    if(chainId != 0x89){this.setChain()};
+                    if(chainId != 0x89){Functions.setChain()};
                     web3.eth.getAccounts()
                     .then((accounts) => {
                         if(accounts.length > 0){
@@ -386,7 +351,7 @@ export default {
                                 console.log("staking: "+receipt);
                                 this.getUserPoolStats();
                             }catch(error){
-                                console.log("staking error after approve: " +error);
+                                console.log("staking after approval error: " +error);
                             }
                         }
                 }catch(error){
@@ -407,37 +372,17 @@ export default {
             for( const itm of this.lpPools){
                 this.getPoolInfo(itm);
                 //console.log("getting stats for:" + itm.name);
-                itm.starEarned =  await this.getPendingStar(itm.pid);
+                itm.starEarned =  await Functions.getPendingStar(itm.pid,this.web3,this.account);
                 itm.starEarned = (+itm.starEarned);
                 //console.log("star earned :"+ itm.starEarned);
                 //console.log("getting staked LP");
-                itm.stakedBalance =  await this.getStakedLp(itm);
+                itm.stakedBalance =  await Functions.getStakedLp(itm,this.web3,this.account);
                 //console.log("staked LP :"+ itm.stakedBalance);
                 console.log("getting token balance");
                 var bal = await this.getBalance(itm);
                 console.log(itm.name +" bal: "+bal);
                 itm.balance = (bal);
                 console.log("token balance: " + itm.balance);
-            }
-        },
-        async getPendingStar(pid){
-            console.log("getting earned star for:" +pid)
-            try{
-                var receipt = await this.masterChefContractInstance.methods.pendingStar(pid,this.account).call()
-                //console.log("pending star: " + receipt);
-                return ethers.utils.formatEther(receipt);
-            }catch(error){
-                console.log("Pending Star error: " + error);
-            }
-        },
-        async getStakedLp(itm){
-            console.log("getting staked lp for:" +itm.pid)
-            try{
-                var receipt = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
-                //console.log("staked lp: " + receipt.amount);
-                return ethers.utils.formatUnits(receipt.amount,itm.decimals);
-            }catch(error){
-                console.log("staked lp error: " + error);
             }
         },
         async compoundReward(itm){
@@ -550,45 +495,6 @@ export default {
                 console.log("emergency withdraw  error: " + error);
             }
         },
-        async setChain(){
-            try {
-                    var chainSet = await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x89' }],
-                });
-                if(chainSet){
-                    this.$router.go();
-                    chainSet = fasle;
-                }
-            } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
-                if (switchError.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x89',
-                                chainName: 'Polygon Mainnet',
-                                nativeCurrency: {
-                                    name: 'Binance Coin',
-                                    symbol: 'MATIC',
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://polygon-rpc.com/'],
-                                blockExplorerUrls: ['https://polygonscan.com/']
-                            }],
-                        });
-                        this.CustomToken();
-                        this.$router.go();
-                    } catch (addError) {
-                        console.log("add chian error: "+addError);
-                    }
-                }
-                else{
-                    console.log("switch error: "+switchError)
-                }
-            }
-        },
         async disconnect(){
             this.account = "Not Connected";
             this.$route.params.account = null;
@@ -621,8 +527,6 @@ export default {
                 'https://polygonscan.com/token/' + itm.address,
                 '_blank' // <- This is what makes it open in a new window.
             );
-            return;                       
-            //location.href = "https://polygonscan.com/token/" + itm.address;
         },
         sleep(ms) {
             return new Promise((resolve) => {

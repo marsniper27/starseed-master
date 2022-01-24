@@ -3,7 +3,7 @@
     <div class="content">
             <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -175,6 +175,7 @@ import {ethers} from "ethers";
 import Moralis from "moralis";
 import { commify } from '@ethersproject/units';
 import * as pools from "./pools.js";
+import * as Functions from "../components/functions.js";
 export default {
     components: {},
     data() {
@@ -247,7 +248,7 @@ export default {
                 var chainId = new this.web3.eth.getChainId();
                 this.starContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
-                if(chainId != 0x89){this.setChain()};
+                if(chainId != 0x89){Functions.setChain()};
                 this.getBalance();
                 this.getPendingStar()
             }
@@ -272,7 +273,7 @@ export default {
                 this.web3 = web3;
                 this.$route.params.web3 = web3;
                 var chainId = new web3.eth.getChainId();
-                if(chainId != 0x89){this.setChain()};
+                if(chainId != 0x89){Functions.setChain()};
                 console.log(web3);
                 web3.eth.getAccounts().then((accounts) => {
                     if(accounts.length > 0){
@@ -331,48 +332,6 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        },
-        async setChain(){
-            try {
-                await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x89' }],
-                });
-            } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
-                if (switchError.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x89',
-                                chainName: 'Polygon Mainnet',
-                                nativeCurrency: {
-                                    name: 'Binance Coin',
-                                    symbol: 'MATIC',
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://polygon-rpc.com/'],
-                                blockExplorerUrls: ['https://polygonscan.com/']
-                            }],
-                        });
-                    } catch (addError) {
-                        console.log("add chian error: "+addError);
-                    }
-                }
-                else{
-                    console.log("switch error: "+switchError)
-                }
-            }
-        },
-        async disconnect(){
-            this.account = "Not Connected";
-            this.$route.params.account = null;
-            this.$route.params.web3 = null;
-            this.web3 = null;
-            this.connected = false;
-            this.availStar="Connect Wallet";
-            this.starHarvest="Connect Wallet";
         },
         async getBalance(){
             try{
