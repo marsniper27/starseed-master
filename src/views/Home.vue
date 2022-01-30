@@ -265,41 +265,56 @@ export default {
             this.getPoolValue();
             setTimeout(()=>{this.getCurrentSupply()}, 1000);
         }
+        else{
+            this.matics();
+            if(confirm("Would you liek to get MetaMask?")){
+                this.getMetamask();
+            }
+        }
     },
     methods: {
         async matics(){
             getWeb3().then((result) => {
-                const web3 = result;// we instantiate our contract next
-                this.web3 = web3;
-                this.$route.params.web3 = web3;
-                var chainId = new web3.eth.getChainId();
-                if(chainId != 0x89){Functions.setChain()};
-                console.log(web3);
-                web3.eth.getAccounts().then((accounts) => {
-                    if(accounts.length > 0){
-                        this.$route.params.account = accounts[0];
-                        this.connected = true;
-                        this.account = accounts[0];
-                        this.messages = " Account: " + this.account;
-                        setTimeout(d=>{this.messages = false},1000);
+                console.log(result);
+                if(result == 'Non-Ethereum browser detected. You should consider trying MetaMask!'){
+                    this.messages = result;
+                    setTimeout(d=>{
+                        this.messages = false;
+                    },5000)
+                }
+                else{
+                    const web3 = result;// we instantiate our contract next
+                    this.web3 = web3;
+                    this.$route.params.web3 = web3;
+                    var chainId = new web3.eth.getChainId();
+                    if(chainId != 0x89){Functions.setChain()};
+                    console.log(web3);
+                    web3.eth.getAccounts().then((accounts) => {
+                        if(accounts.length > 0){
+                            this.$route.params.account = accounts[0];
+                            this.connected = true;
+                            this.account = accounts[0];
+                            this.messages = " Account: " + this.account;
+                            setTimeout(d=>{this.messages = false},1000);
 
-                        this.starContractInstance = new web3.eth.Contract(this.starContractAbi, this.starContractAddress);
-                        
-                        this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                            this.starContractInstance = new web3.eth.Contract(this.starContractAbi, this.starContractAddress);
+                            
+                            this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
 
-                        this.messages = " Pending..."
-                        
-                        this.getBalance();
-                        this.getPendingStar();
-                    }
-                        
-                    else{
-                        this.messages = "No account Connected"
-                        setTimeout(d=>{
-                            this.messages = false
-                        },5000)
-                    }
-                })
+                            this.messages = " Pending..."
+                            
+                            this.getBalance();
+                            this.getPendingStar();
+                        }
+                            
+                        else{
+                            this.messages = "No account Connected"
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                        }
+                    })
+                }
             })
         },
         async CustomToken() {
@@ -463,6 +478,12 @@ export default {
                     console.log("get pool total liquidity  error: " + error);
                 }
             }
+        },
+        getMetamask(){ 
+            window.open(
+                "https://metamask.io/",
+                '_blank' // <- This is what makes it open in a new window.
+            );           
         }
     }
 }
