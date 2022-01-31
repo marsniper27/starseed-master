@@ -50,7 +50,7 @@
                     <router-link :to="{path:'/farm'}">
                         <div class="headings">
                             Earn up to <br>
-                            <span class="purple"> 200-500% </span>  <!-- {{emissionValue}}$ -->
+                            <span class="purple"> 40-150% </span>  <!-- {{emissionValue}}$ -->
                             <br> 
                             in Farms & Pools
                         </div>
