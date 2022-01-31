@@ -176,6 +176,8 @@ import Moralis from "moralis";
 import { commify } from '@ethersproject/units';
 import * as pools from "./pools.js";
 import * as Functions from "../components/functions.js";
+import {initMasterchef} from "../components/masterchef";
+
 export default {
     components: {},
     data() {
@@ -239,6 +241,7 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
                 this.matics();
+                initMasterchef();
             }
             else{
                 console.log("account already set");
@@ -246,6 +249,7 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 var chainId = new this.web3.eth.getChainId();
+                initMasterchef();
                 this.starContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 if(chainId != 0x89){Functions.setChain()};
@@ -268,7 +272,7 @@ export default {
         else{
             this.matics();
             if(confirm("Would you liek to get MetaMask?")){
-                this.getMetamask();
+                Functions.getMetamask();
             }
         }
     },
@@ -288,7 +292,6 @@ export default {
                     this.$route.params.web3 = web3;
                     var chainId = new web3.eth.getChainId();
                     if(chainId != 0x89){Functions.setChain()};
-                    console.log(web3);
                     web3.eth.getAccounts().then((accounts) => {
                         if(accounts.length > 0){
                             this.$route.params.account = accounts[0];
@@ -479,12 +482,17 @@ export default {
                 }
             }
         },
-        getMetamask(){ 
-            window.open(
-                "https://metamask.io/",
-                '_blank' // <- This is what makes it open in a new window.
-            );           
-        }
+        async disconnect(){
+            this.account = "Not Connected";
+            this.$route.params.account = null;
+            this.$route.params.web3 = null;
+            this.web3 = null;
+            this.connected = false;
+            this.availStar="Connect Wallet";
+            this.starHarvest="Connect Wallet";
+            this.lpContractInstance = false;
+            this.masterChefContractInstance = false;
+        },
     }
 }
 
