@@ -93,7 +93,7 @@ export async function getPendingStar(pid,web3,account){
     try{
         var receipt = await masterChef.masterChefContractInstance.methods.pendingStar(pid,account).call()
         //console.log("pending star: " + receipt);
-        return ethers.utils.formatEther(receipt);
+        return (receipt);
     }catch(error){
         console.log("PID: " + pid + " Pending Star error: " + error);
     }
@@ -298,7 +298,8 @@ export async function getUserPoolStats(pools,web3,account){
     for( const itm of pools){
         getPoolInfo(itm,web3,account);
         //console.log("getting stats for:" + itm.name);
-        itm.starEarned =  await getPendingStar(itm.pid,web3,account);
+        var pending = await getPendingStar(itm.pid,web3,account);
+        itm.starEarned =  ethers.utils.formatEther(pending);
         itm.starEarned = (+itm.starEarned);
         //console.log("star earned :"+ itm.starEarned);
         //console.log("getting staked LP");

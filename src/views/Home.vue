@@ -387,25 +387,21 @@ export default {
             }
         },
         async getPendingStar(){
-            try{
-                this.messages = "Getting star ready for harvest";
-                this.masterChefContractInstance.methods.pendingStar(0,this.account).call()
-                    .then((receipt) => {
-                        console.log("pending Star: "+receipt)
-                        this.messages = "Transaction Successfull.";
-                        this.starHarvest = (receipt/10**18).toFixed(4);
-                        setTimeout(d=>{
-                            this.messages = false
-                        },1000)
-                    //this.$router.go();
-                })
-            }catch (error) {
-                console.log(error);
-                this.messages = "get star harvest: " +error
-                setTimeout(d=>{
-                    this.messages = false
-                },5000)
-            }
+           let pending = 0
+            for(var pool of pools.lpPools){
+                try{
+                    var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
+                    pending += parseInt (reciept);
+                    console.log("pending star for " + pool.name + ": " + pending)
+                }catch(error){console.log("pending lp error: " + error)}
+            };
+            for(var pool of pools.tokenPools){
+                var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
+                    pending += parseInt (reciept);
+                console.log("pending star for " + pool.name + ": " + pending)
+            };
+            console.log("pending: " + pending)
+            this.starHarvest = (pending*10**-18).toFixed(6)
         },
         async getBurnedStar(){
             try{
