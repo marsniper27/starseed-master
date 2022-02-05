@@ -97,14 +97,14 @@
                                 111,111
                             </div>
                         </div>
-                        <div class="grid">
+                        <!-- <div class="grid">
                             <div class="label">
                                Total Minted : 
                             </div>
                             <div class="cont">
                                 {{(+totalMinted).toFixed(4)}}
                             </div>
-                        </div>
+                        </div> -->
                         <div class="grid">
                             <div class="label">
                                 Circulating Supply :

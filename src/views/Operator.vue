@@ -27,23 +27,47 @@
                     </div>
                 </div>
                 <div class="card"  style="min-width:40%">
-                    <div class="icon">
-                        <h2>Update Emmision Rate </h2>
-                    </div>
-                    <div class="input">
-                        <input class="input" v-model="emmisionAmount" placeholder="New Emmsion Rate" />
-                    </div>
+                    <div>
+                        <div class="icon">
+                            <h2>Update Emmision Rate </h2>
+                        </div>
+                        <div class="input">
+                            <input v-model="emmisionAmount" placeholder="New Emmsion Rate" />
+                        </div>
                         <button @click="emmission()">Update Emmission</button>;
+                    </div>
                 </div>
                 <div class="card"  style="min-width:40%">
-                    <div class="icon">
-                        <h2>Update Pool Allocation Points </h2>
+                    <div>
+                        <div class="icon">
+                            <h2>Update Pool Allocation Points </h2>
+                        </div>
+                        <div class="input">
+                            <!-- <select v-model="selected">
+                            <option disabled value="">Please select one</option> -->
+                            <select v-model="allocSelected">
+                                <option v-for="pool in pools" v-bind:value="pool.pid">
+                                    {{ pool.name }}
+                                </option>
+                            </select>
+                            <!-- <option>B</option>
+                            <option>C</option>
+                            </select> -->
+                        </div>
+                        <div class="input">
+
+                            <!-- <input  v-model="allocationPid" placeholder="Pool ID" /> -->
+                            <input v-model="allocationAmount" placeholder="New Allocation amount" />
+                        </div>
+                        <div class="input">
+                            <input class = "checkbox" type="checkbox" id="checkbox" v-model="alloChecked">
+                            <label for="checkbox">Update Pools</label>
+                            <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
+                        </div>
+                        <div>
+                            <button @click="allocation()">Update Pool</button>;
+                        </div>
                     </div>
-                    <div class="input">
-                        <input  v-model="allocationPid" placeholder="Pool ID" />
-                        <input class="input" v-model="allocationAmount" placeholder="New Allocation amount" />
-                    </div>
-                        <button @click="allocation()">Update Pool</button>;
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div class="icon">
@@ -65,7 +89,11 @@
                         <h2>Update Pool </h2>
                     </div>
                     <div class="input">
-                        <input v-model="updatePID" placeholder="Pool ID" />
+                        <select v-model="updateSelected">
+                            <option v-for="pool in pools" v-bind:value="pool.pid">
+                                {{ pool.name }}
+                            </option>
+                        </select>
                     </div>
                         <button @click="updatePool()">update pool</button>;
                 </div>
@@ -81,7 +109,13 @@
                             <h2>Add Pool</h2>
                         </div>
                     <div class="input">
-                        <input v-model="fundAmount" placeholder="Amount to fund" />
+                        <input  v-model="tokenAddress" placeholder="New token Address" />
+                        <input  v-model="allocationAmount" placeholder="New Allocation amount" />
+                        <input  v-model="depositFeeBP" placeholder="New Deposit fee" />
+                        <input  v-model="harvestInterval" placeholder="New harvest interval" />
+                        <input class = "checkbox" type="checkbox" id="checkbox" v-model="checked">
+                        <label for="checkbox">Update Pools</label>
+                        <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                     </div>
                         <button @click="addPool()">Add Pool</button>;
                     </div>
@@ -92,9 +126,19 @@
                             <h2>Set Pool Values</h2>
                         </div>
                     <div class="input">
-                        <input v-model="fundAmount" placeholder="Amount to fund" />
+                        <select v-model="setSelected">
+                            <option v-for="pool in pools" v-bind:value="pool.pid">
+                                {{ pool.name }}
+                            </option>
+                        </select>
+                        <input v-model="allocationAmount" placeholder="New Allocation amount" />
+                        <input v-model="depositFeeBP" placeholder="New Deposit fee" />
+                        <input v-model="harvestInterval" placeholder="New harvest interval" />
+                        <input type="checkbox" id="checkbox" v-model="setChecked">
+                        <label for="checkbox">Update Pools</label>
+                        <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                     </div>
-                        <button @click="updatePool()">Update Pool</button>;
+                        <button @click="setPool()">Update Pool</button>;
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -103,7 +147,7 @@
                             <h2>Set Bonus Multiplier</h2>
                         </div>
                     <div class="input">
-                        <input class="input" v-model="multiplier" placeholder="New Bonus Multiplier" />
+                        <input v-model="multiplier" placeholder="New Bonus Multiplier" />
                     </div>
                         <button @click="setMultiplier()">Set Multiplier</button>;
                     </div>
@@ -114,22 +158,11 @@
                             <h2>Collect Fees</h2>
                         </div>
                     <div class="input">
-                        <input class="input" v-model="collectPID" placeholder="Pool Id" />
+                        <input v-model="collectPID" placeholder="Pool Id" />
                     </div>
                         <button @click="collectFees()">Collect Fees</button>;
                     </div>
-                </div>
-                <div class="card"  style="min-width:40%">
-                    <div>
-                        <div class="icon">
-                            <h2>Transfer out</h2>
-                        </div>
-                    <div class="input">
-                        <input v-model="transferOutAmount" placeholder="Amount to trasnfer out" />
-                    </div>
-                        <button @click="trasnferOut()">Trasnfer out funds</button>;
-                    </div>
-                </div>               
+                </div>        
             </div>
         </div>        
     </div>
@@ -149,12 +182,22 @@ import Matic from "maticjs"
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
 import Moralis from "moralis";
+var Pools = require( "./pools.js");
+import * as Functions from "../components/functions.js";
 // import { ChainId, Token, WETH, Fetcher, Route } from "quickswap-sdk";
 
 export default {
     components: {},
     data() {
         return {
+            updateSelected:null,
+            alloChecked:null,
+            tokenAddress:null,
+            checked:null,
+            setSelected:null,
+            setChecked:null,
+            allocSelected:null,
+            pools: Pools.lpPools.concat(Pools.tokenPools),// + Pools.tokenPools,
             Announcement:Announcement,
             logoMain:logoMain,
             web3:false,
@@ -180,7 +223,9 @@ export default {
             WBTCSTARBalance:"--",
             collectPID:null,
             updatePID:null,
-            operatorAddress:null
+            operatorAddress:null,
+            harvestInterval:null,
+            depositFeeBP:null
         }
     },
     watch: {
@@ -244,6 +289,7 @@ export default {
             })
         },
         async fund(){
+            var rates = await Functions.getRates();
             this.messages = "Initiating MasterChef Funding...";
             const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             var allowance = await starContractInstance.methods.allowance(this.account,this.masterChefContractAddress).call()
@@ -252,12 +298,22 @@ export default {
                 this.messages = "Increasing Allowance...";
                 try{
                     console.log("setting fund approval");
-                    var receipt = await starContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000")).send({from: this.account})
+                    var receipt = await starContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000"))
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
                         console.log("stake approval: " +receipt);
                         if(receipt){
                             this.messages = "Funding Masterchef...";
                             try{
-                                receipt = await  this.masterChefContractInstance.methods.fundMasterChef(ethers.utils.parseEther(this.fundAmount.toString())).send({from: this.account})
+                                receipt = await  this.masterChefContractInstance.methods.fundMasterChef(ethers.utils.parseEther(this.fundAmount.toString()))
+                                    .send({
+                                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                        from:this.account
+                                    })
                                 console.log("fund: "+receipt);
                                 setTimeout(d=>{
                                     this.messages = false
@@ -281,7 +337,12 @@ export default {
             else{
                 this.messages = "Funding Masterchef...";
                 try{
-                    receipt = await  this.masterChefContractInstance.methods.fundMasterChef(ethers.utils.parseEther(this.fundAmount.toString())).send({from: this.account})
+                    receipt = await  this.masterChefContractInstance.methods.fundMasterChef(ethers.utils.parseEther(this.fundAmount.toString()))
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
                     console.log("funding: "+receipt);
                     console.log("fund: "+receipt);
                     setTimeout(d=>{
@@ -297,15 +358,27 @@ export default {
             }
         },
         async emmission(){
+            var rates = await Functions.getRates();
             this.messages = "Updating Emission rate...";
-            try{updateBonus
-                var result = await this.masterChefContractInstance.methods.updateEmissionRate(this.emmisionAmount).send({from: this.account});
-                this.messages = "Updating Emission was " +result;
+            try{
+                var result = await this.masterChefContractInstance.methods.updateEmissionRate(this.emmisionAmount)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "Updating Emission was " +outcome;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
             }catch(error){
-                console.log("Updating Emissionr error: " + error);
+                console.log("Updating Emission rate error: " + error);
                 this.meassages = "Updating Emission error: " + error;
                 setTimeout(d=>{
                     this.messages = false
@@ -313,20 +386,40 @@ export default {
             }
         },
         async allocation(){
-            this.messages = "Updating Pool Allocation...";
+            var rates = await Functions.getRates();
+            this.messages = "Updating " +this.allocSelected+" Allocation...";
+            setTimeout(d=>{
+                this.messages = false
+            },5000)
             try{
-                var result = await this.masterChefContractInstance.methods.updateAllocPoint(this.allocationPid,this.allocationAmount,true).send({from: this.account});
-                this.messages = "Allocation update was " +result;
-                try{
-                    this.messages = "Updating pools";
-                    result = await this.masterChefContractInstance.methods.massUpdatePools().send({from: this.account});
-                }catch(error){
-                    console.log("mass update error: " + error);
-                    this.meassages = "mass update error: " + error;
-                    setTimeout(d=>{
-                        this.messages = false
-                    },5000)
+                if(this.alloChecked){ 
+                    var result = await this.masterChefContractInstance.methods.updateAllocPoint(this.allocSelected,this.allocationAmount,true)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
                 }
+                else{
+                    var result = await this.masterChefContractInstance.methods.updateAllocPoint(this.allocSelected,this.allocationAmount,false)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                }
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "Allocation update was " +outcome;
+                console.log(result);
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+                console.log(result);
             }catch(error){
                 console.log("allocation error: " + error);
                 this.meassages = "Allocation error: " + error;
@@ -336,10 +429,22 @@ export default {
             }
         },
         async operator(){
+            var rates = await Functions.getRates();
             this.messages = "Updating Operator rate...";
-            try{updateBonus
-                var result = await this.masterChefContractInstance.methods.transferOperator(this.operatorAddress).send({from: this.account});
-                this.messages = "Updating Operator was " +result;
+            try{
+                var result = await this.masterChefContractInstance.methods.transferOperator(this.operatorAddress)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "Updating Operator was " +outcome;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -352,10 +457,22 @@ export default {
             }
         },
         async setMultiplier(){
+            var rates = await Functions.getRates();
             this.messages = "Updating Bonus Multiplier...";
-            try{updateBonus
-                var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier).send({from: this.account});
-                this.messages = "update was " +result;
+            try{
+                var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "update was " +outcome;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -367,29 +484,23 @@ export default {
                 },5000)
             }
         },
-        async transferOut(){
-            lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
-                try{
-                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
-                    console.log("can harvest: " + harvest);
-                    if(harvest){
-                        try{
-                            var receipt = await this.masterChefContractInstance.methods.harvestStar(itm.pid).send({from:this.account})
-                                console.log("harvest star: " + receipt);
-                                return(receipt);
-                        }catch(error){
-                            console.log("harvest Star error: " + error);
-                        }
-                    }
-                }catch(error){
-                    console.log("can harvest error: " + error);
-                }
-        },
         async collectFees(){
+            var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID).send({from: this.account});
-                this.messages = "Fee colection was " +result;
+                var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "Fee colection was " +outcome;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -402,10 +513,22 @@ export default {
             }
         },
         async massUpdate(){
+            var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                var result = await this.masterChefContractInstance.methods.massUpdatePools().send({from: this.account});
-                this.messages = "mass update pools was " +result;
+                var result = await this.masterChefContractInstance.methods.massUpdatePools()
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "mass update pools was " +outcome;
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -418,10 +541,23 @@ export default {
             }
         },
         async updatePool(){
+            var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                var result = await this.masterChefContractInstance.methods.updatePool(this.updatePID).send({from: this.account});
-                this.messages = "updatePool was " +result;
+                var result = await this.masterChefContractInstance.methods.updatePool(this.updateSelected)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "updatePool was " +outcome;
+                console.log(result);
                 setTimeout(d=>{
                     this.messages = false
                 },5000)
@@ -434,25 +570,57 @@ export default {
             }
         },
         async changeMxTxAmount(){
+            var rates = await Functions.getRates(); 
             const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             try{
-                var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000")).send({from:this.masterChefContractInstance.address})
+                var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000"))
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.masterChefContractInstance.address
+                        })
                 console.log("change mx tx amount: " + receipt);
             }catch(error){
                 console.log("change mx tx amount error: " + error);
             }
         },
-        async getPrice(){
-            const NODE_URL = "https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
-            const provider = new ethers.providers.JsonRpcProvider(NODE_URL);
-
-            const options = {
-                address: "0x8440178087C4fd348D43d0205F4574e0348a06F0",
-                chain: "polygon",
-                exchange: "quickswap"
-            };
-            const price = await Moralis.Web3API.token.getTokenPrice(options);
-            console.log("Star Price: " + price.usdPrice)
+        async setPool(){
+            var rates = await Functions.getRates();
+            this.messages = "collecting fees...";
+            try{
+                if(this.setChecked){ 
+                    var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,true)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                }
+                else{
+                    var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,false)
+                    .send({
+                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        from:this.account
+                    })
+                }
+                if(result.status){
+                    var outcome = "successful"
+                }
+                else{
+                    var outcome = "unsuccessful"
+                }
+                this.messages = "set Pool was " +outcome;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }catch(error){
+                console.log("set Pool error: " + error);
+                this.messages = "set Pool error: " + error;
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
         }
     }
 }
