@@ -158,7 +158,7 @@
 <script>
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
-var Pools = require( "./pools.js");
+var Pools = require("./pools.js");
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef.js";
 import {getTotalAllocation} from "../components/starStats.js";
@@ -423,18 +423,18 @@ export default {
             }
             this.lpContractInstance =null;
         },
-        async getPoolInfo(itm){
-            try{
-                var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
-                if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-                //console.log("total liquidity: " + (receipt.totalLp));
-                itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
-                itm.stakedLP = receipt.totalLp;
-                itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*this.starPrice*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
-            }catch(error){
-                console.log("get pool total liquidity  error: " + error);
-            }
-        },
+        // async getPoolInfo(itm){
+        //     try{
+        //         var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
+        //         if(receipt.totalLp == undefined){receipt.totalLp = 0;}
+        //         //console.log("total liquidity: " + (receipt.totalLp));
+        //         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
+        //         itm.stakedLP = receipt.totalLp;
+        //         itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*Pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
+        //     }catch(error){
+        //         console.log("get pool total liquidity  error: " + error);
+        //     }
+        // },
         async disconnect(){
             this.account = "Not Connected";
             this.$route.params.account = null;

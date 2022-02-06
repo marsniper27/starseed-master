@@ -175,11 +175,11 @@ import Web3 from 'web3';
 import {ethers} from "ethers";
 import Moralis from "moralis";
 import { commify } from '@ethersproject/units';
-import * as pools from "./pools.js";
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef";
 import { totalAllocation } from '../components/starStats';
 
+var pools = require( "./pools.js");
 var starStats = require("../components/starStats.js");
 
 export default {
@@ -275,6 +275,8 @@ export default {
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
             Moralis.start({ serverUrl, appId });
             this.starValue =  await this.getPrice(this.starContractAddress);
+            pools.tokenPools[1].price = this.starValue;
+            starStats.price = this.starValue
             this.totalAllocation = await starStats.getTotalAllocation();
             this.getBurnedStar();
             this.getTotalSupply();
