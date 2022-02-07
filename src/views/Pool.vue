@@ -203,21 +203,23 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set pool");
                 await initMasterchef();
-                await getTotalAllocation();
+                //await getTotalAllocation();
                 this.metaMaskWallet();
             }
             else{
+                this.messages = "Loading user Details";
                 console.log("account already set pool");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 await initMasterchef();
-                await getTotalAllocation();
+                //await getTotalAllocation();
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
                 var chainId = new this.web3.eth.getChainId();
                 if(chainId != 0x89){Functions.setChain()};
-                this.getTotalAllocation();
-                Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                //this.getTotalAllocation();
+                await Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                this.messages = false;
             }
         }
         else{
@@ -253,8 +255,10 @@ export default {
                             this.$route.params.account = accounts[0];
                             this.connected = true;
                             this.messages = false;
-                            this.getTotalAllocation();
+                            this.messages = "Loading user Details";
+                            //this.getTotalAllocation();
                             Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                            this.messages = false;
                         }else{
                             this.messages = "No account Connected"
                             console.log("no account connected")
