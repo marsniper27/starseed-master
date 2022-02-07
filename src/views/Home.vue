@@ -5,7 +5,7 @@
                 Connected Account <span id="account" class="purple">{{account}}</span>
                 <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
-                    <button  @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
+                    <button  @click="matics()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
                 <div v-if="connected" class="disconnect">
                     <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>

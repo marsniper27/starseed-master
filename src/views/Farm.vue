@@ -5,7 +5,7 @@
                 Connected Account <span id="account" class="purple">{{account}}</span>
                 <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
-                    <button  @click="metaMaskWallet" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
+                    <button  @click="metaMaskWallet()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
                 <div v-if="connected" class="disconnect">
                     <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
@@ -73,7 +73,7 @@
                                     {{(+matic.balance).toFixed(4)}}
                                 </div>
                             </div>
-                            <button v-if="!connected" @click="pops(matic)">Unlock Wallet</button>               
+                            <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>               
                         <div v-if="matic.balance>0">
                             <div class="grid">
                                 <div class="label colored">
@@ -244,6 +244,7 @@ export default {
                     this.messages = " Pending..."
                     const web3 = result;// we instantiate our contract next
                     this.web3 = web3;
+                    this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                     this.$route.params.web3 = web3;
                     var chainId = new web3.eth.getChainId();
                     if(chainId != 0x89){Functions.setChain()};
@@ -253,7 +254,6 @@ export default {
                             this.account = accounts[0];
                             this.$route.params.account = accounts[0];
                             this.connected = true;
-                            this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                             this.messages = false;
                             this.getTotalAllocation();
                             Functions.getUserPoolStats(this.lpPools,this.web3,this.account);
@@ -390,8 +390,8 @@ export default {
                     if(!harvest){
                         var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
                         var date = new Date(userinfo.nextHarvestUntil * 1000);
-                        console.log("compound next harvest time: " + date)
-                        this.messages = "Compound not available until: "+ date;
+                        console.log("next harvest time: " + date)
+                        this.messages = "Harvest not available until: "+ date;
                         setTimeout(d=>{
                             this.messages = false
                         },5000)
