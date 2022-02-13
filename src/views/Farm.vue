@@ -226,7 +226,7 @@ export default {
         }
         else{
             this.matics();
-            if(confirm("Would you liek to get MetaMask?")){
+            if(confirm("Would you like to get MetaMask?")){
                 Functions.getMetamask();
             }
         }
@@ -260,7 +260,9 @@ export default {
                             this.messages = "Loading user Details";
                             //this.getTotalAllocation();
                             Functions.getUserPoolStats(this.lpPools,this.web3,this.account);
-                            this.messages = false;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
                         }else{
                             this.messages = "No account Connected"
                             console.log("no account connected")

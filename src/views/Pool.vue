@@ -204,7 +204,7 @@ export default {
                 console.log("account not set pool");
                 await initMasterchef();
                 //await getTotalAllocation();
-                this.metaMaskWallet();
+                await this.metaMaskWallet();
             }
             else{
                 this.messages = "Loading user Details";
@@ -224,7 +224,7 @@ export default {
         }
         else{
             this.matics();
-            if(confirm("Would you liek to get MetaMask?")){
+            if(confirm("Would you like to get MetaMask?")){
                 Functions.getMetamask();
             }
         }
@@ -242,32 +242,34 @@ export default {
             this.showPops = false
             getWeb3().then((result) => {
                 this.messages = " Pending..."
-                    const web3 = result;// we instantiate our contract next
-                    this.web3 = web3;
-                    this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
-                    this.$route.params.web3 = web3;
-                    var chainId = new web3.eth.getChainId();
-                    if(chainId != 0x89){Functions.setChain()};
-                    web3.eth.getAccounts()
-                    .then((accounts) => {
-                        if(accounts.length > 0){
-                            this.account = accounts[0];
-                            this.$route.params.account = accounts[0];
-                            this.connected = true;
-                            this.messages = false;
-                            this.messages = "Loading user Details";
-                            //this.getTotalAllocation();
-                            Functions.getUserPoolStats(this.pools,this.web3,this.account);
-                            this.messages = false;
-                        }else{
-                            this.messages = "No account Connected"
-                            console.log("no account connected")
-                            setTimeout(d=>{
-                                this.messages = false
-                            },5000)
-                        }                
-                    })
+                const web3 = result;// we instantiate our contract next
+                this.web3 = web3;
+                console.log("web3 set")
+                this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                this.$route.params.web3 = web3;
+                var chainId = new web3.eth.getChainId();
+                if(chainId != 0x89){Functions.setChain()};
+                web3.eth.getAccounts()
+                .then((accounts) => {
+                    if(accounts.length > 0){
+                        this.account = accounts[0];
+                        this.$route.params.account = accounts[0];
+                        this.connected = true;
+                        this.messages = false;
+                        this.messages = "Loading user Details";
+                        //this.getTotalAllocation();
+                        Functions.getUserPoolStats(this.pools,this.web3,this.account);setTimeout(d=>{
+                        this.messages = false
+                        },5000)
+                    }else{
+                        this.messages = "No account Connected"
+                        console.log("no account connected")
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }                
                 })
+            })
         },
         async trustWallet(){
              this.showPops = false

@@ -137,10 +137,10 @@ export async function compoundReward(itm,web3,account){
                 return (code,receipt);
                 
             }catch(error){
-                console.log("function compound reward error: " + error.value);
+                console.log("function compound reward error: " + error.message);
                 if(error.code == -32602){
                     var code = 2;
-                    return(code,error.value);
+                    return(code,error.message);
                 }
             }
             var code = 1;
@@ -150,7 +150,7 @@ export async function compoundReward(itm,web3,account){
         console.log("function compound can harvest error: " + error.message);
         if(error.value.code == -32602){
             var code = 2;
-            return(code,error.value);
+            return(code,error.message);
         }
         var code = 3;
         return(code,error.message);
@@ -283,7 +283,7 @@ function sleep(ms) {
     }            
     try{
         var receipt = await lpContractInstance.methods.balanceOf(account).call();
-            console.log(itm.name +" get balance: " + receipt);
+            //console.log(itm.name +" get balance: " + receipt);
             if(receipt == undefined){receipt = 0;}
             return ethers.utils.formatUnits(receipt,itm.decimals);
     }catch(error){
@@ -295,8 +295,8 @@ function sleep(ms) {
 export async function getUserPoolStats(pools,web3,account){
     await getDailyEmmission();
     await getTotalAllocation();
-    console.log("starStats emmission: " + starStats.dailyEmission);
-    console.log("starStats total allocation: " + starStats.totalAllocation);
+    //console.log("starStats emmission: " + starStats.dailyEmission);
+    //console.log("starStats total allocation: " + starStats.totalAllocation);
     for( const itm of pools){
         getPoolInfo(itm,web3,account);
         //console.log("getting stats for:" + itm.name);
@@ -318,22 +318,22 @@ async function getPoolInfo(itm,web3){
     try{
         var receipt = await masterChefContractInstance.methods.poolInfo(itm.pid).call();
         if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-        console.log("total liquidity: " + (receipt.totalLp));
+        //console.log("total liquidity: " + (receipt.totalLp));
         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
         itm.stakedLP = receipt.totalLp;
         if(itm.pid>4){
             itm.price = await getPrice(itm.address);
         }
-        console.log(itm.price);
+        //console.log(itm.price);
         itm.apr = (((((starStats.dailyEmission*(receipt.allocPoint/starStats.totalAllocation))*pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
-        console.log("pool: " + itm.name + " APR: " + itm.apr);
+        //console.log("pool: " + itm.name + " APR: " + itm.apr);
     }catch(error){
         console.log("get pool total liquidity  error: " + error);
     }
 }
 
 export async function getPrice(address){
-    console.log("getting token price: " + address)
+    //console.log("getting token price: " + address)
     const options = {
         address: address,
         chain: "polygon",
@@ -341,8 +341,8 @@ export async function getPrice(address){
     };
     try{
         const price = await moralis.fetchPrice(options);//Moralis.Moralis.Web3API.token.getTokenPrice(options);
-        console.log(price);
-        console.log(address+" Price: " +price.usdPrice)
+        //console.log(price);
+        //console.log(address+" Price: " +price.usdPrice)
         return(price.usdPrice);
     }catch(error){
         console.log("get price error: " + error)

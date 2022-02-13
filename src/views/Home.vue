@@ -36,7 +36,7 @@
                                 {{availStar}}
                             </div>
                         </div>
-                        <button v-if="!connected" @click="matics">Unlock Wallet</button>
+                        <button v-if="!connected" @click="matics()">Unlock Wallet</button>
                     </div>
                 </div>
                 <div class="card"  style="min-width:40%">
@@ -247,7 +247,7 @@ export default {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
-                this.matics();
+                await this.matics();
                 initMasterchef();
             }
             else{
@@ -287,7 +287,7 @@ export default {
         }
         else{
             this.matics();
-            if(confirm("Would you liek to get MetaMask?")){
+            if(confirm("Would you like to get MetaMask?")){
                 Functions.getMetamask();
             }
         }
@@ -295,7 +295,7 @@ export default {
     methods: {
         async matics(){
             getWeb3().then((result) => {
-                console.log(result);
+                //console.log(result);
                 if(result == 'Non-Ethereum browser detected. You should consider trying MetaMask!'){
                     this.messages = result;
                     setTimeout(d=>{
@@ -324,6 +324,11 @@ export default {
                             
                             this.getBalance();
                             this.getPendingStar();
+                            //window.location.reload()
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            created();
                         }
                             
                         else{
@@ -372,7 +377,7 @@ export default {
                 this.starContractInstance.methods.balanceOf(this.account).call()
                 .then (
                     (receipt) => {
-                        console.log("balance: "+receipt)
+                        // console.log("balance: "+receipt)
                         this.messages = "Transaction Successfull.";
                         this.availStar = (receipt/10**18).toFixed(4);
                     setTimeout(d=>{
@@ -394,21 +399,21 @@ export default {
                 try{
                     var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
                     pending += parseInt (reciept);
-                    console.log("pending star for " + pool.name + ": " + pending)
+                    //console.log("pending star for " + pool.name + ": " + pending)
                 }catch(error){console.log("pending lp error: " + error)}
             };
             for(var pool of pools.tokenPools){
                 var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
                     pending += parseInt (reciept);
-                console.log("pending star for " + pool.name + ": " + pending)
+                //console.log("pending star for " + pool.name + ": " + pending)
             };
-            console.log("pending: " + pending)
+            //console.log("pending: " + pending)
             this.starHarvest = (pending*10**-18).toFixed(6)
         },
         async getBurnedStar(){
             try{
                 var receipt = await this.moralisStarContractInstance.methods.balanceOf("0x000000000000000000000000000000000000dEaD").call()
-                    console.log("get burned star: " + receipt)
+                    //console.log("get burned star: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.burnedStar = ethers.utils.formatUnits(receipt,18);
                     this.burnValue = this.burnedStar*this.starValue;
@@ -419,7 +424,7 @@ export default {
         async getTotalSupply(){
             try{
                 var receipt = await this.moralisStarContractInstance.methods.totalSupply().call()
-                    console.log("get total supply: " + receipt)
+                    //console.log("get total supply: " + receipt)
                     if(receipt == undefined){receipt = 0;}
                     this.totalMinted = ethers.utils.formatUnits(receipt,18);
             }catch(error){
@@ -429,7 +434,7 @@ export default {
         getCurrentSupply(){            
             this.currentSupply = 9000;//(+this.totalMinted) - (+this.burnedStar);
             this.marketCap = commify((this.totalMinted*this.starValue).toFixed(4));
-            console.log("currentsupply : " +this.currentSupply);
+            //console.log("currentsupply : " +this.currentSupply);
         },
         getStar(){
             location.href = "https://quickswap.exchange/#/swap?outputCurrency=0x8440178087C4fd348D43d0205F4574e0348a06F0";
@@ -437,14 +442,14 @@ export default {
         async getEmissionRate(){
             try{
                 var receipt = await this.moralisMasterChefContractInstance.methods.starPerBlock().call()
-                    console.log("get star per block: " + receipt)
-                    console.log("total allocation: "+ starStats.totalAllocation);
+                    //console.log("get star per block: " + receipt)
+                    //console.log("total allocation: "+ starStats.totalAllocation);
                     if(receipt == undefined){receipt = 0;}
                     else{
                         receipt = receipt*((starStats.totalAllocation-9530)/starStats.totalAllocation);
                         receipt = receipt.toFixed(0);
                     }
-                    console.log("real star per block: "+receipt)
+                    //console.log("real star per block: "+receipt)
                     this.emissionRate = ethers.utils.formatUnits(receipt,18);
                     this.emissionValue = (this.emissionRate*this.starValue*38400).toFixed(2);
             }catch(error){
@@ -452,29 +457,29 @@ export default {
             }
         },
         async getPrice(address){
-            console.log("getting token price: " + address)
+            //console.log("getting token price: " + address)
             const options = {
                 address: address,
                 chain: "polygon",
                 exchange: "quickswap"
             };
             const price = await Moralis.Web3API.token.getTokenPrice(options);
-            console.log(address+" Price: " +price.usdPrice)
+            //console.log(address+" Price: " +price.usdPrice)
             return(price.usdPrice);
         },
         async getLpPoolValue(){
-            console.log(pools.lpPools)
-            console.log("num lp pools: " +pools.lpPools.length)
+            //console.log(pools.lpPools)
+            //console.log("num lp pools: " +pools.lpPools.length)
             for(var pool of pools.lpPools){
-                console.log(pool.name)
+                //console.log(pool.name)
                 try{
                     var receipt = await this.moralisMasterChefContractInstance.methods.poolInfo(pool.pid).call();
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
-                    console.log("tokens staked: " + numTokens);
+                    //console.log("tokens staked: " + numTokens);
                     var tokenPrice = await this.getPrice(pool.address);
-                    console.log("token Price: $"+tokenPrice);
-                    console.log("pools Value: $" + (numTokens*tokenPrice));
+                    //console.log("token Price: $"+tokenPrice);
+                    //console.log("pools Value: $" + (numTokens*tokenPrice));
                     this.poolsValue += (numTokens*tokenPrice)
                 }catch(error){
                     console.log("get pool total liquidity  error: " + error);
@@ -482,18 +487,18 @@ export default {
             }
         },
         async getPoolValue(){
-            console.log(pools.tokenPools)
-            console.log("num lp pools: " +pools.tokenPools.length)
+            //console.log(pools.tokenPools)
+            //console.log("num lp pools: " +pools.tokenPools.length)
             for(var pool of pools.tokenPools){
-                console.log(pool.name)
+                //console.log(pool.name)
                 try{
                     var receipt = await this.moralisMasterChefContractInstance.methods.poolInfo(pool.pid).call();
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
-                    console.log("tokens staked: " + numTokens);
+                    //console.log("tokens staked: " + numTokens);
                     var tokenPrice = await this.getPrice(pool.address);
-                    console.log("token Price: $"+tokenPrice);
-                    console.log("pools Value: $" + (numTokens*tokenPrice));
+                    //console.log("token Price: $"+tokenPrice);
+                    //console.log("pools Value: $" + (numTokens*tokenPrice));
                     this.poolsValue += (numTokens*tokenPrice)
                 }catch(error){
                     console.log("get pool total liquidity  error: " + error);
