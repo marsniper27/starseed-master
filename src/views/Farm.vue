@@ -354,21 +354,21 @@ export default {
             if(itm.starEarned > 0){
                 try{
                     var result = await Functions.compoundReward(itm,this.web3,this.account);
-                    switch(result.code){
+                    switch(result[0]){
                         case 0:
-                            this.messages = "Compound not available until: "+ result[1];
+                            this.messages = "Compound not available until: "+ result[1].message;
                             setTimeout(d=>{
                                 this.messages = false
                             },5000)
                             break;
                         case 1:
-                            this.messages = "Compound rewards error: "+ result[1];
+                            this.messages = "Compound rewards error: "+ result[1].message;
                             setTimeout(d=>{
                                 this.messages = false
                             },5000)
                             break;
                         case 2:
-                            this.messages = "EIP-1559: "+ result[1];
+                            this.messages = "EIP-1559: "+ result[1].message;
                             setTimeout(d=>{
                                 this.messages = false
                             },5000)

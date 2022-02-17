@@ -112,6 +112,7 @@ export async function getStakedLp(itm,web3,account){
 export async function compoundReward(itm,web3,account){
     const masterChefContractInstance = new web3.eth.Contract(masterChefContractAbi, masterChefContractAddress);
     var rates = await getRates();
+    console.log(rates.fast.maxFee)
     try{
         var harvest = await masterChefContractInstance.methods.canHarvest(itm.pid,account).call()
         console.log("can harvest: " + harvest);
@@ -128,10 +129,12 @@ export async function compoundReward(itm,web3,account){
             try{
                 var receipt =masterChefContractInstance.methods.compound(itm.pid)
                 .send({
-                    maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                    maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                    maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                    maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                     from:account
                 })    
+                console.log(rates.fast.maxFee)
+                console.log("maxFeePerGas: " + maxFeePerGas)
                 console.log("compound rewards: " + receipt)
                 var code = 1;
                 return (code,receipt);
@@ -164,8 +167,8 @@ export async function withdraw(itm,web3,account){
         try{
             var receipt = await masterChefContractInstance.methods.withdraw(itm.pid,ethers.utils.parseUnits(itm.withdrawAmount.toString(), itm.decimals))
             .send({
-                maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                 from:account
             })
             console.log("withdraw tokens: " + receipt);
@@ -184,8 +187,8 @@ export async function emergencyWithdraw(itm,web3,account){
     try{
         var receipt = await masterChefContractInstance.methods.emergencyWithdraw(itm.pid)
         .send({
-            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
             from:account
         })
         console.Log("emergency Withdraw: " + receipt);
@@ -200,8 +203,8 @@ export async function harvest(itm,web3,account){
     try{
         var receipt = await masterChefContractInstance.methods.harvestStar(itm.pid)
         .send({
-            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
             from:account
         })
             return(receipt);
@@ -219,8 +222,8 @@ export async function StakeLP(itm,web3,account){
         try{
             var receipt = await lpContractInstance.methods.approve(masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals))
                 .send({
-                    maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                    maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                    maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                    maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                     from:account
                 })
                 if(receipt){
@@ -228,8 +231,8 @@ export async function StakeLP(itm,web3,account){
                     try{
                         receipt = await  masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
                             .send({
-                                maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                                maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                                 from:account
                             })
                         return
@@ -245,8 +248,8 @@ export async function StakeLP(itm,web3,account){
         try{
             receipt = await  masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
                 .send({
-                    maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                    maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                    maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                    maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                     from:account
                 })
             return
