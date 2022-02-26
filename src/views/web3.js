@@ -15,7 +15,7 @@ const getWeb3 = () => new Promise((resolve) => {
         alert('Please allow access for the app to work');
       }
     } else if (window.web3) {
-      window.web3 = new Web3(web3.currentProvider);
+      window.web3 = new Web3(web3.window.ethereum);
       // Acccounts always exposed
       resolve(currentWeb3);
     } else {

@@ -177,7 +177,6 @@ import Moralis from "moralis";
 import { commify } from '@ethersproject/units';
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef";
-import { totalAllocation } from '../components/starStats';
 
 var pools = require( "./pools.js");
 var starStats = require("../components/starStats.js");
@@ -198,7 +197,7 @@ export default {
             totalMinted:null,
             starAdded:false,
             burnedStar:null,
-            currentSupply: null,
+            currentSupply: 9000,
             burnValue:null,
             starValue:null,
             emissionRate: null,
@@ -276,7 +275,7 @@ export default {
             Moralis.start({ serverUrl, appId });
             this.starValue =  await this.getPrice(this.starContractAddress);
             pools.tokenPools[1].price = this.starValue;
-            starStats.price = this.starValue
+            starStats.stats.price = this.starValue
             this.totalAllocation = await starStats.getTotalAllocation();
             this.getBurnedStar();
             this.getTotalSupply();
@@ -328,7 +327,6 @@ export default {
                             setTimeout(d=>{
                                 this.messages = false
                             },5000)
-                            created();
                         }
                             
                         else{
@@ -446,7 +444,7 @@ export default {
                     //console.log("total allocation: "+ starStats.totalAllocation);
                     if(receipt == undefined){receipt = 0;}
                     else{
-                        receipt = receipt*((starStats.totalAllocation-9530)/starStats.totalAllocation);
+                        receipt = receipt*((starStats.stats.totalAllocation-9530)/starStats.stats.totalAllocation);
                         receipt = receipt.toFixed(0);
                     }
                     //console.log("real star per block: "+receipt)

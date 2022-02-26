@@ -161,7 +161,6 @@ import {ethers} from "ethers";
 var Pools = require("./pools.js");
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef.js";
-import {getTotalAllocation} from "../components/starStats.js";
 
 export default {
     components: {},

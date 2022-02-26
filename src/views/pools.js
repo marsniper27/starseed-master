@@ -288,7 +288,7 @@ var tokenPools = [{
         decimals:18,
         stakedLP:null,
         apr: null,
-        price:2.70
+        price:2.65
     },
     {
         name: "ABUND",
@@ -309,7 +309,7 @@ var tokenPools = [{
         decimals:18,
         stakedLP:null,
         apr: null,
-        price:0
+        price:1
     }]
 
 export {lpPools,tokenPools};

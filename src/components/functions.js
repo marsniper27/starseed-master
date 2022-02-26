@@ -325,10 +325,13 @@ async function getPoolInfo(itm,web3){
         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
         itm.stakedLP = receipt.totalLp;
         if(itm.pid>4){
-            itm.price = await getPrice(itm.address);
+            var price = await getPrice(itm.address);
+            if(price != "no liquidity"){
+                itm.price = price;
+            }
         }
         //console.log(itm.price);
-        itm.apr = (((((starStats.dailyEmission*(receipt.allocPoint/starStats.totalAllocation))*pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
+        itm.apr = (((((starStats.stats.dailyEmission*(receipt.allocPoint/starStats.stats.totalAllocation))*pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
         //console.log("pool: " + itm.name + " APR: " + itm.apr);
     }catch(error){
         console.log("get pool total liquidity  error: " + error);
@@ -350,5 +353,8 @@ export async function getPrice(address){
     }catch(error){
         console.log("get price error: " + error)
         console.log(error)
+        if(error.code == 141){
+            return("no liquidity")
+        }
     }
 }
