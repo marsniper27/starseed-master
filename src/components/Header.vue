@@ -64,7 +64,7 @@
             </li>
         </ul>
         <div class="earning">
-          <div @click = "chart()">$ {{currentStarPrice}}</div>
+          <div @click = "chart()">$ {{(currentStarPrice).toFixed(4)}}</div>
           <div >
             <!-- <a href="https://t.me/+FMsZhHS4oS02ODQx" target="_new"> -->
               <!-- <telegram> -->
@@ -97,6 +97,7 @@
 import * as THREE from 'three';
 import getWeb3 from '../views/web3.js';
 var starStats = require("./starStats.js");
+import * as Functions from "../components/functions.js";
 
 export default {
     data() {
@@ -243,8 +244,13 @@ export default {
                 '_blank' // <- This is what makes it open in a new window.
             );
         },
-        async getPrice(){            
-            this.currentStarPrice = (starStats.stats.price).toFixed(4)
+        async getPrice(){
+            try{
+                this.currentStarPrice = await Functions.getPrice("0x8440178087C4fd348D43d0205F4574e0348a06F0");
+            }catch(error){
+                this.currentStarPrice = (starStats.stats.price).toFixed(4)
+                console.log(error)
+            }
         }
     }
 }

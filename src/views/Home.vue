@@ -273,7 +273,7 @@ export default {
             const serverUrl = "https://vwtvxfrruomo.usemoralis.com:2053/server";
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
             Moralis.start({ serverUrl, appId });
-            this.starValue =  await this.getPrice(this.starContractAddress);
+            this.starValue =  await Functions.getPrice(this.starContractAddress);
             pools.tokenPools[1].price = this.starValue;
             starStats.stats.price = this.starValue
             this.totalAllocation = await starStats.getTotalAllocation();
@@ -326,14 +326,14 @@ export default {
                             //window.location.reload()
                             setTimeout(d=>{
                                 this.messages = false
-                            },5000)
+                            },1000)
                         }
                             
                         else{
                             this.messages = "No account Connected"
                             setTimeout(d=>{
                                 this.messages = false
-                            },5000)
+                            },3000)
                         }
                     })
                 }
@@ -454,17 +454,6 @@ export default {
                 console.log("get star per block error: " + error);
             }
         },
-        async getPrice(address){
-            //console.log("getting token price: " + address)
-            const options = {
-                address: address,
-                chain: "polygon",
-                exchange: "quickswap"
-            };
-            const price = await Moralis.Web3API.token.getTokenPrice(options);
-            //console.log(address+" Price: " +price.usdPrice)
-            return(price.usdPrice);
-        },
         async getLpPoolValue(){
             //console.log(pools.lpPools)
             //console.log("num lp pools: " +pools.lpPools.length)
@@ -475,7 +464,7 @@ export default {
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
                     //console.log("tokens staked: " + numTokens);
-                    var tokenPrice = await this.getPrice(pool.address);
+                    var tokenPrice = await Functions.getPrice(pool.address);
                     //console.log("token Price: $"+tokenPrice);
                     //console.log("pools Value: $" + (numTokens*tokenPrice));
                     this.poolsValue += (numTokens*tokenPrice)
@@ -494,7 +483,7 @@ export default {
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
                     //console.log("tokens staked: " + numTokens);
-                    var tokenPrice = await this.getPrice(pool.address);
+                    var tokenPrice = await Functions.getPrice(pool.address);
                     //console.log("token Price: $"+tokenPrice);
                     //console.log("pools Value: $" + (numTokens*tokenPrice));
                     this.poolsValue += (numTokens*tokenPrice)

@@ -257,15 +257,16 @@ export default {
                         this.messages = false;
                         this.messages = "Loading user Details";
                         //this.getTotalAllocation();
-                        Functions.getUserPoolStats(this.pools,this.web3,this.account);setTimeout(d=>{
+                        Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                        setTimeout(d=>{
                         this.messages = false
-                        },5000)
+                        },1000)
                     }else{
                         this.messages = "No account Connected"
                         console.log("no account connected")
                         setTimeout(d=>{
                             this.messages = false
-                        },5000)
+                        },3000)
                     }                
                 })
             })

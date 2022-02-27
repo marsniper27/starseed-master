@@ -116,6 +116,9 @@
                                     <div class="cont sm-text">
                                         <button @click="viewExplorer(matic)">View on Matic Explorer</button>
                                     </div>
+                                    <div class="cont sm-text">
+                                        <button @click="dextools(matic)">View char on Dextools</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="grid" v-if="matic.stakedBalance>0">
@@ -261,13 +264,13 @@ export default {
                             Functions.getUserPoolStats(this.lpPools,this.web3,this.account);
                             setTimeout(d=>{
                                 this.messages = false
-                            },5000)
+                            },1000)
                         }else{
                             this.messages = "No account Connected"
                             console.log("no account connected")
                             setTimeout(d=>{
                                 this.messages = false
-                            },5000)
+                            },3000)
                         }                
                     })
                 })
@@ -485,7 +488,13 @@ export default {
             // if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
             //}
-        }
+        },
+        dextools(itm){
+            window.open(
+                'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        },
     }
 }
 </script>
