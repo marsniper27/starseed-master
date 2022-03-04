@@ -180,6 +180,8 @@ import {initMasterchef} from "../components/masterchef";
 
 var pools = require( "./pools.js");
 var starStats = require("../components/starStats.js");
+const fleekStorage = require('@fleekhq/fleek-storage-js')
+var fs = require('fs');
 
 export default {
     components: {},
@@ -214,6 +216,7 @@ export default {
             moralisMasterChefContractInstance: null,
             web3: null,
             totalAllocation:null,
+            tempValue:0,
             contracts:{
                 "WMatic":{
                     address:"0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
@@ -242,6 +245,7 @@ export default {
         }
     },
     async created() {
+        await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -259,8 +263,9 @@ export default {
                 this.starContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 if(chainId != 0x89){Functions.setChain()};
-                this.getBalance();
-                this.getPendingStar()
+                await this.getBalance();
+                await this.getPendingStar()
+                //await this.updateBackup()
             }
         
             /* Moralis init code */
@@ -277,11 +282,13 @@ export default {
             pools.tokenPools[1].price = this.starValue;
             starStats.stats.price = this.starValue
             this.totalAllocation = await starStats.getTotalAllocation();
-            this.getBurnedStar();
-            this.getTotalSupply();
-            this.getEmissionRate();
-            this.getLpPoolValue();
-            this.getPoolValue();
+            await this.getBurnedStar();
+            await this.getTotalSupply();
+            await this.getEmissionRate();
+            await this.getLpPoolValue();
+            await this.getPoolValue();
+            this.poolsValue = this.tempValue;
+            await this.updateBackup();
             setTimeout(()=>{this.getCurrentSupply()}, 1000);
         }
         else{
@@ -312,7 +319,7 @@ export default {
                             this.$route.params.account = accounts[0];
                             this.connected = true;
                             this.account = accounts[0];
-                            this.messages = " Account: " + this.account;
+                            //this.messages = " Account: " + this.account;
                             setTimeout(d=>{this.messages = false},1000);
 
                             this.starContractInstance = new web3.eth.Contract(this.starContractAbi, this.starContractAddress);
@@ -323,10 +330,12 @@ export default {
                             
                             this.getBalance();
                             this.getPendingStar();
+                            //this.updateBackup();
                             //window.location.reload()
-                            setTimeout(d=>{
-                                this.messages = false
-                            },1000)
+                            // setTimeout(d=>{
+                            //     this.messages = false
+                            //     //this.updateBackup();
+                            // },1000)
                         }
                             
                         else{
@@ -464,10 +473,17 @@ export default {
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
                     //console.log("tokens staked: " + numTokens);
-                    var tokenPrice = await Functions.getPrice(pool.address);
+                    try{
+                        var tokenPrice = await Functions.getPrice(pool.address);
+                        if (tokenPrice = "no liquidity"){
+                            tokenPrice = pool.price;
+                        }
+                    }catch(error){
+                        console.log("couldn't fetch price")
+                    }
                     //console.log("token Price: $"+tokenPrice);
                     //console.log("pools Value: $" + (numTokens*tokenPrice));
-                    this.poolsValue += (numTokens*tokenPrice)
+                    this.tempValue += (numTokens*tokenPrice)
                 }catch(error){
                     console.log("get pool total liquidity  error: " + error);
                 }
@@ -483,10 +499,17 @@ export default {
                     if(receipt.totalLp == undefined){receipt.totalLp = 0;}
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
                     //console.log("tokens staked: " + numTokens);
-                    var tokenPrice = await Functions.getPrice(pool.address);
+                     try{
+                        var tokenPrice = await Functions.getPrice(pool.address);
+                        if (tokenPrice = "no liquidity"){
+                            tokenPrice = pool.price;
+                        }
+                    }catch(error){
+                        console.log("couldn't fetch price")
+                    }
                     //console.log("token Price: $"+tokenPrice);
                     //console.log("pools Value: $" + (numTokens*tokenPrice));
-                    this.poolsValue += (numTokens*tokenPrice)
+                    this.tempValue += (numTokens*tokenPrice)
                 }catch(error){
                     console.log("get pool total liquidity  error: " + error);
                 }
@@ -503,8 +526,68 @@ export default {
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
         },
+        async updateBackup(){
+            //console.log("update backup")
+            var fileData = {
+                starPrice : this.starValue,
+                circulatingSupply : this.currentSupply,
+                totalBurned : this.burnedStar,
+                burnValue : this.burnValue,
+                marketCap : this.marketCap,
+                emission : this.emissionRate,
+                totalValue: this.poolsValue
+            }
+            const stream  = JSON.stringify(fileData);
+
+            const uploadedFile = await fleekStorage.streamUpload({
+                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
+                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                key: 'StarSeeds/StarSeedsStatsBackup.json',
+                stream,
+            });
+            console.log("Updated Backup")
+
+        //     fs.readFile(filePath, async (error, fileData) => {
+        //         const uploadedFile = await fleekStorage.upload({
+        //             apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
+        //             apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+        //             key: 'StarSeeds/StarSeedsStatsBackup.json',
+        //             ContentType: 'json',
+        //             data: fileData,
+        //             httpUploadProgressCallback: (event) => {
+        //             console.log(Math.round(event.loaded/event.total*100)+ '% done');
+        //             }
+        //         });
+        //     })
+        // }
+        },
+        async readBackup(){
+            const myFile = await fleekStorage.get({
+                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
+                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                key: 'StarSeeds/StarSeedsStatsBackup.json',
+                getOptions: [
+                    'data'
+                ],
+            })
+            var data = myFile.data
+            //console.log(data)
+            var text = ""
+            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+            //console.log("text: "+text)
+            var data = JSON.parse(text)
+            console.log("Loaded Backup")
+            this.starValue = data.starPrice
+            this.currentSupply = data.circulatingSupply
+            this.burnedStar = data.totalBurned
+            this.burnValue = data.burnValue
+            this.marketCap = data.marketCap
+            this.emissionRate = data.emission
+            this.poolsValue = data.totalValue
+        }
     }
 }
-
 </script>
 
+// process.env.API_key,
+// process.env.API_key,

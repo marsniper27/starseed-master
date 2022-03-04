@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@fleekhq/fleek-storage-js": "^1.0.20",
     "@johmun/vue-tags-input": "^2.1.0",
     "@maticnetwork/walletconnect-provider": "0.0.1-beta.1",
     "axios": "^0.21.1",
