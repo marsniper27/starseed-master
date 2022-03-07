@@ -161,6 +161,8 @@ import {ethers} from "ethers";
 var Pools = require("./pools.js");
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef.js";
+const fleekStorage = require('@fleekhq/fleek-storage-js')
+var fs = require('fs');
 
 export default {
     components: {},
@@ -197,6 +199,7 @@ export default {
         }
     },
     async created() {
+        await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -204,6 +207,7 @@ export default {
                 await initMasterchef();
                 //await getTotalAllocation();
                 await this.metaMaskWallet();
+                await this.updateBackup();
             }
             else{
                 this.messages = "Loading user Details";
@@ -219,10 +223,11 @@ export default {
                 //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.pools,this.web3,this.account);
                 this.messages = false;
+                await this.updateBackup();
             }
         }
         else{
-            this.matics();
+            //this.matics();
             if(confirm("Would you like to get MetaMask?")){
                 Functions.getMetamask();
             }
@@ -243,7 +248,7 @@ export default {
                 this.messages = " Pending..."
                 const web3 = result;// we instantiate our contract next
                 this.web3 = web3;
-                console.log("web3 set")
+                //console.log("web3 set")
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.$route.params.web3 = web3;
                 var chainId = new web3.eth.getChainId();
@@ -259,7 +264,7 @@ export default {
                         //this.getTotalAllocation();
                         Functions.getUserPoolStats(this.pools,this.web3,this.account);
                         setTimeout(d=>{
-                        this.messages = false
+                            this.messages = false
                         },1000)
                     }else{
                         this.messages = "No account Connected"
@@ -484,6 +489,49 @@ export default {
            // if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
             //}
+        },
+        async updateBackup(){
+            //console.log("update backup")
+            var fileData =[];
+            for(const pool of Pools.tokenPools){
+                fileData.push( 
+                    {                
+                        apr: pool.apr,
+                        stakedTokens: pool.totalLiquidity
+                    })
+            }
+            const stream  = JSON.stringify(fileData);
+
+            const uploadedFile = await fleekStorage.streamUpload({
+                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
+                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                key: 'StarSeeds/PoolBackup.json',
+                stream,
+            });
+            console.log("Updated Backup")
+        },
+        async readBackup(){
+            const myFile = await fleekStorage.get({
+                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
+                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                key: 'StarSeeds/PoolBackup.json',
+                getOptions: [
+                    'data'
+                ],
+            })
+            var data = myFile.data
+            //console.log(data)
+            var text = ""
+            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+            //console.log("text: "+text)
+            var data = JSON.parse(text)
+            var count =0
+            for(const pool of this.pools){
+                pool.apr = data[count].apr,
+                pool.totalLiquidity = data[count].stakedTokens
+                count++;
+            }
+            console.log("Loaded Backup")
         }
     }
 }

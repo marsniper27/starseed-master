@@ -288,11 +288,12 @@ export default {
             await this.getLpPoolValue();
             await this.getPoolValue();
             this.poolsValue = this.tempValue;
+            //setTimeout(()=>{this.getCurrentSupply()}, 1000);
+            await this.getCurrentSupply();
             await this.updateBackup();
-            setTimeout(()=>{this.getCurrentSupply()}, 1000);
         }
         else{
-            this.matics();
+            //this.matics();
             if(confirm("Would you like to get MetaMask?")){
                 Functions.getMetamask();
             }
@@ -546,20 +547,6 @@ export default {
                 stream,
             });
             console.log("Updated Backup")
-
-        //     fs.readFile(filePath, async (error, fileData) => {
-        //         const uploadedFile = await fleekStorage.upload({
-        //             apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
-        //             apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
-        //             key: 'StarSeeds/StarSeedsStatsBackup.json',
-        //             ContentType: 'json',
-        //             data: fileData,
-        //             httpUploadProgressCallback: (event) => {
-        //             console.log(Math.round(event.loaded/event.total*100)+ '% done');
-        //             }
-        //         });
-        //     })
-        // }
         },
         async readBackup(){
             const myFile = await fleekStorage.get({
