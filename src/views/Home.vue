@@ -541,8 +541,8 @@ export default {
             const stream  = JSON.stringify(fileData);
 
             const uploadedFile = await fleekStorage.streamUpload({
-                apiKey: process.env.API_key,
-                apiSecret:  process.env.API_secret,
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
                 key: 'StarSeeds/StarSeedsStatsBackup.json',
                 stream,
             });
@@ -550,8 +550,8 @@ export default {
         },
         async readBackup(){
             const myFile = await fleekStorage.get({
-                apiKey: process.env.API_key,
-                apiSecret:  process.env.API_secret,
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
                 key: 'StarSeeds/StarSeedsStatsBackup.json',
                 getOptions: [
                     'data'
