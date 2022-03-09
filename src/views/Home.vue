@@ -46,12 +46,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card"  style="min-width:20%">
+                <!-- <div class="card"  style="min-width:20%">
                     <router-link :to="{path:'/farm'}">
                         <div class="headings">
                             Earn up to <br>
                             <span class="purple"> 40-150% </span>  <!-- {{emissionValue}}$ -->
-                            <br> 
+                            <!-- <br> 
                             in Farms & Pools
                         </div>
                     </router-link>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --> 
                 <div class="card"  style="min-width:40%">
                     <div>
                         <div class="icon">
@@ -541,8 +541,8 @@ export default {
             const stream  = JSON.stringify(fileData);
 
             const uploadedFile = await fleekStorage.streamUpload({
-                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
-                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                apiKey: process.env.API_key,
+                apiSecret:  process.env.API_secret,
                 key: 'StarSeeds/StarSeedsStatsBackup.json',
                 stream,
             });
@@ -550,8 +550,8 @@ export default {
         },
         async readBackup(){
             const myFile = await fleekStorage.get({
-                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
-                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                apiKey: process.env.API_key,
+                apiSecret:  process.env.API_secret,
                 key: 'StarSeeds/StarSeedsStatsBackup.json',
                 getOptions: [
                     'data'

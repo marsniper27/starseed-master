@@ -117,7 +117,7 @@
                                         <button @click="viewExplorer(matic)">View on Matic Explorer</button>
                                     </div>
                                     <div class="cont sm-text">
-                                        <button @click="dextools(matic)">View char on Dextools</button>
+                                        <button @click="dextools(matic)">View chart on Dextools</button>
                                     </div>
                                 </div>
                             </div>
@@ -515,8 +515,8 @@ export default {
             const stream  = JSON.stringify(fileData);
 
             const uploadedFile = await fleekStorage.streamUpload({
-                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
-                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                apiKey: process.env.API_key,
+                apiSecret:  process.env.API_secret,
                 key: 'StarSeeds/FarmBackup.json',
                 stream,
             });
@@ -524,8 +524,8 @@ export default {
         },
         async readBackup(){
             const myFile = await fleekStorage.get({
-                apiKey: 'uE4l7SIn9LfNqIThdsx8Iw==',
-                apiSecret: '6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=',
+                apiKey: process.env.API_key,
+                apiSecret:  process.env.API_secret,
                 key: 'StarSeeds/FarmBackup.json',
                 getOptions: [
                     'data'
