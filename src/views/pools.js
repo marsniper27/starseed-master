@@ -141,7 +141,7 @@ var lpPools= [{
         decimals:18,
         stakedLP:null,
         apr: null,
-        price:2.5543052
+        price:10
     },
     // {
     //     name: "DAO - ABUND",
@@ -289,7 +289,7 @@ var tokenPools = [{
         decimals:18,
         stakedLP:null,
         apr: null,
-        price:2.65
+        price:2.50
      },
     // {
     //     name: "ABUND",
