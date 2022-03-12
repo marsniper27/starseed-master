@@ -43,25 +43,18 @@
                             <h2>Update Pool Allocation Points </h2>
                         </div>
                         <div class="input">
-                            <!-- <select v-model="selected">
-                            <option disabled value="">Please select one</option> -->
                             <select v-model="allocSelected">
                                 <option v-for="pool in pools" v-bind:value="pool.pid">
                                     {{ pool.name }}
                                 </option>
                             </select>
-                            <!-- <option>B</option>
-                            <option>C</option>
-                            </select> -->
                         </div>
                         <div class="input">
-
-                            <!-- <input  v-model="allocationPid" placeholder="Pool ID" /> -->
                             <input v-model="allocationAmount" placeholder="New Allocation amount" />
                         </div>
                         <div class="input">
                             <input class = "checkbox" type="checkbox" id="checkbox" v-model="alloChecked">
-                            <label for="checkbox">Update Pools</label>
+                            <label for="checkbox">.   Update Pools</label>
                             <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                         </div>
                         <div>
@@ -108,16 +101,20 @@
                         <div class="icon">
                             <h2>Add Pool</h2>
                         </div>
-                    <div class="input">
-                        <input  v-model="tokenAddress" placeholder="New token Address" />
-                        <input  v-model="allocationAmount" placeholder="New Allocation amount" />
-                        <input  v-model="depositFeeBP" placeholder="New Deposit fee" />
-                        <input  v-model="harvestInterval" placeholder="New harvest interval" />
-                        <input class = "checkbox" type="checkbox" id="checkbox" v-model="checked">
-                        <label for="checkbox">Update Pools</label>
-                        <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
-                    </div>
-                        <button @click="addPool()">Add Pool</button>;
+                        <div class="input">
+                            <input  v-model="tokenAddress" placeholder="New token Address" />
+                            <input  v-model="allocationAmount" placeholder="New Allocation amount" />
+                            <input  v-model="depositFeeBP" placeholder="New Deposit fee" />
+                            <input  v-model="harvestInterval" placeholder="New harvest interval" />
+                        </div>
+                        <div class="input"> 
+                            <input class = "checkbox" type="checkbox" id="checkbox" v-model="checked">
+                            <label for="checkbox">.  Update Pools</label>
+                            <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
+                        </div>
+                        <div>
+                            <button @click="addPool()">Add Pool</button>;
+                        </div>
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -125,20 +122,24 @@
                         <div class="icon">
                             <h2>Set Pool Values</h2>
                         </div>
-                    <div class="input">
-                        <select v-model="setSelected">
-                            <option v-for="pool in pools" v-bind:value="pool.pid">
-                                {{ pool.name }}
-                            </option>
-                        </select>
-                        <input v-model="allocationAmount" placeholder="New Allocation amount" />
-                        <input v-model="depositFeeBP" placeholder="New Deposit fee" />
-                        <input v-model="harvestInterval" placeholder="New harvest interval" />
-                        <input type="checkbox" id="checkbox" v-model="setChecked">
-                        <label for="checkbox">Update Pools</label>
-                        <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
-                    </div>
-                        <button @click="setPool()">Update Pool</button>;
+                        <div class="input">
+                            <select v-model="setSelected">
+                                <option v-for="pool in pools" v-bind:value="pool.pid">
+                                    {{ pool.name }}
+                                </option>
+                            </select>
+                            <input v-model="allocationAmount" placeholder="New Allocation amount" />
+                            <input v-model="depositFeeBP" placeholder="New Deposit fee" />
+                            <input v-model="harvestInterval" placeholder="New harvest interval" />
+                        </div>
+                        <div class="input"> 
+                                <input class = "checkbox" type="checkbox" id="checkbox" v-model="setChecked">
+                                <label for="checkbox">.  Update Pools</label>
+                                <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
+                        </div>
+                        <div>
+                            <button @click="setPool()">Update Pool</button>;
+                        </div>
                     </div>
                 </div>          
                 <div class="card"  style="min-width:40%">
@@ -164,36 +165,7 @@
                         </select>
                         <button @click="collectFees()">Collect Fees</button>;
                     </div>
-                </div>         
-                <div class="card"  style="min-width:40%">
-                    <div>
-                        <div class="icon">
-                            <h2>test test net star approve</h2>
-                        </div>
-                    <!-- <div class="input">
-                        <input v-model="collectPID" placeholder="Pool Id" />
-                    </div> -->
-                        <button @click="testnetApprove()">Test approve</button>;
-                    </div>
-                </div>        
-                <div class="card"  style="min-width:40%">
-                    <div>
-                        <div class="icon">
-                            <h2>test test net star deposit</h2>
-                        </div>
-                    <!-- <div class="input">
-                        <input v-model="collectPID" placeholder="Pool Id" />
-                    </div> -->
-                        <button @click="testnetDeposit()">Test deposit</button>;
-                    </div>
                 </div>
-                <!-- <div class="card"  style="min-width:40%">
-                    <div>
-                        <div class="icon">
-                            <h2>Current Frock{{this.Frock}}</h2>
-                        </div>
-                    </div>
-                </div> -->
             </div>        
         </div>
         <div v-if="messages" class="messages">
