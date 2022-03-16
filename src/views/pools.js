@@ -5,7 +5,7 @@ import ethMatic from "../assets/eth-matic.png"
 import mai from "../assets/mai.png"
 import dhv from "../assets/DHV.png"
 import logoMain from '../assets/logo.png';
-import dao from "../assets/DAO.svg"
+import dao from "../assets/DAO.jpg"
 
 var lpPools= [{
         name: "STAR-WBTC",

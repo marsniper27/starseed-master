@@ -55,12 +55,43 @@ export async function setChain(){
     }
 }
 
-export async function CustomToken() {
+export async function AddStar() {
     const tokenAddress = '0x8440178087C4fd348D43d0205F4574e0348a06F0';
     const tokenSymbol = 'STAR';
     const tokenDecimals = 18;
     const tokenImage = 'https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/logo-1.png';
 
+    try {
+        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        const wasAdded = await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                options: {
+                    address: tokenAddress, // The address that the token is at.
+                    symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                    decimals: tokenDecimals, // The number of decimals in the token
+                    image: tokenImage, // A string url of the token logo
+                },
+            },
+        });
+
+        if (wasAdded) {
+            console.log('Thanks for your interest!');
+        } else {
+            console.log('Your loss!');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export async function AddDao() {
+    const tokenAddress = '0x17840DF7CAa07e298b16E8612157B90ED231C973';
+    const tokenSymbol = 'DAO';
+    const tokenDecimals = 18;
+    const tokenImage = 'https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/DAO.jpg';
     try {
         // wasAdded is a boolean. Like any RPC method, an error may be thrown.
         const wasAdded = await ethereum.request({

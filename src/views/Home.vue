@@ -2,8 +2,9 @@
 <main id="main">
     <div class="content">
             <h3 class="account">
-                Connected Account <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.CustomToken()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                Connected Account: <span id="account" class="purple">{{account}}</span>
+                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="matics()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -188,6 +189,7 @@ export default {
     data() {
         return {
             //lpPools:lpPools,
+            Functions:Functions,
             Announcement:Announcement,
             logoMain:logoMain,
             account: "Not Connected",
