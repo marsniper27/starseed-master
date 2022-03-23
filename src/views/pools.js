@@ -138,6 +138,8 @@ var lpPools= [{
         starEarned:"--",
         totalLiquidity: "--",
         harvestTime:"--",
+        pool: "https://quickswap.exchange/#/add/0x17840DF7CAa07e298b16E8612157B90ED231C973/0x8440178087C4fd348D43d0205F4574e0348a06F0",
+        supply: null,
         decimals:18,
         stakedLP:null,
         apr: null,

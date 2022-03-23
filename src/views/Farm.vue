@@ -177,6 +177,7 @@ export default {
             Functions:Functions,
             lpPools: Pools.lpPools,
             starAdded:false,
+            DAOAdded: false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -474,6 +475,7 @@ export default {
             }
         },
         getLp(itm){
+            console.log("get lp item: "+itm)
             window.open(
                 itm.pool,
                 '_blank' // <- This is what makes it open in a new window.
@@ -481,6 +483,7 @@ export default {
             //location.href = itm.pool;
         },
         viewExplorer(itm){
+            console.log("item: "+itm)
             window.open(
                 'https://polygonscan.com/token/' + itm.address,
                 '_blank' // <- This is what makes it open in a new window.
@@ -498,6 +501,7 @@ export default {
             //}
         },
         dextools(itm){
+            console.log(itm)
             window.open(
                 'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
                 '_blank' // <- This is what makes it open in a new window.

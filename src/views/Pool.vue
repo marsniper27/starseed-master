@@ -111,7 +111,7 @@
                                 <div class="label colored">
                                     <div class="cont sm-text">
                                         Get LP tokens from quickswap.
-                                        <button @click="getLp(matic)">Get LP Tokens</button>
+                                        <button @click="getLp(matic)">Get Tokens</button>
                                     </div>
                                     <div class="cont sm-text">
                                         <button @click="viewExplorer(matic)">View on Matic Explorer</button>
@@ -172,6 +172,7 @@ export default {
             Functions:Functions,
             pools:Pools.tokenPools,
             starAdded:false,
+            DAOAdded: false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -468,13 +469,15 @@ export default {
             }
         },
         getLp(itm){
+            console.log("get lp item: "+itm.name)
             window.open(
-                itm.pool,
+                'https://quickswap.exchange/#/swap?outputCurrency='+itm.address,
                 '_blank' // <- This is what makes it open in a new window.
             );         
             //location.href = itm.pool;
         },
         viewExplorer(itm){ 
+            console.log("item: "+itm)
             window.open(
                 'https://polygonscan.com/token/' + itm.address,
                 '_blank' // <- This is what makes it open in a new window.

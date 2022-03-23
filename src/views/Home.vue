@@ -200,6 +200,7 @@ export default {
             connected:false,
             totalMinted:null,
             starAdded:false,
+            DAOAdded: false,
             burnedStar:null,
             currentSupply: 9000,
             burnValue:null,
