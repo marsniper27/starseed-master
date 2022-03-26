@@ -250,7 +250,7 @@ export default {
                 console.log("account already set");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
-                if(this.account !=  "0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB" && this.account != "0xf60de76791c2f09995df52aa1c6e2e7dcf1e75d7"){
+                if(this.account !=  "0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB" && this.account != "0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7"){
                     console.log("your account is not owner or operator: " +this.acount)
                     this.$router.push({ name: 'Home' });
                 }
