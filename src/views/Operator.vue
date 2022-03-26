@@ -250,10 +250,10 @@ export default {
                 console.log("account already set");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
-                if(this.account !=  "0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB" && this.account != "0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7"){
-                    console.log("your account is not owner or operator: " +this.acount)
-                    this.$router.push({ name: 'Home' });
-                }
+                // if(this.account !=  "0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB" && this.account != "0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7"){
+                //     console.log("your account is not owner or operator: " +this.acount)
+                //     this.$router.push({ name: 'Home' });
+                // }
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
             }
             /* TODO: Add Moralis Authentication code */
