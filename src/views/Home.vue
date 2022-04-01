@@ -181,7 +181,7 @@ import {initMasterchef} from "../components/masterchef";
 
 var pools = require( "./pools.js");
 var starStats = require("../components/starStats.js");
-const fleekStorage = require('@fleekhq/fleek-storage-js')
+//const fleekStorage = require('@fleekhq/fleek-storage-js')
 var fs = require('fs');
 
 export default {
@@ -281,9 +281,12 @@ export default {
             const serverUrl = "https://vwtvxfrruomo.usemoralis.com:2053/server";
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
             Moralis.start({ serverUrl, appId });
-            this.starValue =  await Functions.getPrice(this.starContractAddress);
-            pools.tokenPools[1].price = this.starValue;
-            starStats.stats.price = this.starValue
+            var price =  await Functions.getPrice(this.starContractAddress);
+            if(price != undefined){
+                this.starValue = price;
+            }
+            //pools.tokenPools[1].price = this.starValue;
+            //starStats.stats.price = this.starValue
             this.totalAllocation = await starStats.getTotalAllocation();
             await this.getBurnedStar();
             await this.getTotalSupply();
@@ -443,7 +446,7 @@ export default {
             }
         },
         getCurrentSupply(){            
-            this.currentSupply = 9000;//(+this.totalMinted) - (+this.burnedStar);
+            this.currentSupply = (+this.totalMinted) - (+this.burnedStar);
             this.marketCap = commify((this.totalMinted*this.starValue).toFixed(4));
             //console.log("currentsupply : " +this.currentSupply);
         },
@@ -455,7 +458,7 @@ export default {
                 var receipt = await this.moralisMasterChefContractInstance.methods.starPerBlock().call()
                     //console.log("get star per block: " + receipt)
                     //console.log("total allocation: "+ starStats.totalAllocation);
-                    if(receipt == undefined){receipt = 0;}
+                    if(receipt == undefined){return;}
                     else{
                         receipt = receipt*((starStats.stats.totalAllocation-9530)/starStats.stats.totalAllocation);
                         receipt = receipt.toFixed(0);
@@ -529,52 +532,52 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
-        },
-        async updateBackup(){
-            //console.log("update backup")
-            var fileData = {
-                starPrice : this.starValue,
-                circulatingSupply : this.currentSupply,
-                totalBurned : this.burnedStar,
-                burnValue : this.burnValue,
-                marketCap : this.marketCap,
-                emission : this.emissionRate,
-                totalValue: this.poolsValue
-            }
-            const stream  = JSON.stringify(fileData);
+        }//,
+        // async updateBackup(){
+        //     //console.log("update backup")
+        //     var fileData = {
+        //         starPrice : this.starValue,
+        //         circulatingSupply : this.currentSupply,
+        //         totalBurned : this.burnedStar,
+        //         burnValue : this.burnValue,
+        //         marketCap : this.marketCap,
+        //         emission : this.emissionRate,
+        //         totalValue: this.poolsValue
+        //     }
+        //     const stream  = JSON.stringify(fileData);
 
-            const uploadedFile = await fleekStorage.streamUpload({
-                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-                key: 'StarSeeds/StarSeedsStatsBackup.json',
-                stream,
-            });
-            console.log("Updated Backup")
-        },
-        async readBackup(){
-            const myFile = await fleekStorage.get({
-                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-                key: 'StarSeeds/StarSeedsStatsBackup.json',
-                getOptions: [
-                    'data'
-                ],
-            })
-            var data = myFile.data
-            //console.log(data)
-            var text = ""
-            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
-            //console.log("text: "+text)
-            var data = JSON.parse(text)
-            console.log("Loaded Backup")
-            this.starValue = data.starPrice
-            this.currentSupply = data.circulatingSupply
-            this.burnedStar = data.totalBurned
-            this.burnValue = data.burnValue
-            this.marketCap = data.marketCap
-            this.emissionRate = data.emission
-            this.poolsValue = data.totalValue
-        }
+        //     const uploadedFile = await fleekStorage.streamUpload({
+        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+        //         key: 'StarSeeds/StarSeedsStatsBackup.json',
+        //         stream,
+        //     });
+        //     console.log("Updated Backup")
+        // },
+        // async readBackup(){
+        //     const myFile = await fleekStorage.get({
+        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+        //         key: 'StarSeeds/StarSeedsStatsBackup.json',
+        //         getOptions: [
+        //             'data'
+        //         ],
+        //     })
+        //     var data = myFile.data
+        //     //console.log(data)
+        //     var text = ""
+        //     data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+        //     //console.log("text: "+text)
+        //     var data = JSON.parse(text)
+        //     console.log("Loaded Backup")
+        //     this.starValue = data.starPrice
+        //     this.currentSupply = data.circulatingSupply
+        //     this.burnedStar = data.totalBurned
+        //     this.burnValue = data.burnValue
+        //     this.marketCap = data.marketCap
+        //     this.emissionRate = data.emission
+        //     this.poolsValue = data.totalValue
+        // }
     }
 }
 </script>
