@@ -59,7 +59,7 @@ export async function AddStar() {
     const tokenAddress = '0x8440178087C4fd348D43d0205F4574e0348a06F0';
     const tokenSymbol = 'STAR';
     const tokenDecimals = 18;
-    const tokenImage = 'https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/logo-1.png';
+    const tokenImage = 'https://storageapi2.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/logo-1.png';
 
     try {
         // wasAdded is a boolean. Like any RPC method, an error may be thrown.
@@ -91,7 +91,7 @@ export async function AddDao() {
     const tokenAddress = '0x17840DF7CAa07e298b16E8612157B90ED231C973';
     const tokenSymbol = 'DAO';
     const tokenDecimals = 18;
-    const tokenImage = 'https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/DAO.jpg';
+    const tokenImage = 'https://storageapi2.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/DAO.jpg';
     try {
         // wasAdded is a boolean. Like any RPC method, an error may be thrown.
         const wasAdded = await ethereum.request({
