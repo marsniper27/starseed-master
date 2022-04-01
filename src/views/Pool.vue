@@ -201,7 +201,7 @@ export default {
         }
     },
     async created() {
-        await this.readBackup()
+        //await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -209,7 +209,7 @@ export default {
                 await initMasterchef();
                 //await getTotalAllocation();
                 await this.metaMaskWallet();
-                await this.updateBackup();
+                //await this.updateBackup();
             }
             else{
                 this.messages = "Loading user Details";
@@ -225,7 +225,7 @@ export default {
                 //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.pools,this.web3,this.account);
                 this.messages = false;
-                await this.updateBackup();
+                //await this.updateBackup();
             }
         }
         else{

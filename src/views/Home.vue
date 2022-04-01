@@ -248,7 +248,7 @@ export default {
         }
     },
     async created() {
-        await this.readBackup()
+        //await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -296,7 +296,7 @@ export default {
             this.poolsValue = this.tempValue;
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
             await this.getCurrentSupply();
-            await this.updateBackup();
+            //await this.updateBackup();
         }
         else{
             //this.matics();

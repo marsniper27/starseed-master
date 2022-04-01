@@ -207,7 +207,7 @@ export default {
     },
     async created() {
         console.log(this.lpPools[0].apr)
-        await this.readBackup()
+        //await this.readBackup()
         console.log(this.lpPools[0].apr)
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
@@ -216,7 +216,7 @@ export default {
                 await initMasterchef();
                 //await getTotalAllocation();
                 await this.metaMaskWallet();
-                await this.updateBackup();
+                //await this.updateBackup();
             }
             else{
                 this.messages = "Loading user Details";
@@ -232,7 +232,7 @@ export default {
                 //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.lpPools,this.web3,this.account);
                 this.messages = false;            
-                await this.updateBackup();
+                //await this.updateBackup();
             }
         }
         else{
