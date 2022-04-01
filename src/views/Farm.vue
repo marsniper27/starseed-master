@@ -499,14 +499,14 @@ export default {
             // if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
             //}
-        // },
-        // dextools(itm){
-        //     console.log(itm)
-        //     window.open(
-        //         'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
-        //         '_blank' // <- This is what makes it open in a new window.
-        //     );
-        // },
+        },
+        dextools(itm){
+            console.log(itm)
+            window.open(
+                'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }//,
         // async updateBackup(){
         //     //console.log("update backup")
         //     var fileData =[];
