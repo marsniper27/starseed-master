@@ -3,8 +3,8 @@
     <div class="content">
             <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
-                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="..\assets\metamask-fox.svg"></button>
+                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="..\assets\metamask-fox.svg"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="metaMaskWallet()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -493,7 +493,13 @@ export default {
            // if(confirm("Minimum Stake Time is 8 Hours")){
                 this.StakeLP(matic);
             //}
-        }//,
+        },
+        maxButton(itm){
+            if(item.name = "DAO"){
+                itm.amount = (itm.balance-0.001).toFixed(itm.decimals)
+            }
+            itm.amount = (itm.balance-(4/(10**(itm.decimals - 4)))).toFixed(itm.decimals)
+        }
         // async updateBackup(){
         //     //console.log("update backup")
         //     var fileData =[];

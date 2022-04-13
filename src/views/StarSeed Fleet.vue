@@ -3,7 +3,7 @@
         <div class="content">
                 <!-- <h3 class="account">
                     Connected Account <span id="account" class="purple">{{account}}</span>
-                    <button @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="https://jaguarswap.com/images/tokens/metamask.png"></button>
+                    <button @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="..\assets\metamask-fox.svg"></button>
                     <div class="connect">
                         <button @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                     </div>
