@@ -3,8 +3,8 @@
     <div class="content">
             <h3 class="account">
                 Connected Account: <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="..\assets\metamask-fox.svg"></button>
-                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="..\assets\metamask-fox.svg"></button>
+                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <div v-if="!connected" class="connect">
                     <button  @click="matics()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
                 </div>
@@ -169,6 +169,7 @@
 <script>
 
 import logoMain from '../assets/logo.png';
+import metaMask from '../assets/metamask-fox.svg'
 import Announcement from '../assets/loudspeaker.png';
 
 import getWeb3 from './web3.js';
