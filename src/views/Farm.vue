@@ -167,7 +167,7 @@ import {ethers} from "ethers";
 var Pools = require("./pools.js");
 import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef.js";
-//const fleekStorage = require('@fleekhq/fleek-storage-js')
+const fleekStorage = require('@fleekhq/fleek-storage-js')
 var fs = require('fs');
 
 export default {
@@ -207,7 +207,7 @@ export default {
     },
     async created() {
         console.log(this.lpPools[0].apr)
-        //await this.readBackup()
+        await this.readBackup()
         console.log(this.lpPools[0].apr)
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
@@ -216,7 +216,7 @@ export default {
                 await initMasterchef();
                 //await getTotalAllocation();
                 await this.metaMaskWallet();
-                //await this.updateBackup();
+                await this.updateBackup();
             }
             else{
                 this.messages = "Loading user Details";
@@ -232,7 +232,7 @@ export default {
                 //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.lpPools,this.web3,this.account);
                 this.messages = false;            
-                //await this.updateBackup();
+                await this.updateBackup();
             }
         }
         else{
@@ -506,50 +506,50 @@ export default {
                 'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
                 '_blank' // <- This is what makes it open in a new window.
             );
-        }//,
-        // async updateBackup(){
-        //     //console.log("update backup")
-        //     var fileData =[];
-        //     for(const pool of Pools.lpPools){
-        //         fileData.push( 
-        //             {                
-        //                 apr: pool.apr,
-        //                 stakedTokens: pool.totalLiquidity
-        //             })
-        //     }
-        //     const stream  = JSON.stringify(fileData);
+        },
+        async update (){
+            //console.log("update backup")
+            var fileData =[];
+            for(const pool of Pools.lpPools){
+                fileData.push( 
+                    {                
+                        apr: pool.apr,
+                        stakedTokens: pool.totalLiquidity
+                    })
+            }
+            const stream  = JSON.stringify(fileData);
 
-        //     const uploadedFile = await fleekStorage.streamUpload({
-        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-        //         key: 'StarSeeds/FarmBackup.json',
-        //         stream,
-        //     });
-        //     console.log("Updated Backup")
-        // },
-        // async readBackup(){
-        //     const myFile = await fleekStorage.get({
-        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-        //         key: 'StarSeeds/FarmBackup.json',
-        //         getOptions: [
-        //             'data'
-        //         ],
-        //     })
-        //     var data = myFile.data
-        //     //console.log(data)
-        //     var text = ""
-        //     data.forEach(element =>text = text.concat(String.fromCharCode(element)))
-        //     //console.log("text: "+text)
-        //     var data = JSON.parse(text)
-        //     var count =0
-        //     for(const pool of this.lpPools){
-        //         pool.apr = data[count].apr,
-        //         pool.totalLiquidity = data[count].stakedTokens
-        //         count++;
-        //     }
-        //     console.log("Loaded Backup")
-        // }
+            const uploadedFile = await fleekStorage.streamUpload({
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+                key: 'StarSeeds/FarmBackup.json',
+                stream,
+            });
+            console.log("Updated Backup")
+        },
+        async readBackup(){
+            const myFile = await fleekStorage.get({
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+                key: 'StarSeeds/FarmBackup.json',
+                getOptions: [
+                    'data'
+                ],
+            })
+            var data = myFile.data
+            //console.log(data)
+            var text = ""
+            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+            //console.log("text: "+text)
+            var data = JSON.parse(text)
+            var count =0
+            for(const pool of this.lpPools){
+                pool.apr = data[count].apr,
+                pool.totalLiquidity = data[count].stakedTokens
+                count++;
+            }
+            console.log("Loaded Backup")
+        }
     }
 }
 </script>

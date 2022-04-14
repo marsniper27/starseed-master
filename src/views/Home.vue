@@ -182,7 +182,7 @@ import {initMasterchef} from "../components/masterchef";
 
 var pools = require( "./pools.js");
 var starStats = require("../components/starStats.js");
-//const fleekStorage = require('@fleekhq/fleek-storage-js')
+const fleekStorage = require('@fleekhq/fleek-storage-js')
 var fs = require('fs');
 
 export default {
@@ -249,7 +249,7 @@ export default {
         }
     },
     async created() {
-        //await this.readBackup()
+        await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -269,7 +269,7 @@ export default {
                 if(chainId != 0x89){Functions.setChain()};
                 await this.getBalance();
                 await this.getPendingStar()
-                //await this.updateBackup()
+                await this.updateBackup()
             }
         
             /* Moralis init code */
@@ -297,7 +297,7 @@ export default {
             this.poolsValue = this.tempValue;
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
             await this.getCurrentSupply();
-            //await this.updateBackup();
+            await this.updateBackup();
         }
         else{
             //this.matics();
@@ -338,7 +338,7 @@ export default {
                             
                             this.getBalance();
                             this.getPendingStar();
-                            //this.updateBackup();
+                            this.updateBackup();
                             //window.location.reload()
                             // setTimeout(d=>{
                             //     this.messages = false
@@ -533,52 +533,52 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
-        }//,
-        // async updateBackup(){
-        //     //console.log("update backup")
-        //     var fileData = {
-        //         starPrice : this.starValue,
-        //         circulatingSupply : this.currentSupply,
-        //         totalBurned : this.burnedStar,
-        //         burnValue : this.burnValue,
-        //         marketCap : this.marketCap,
-        //         emission : this.emissionRate,
-        //         totalValue: this.poolsValue
-        //     }
-        //     const stream  = JSON.stringify(fileData);
+        },
+        async updateBackup(){
+            //console.log("update backup")
+            var fileData = {
+                starPrice : this.starValue,
+                circulatingSupply : this.currentSupply,
+                totalBurned : this.burnedStar,
+                burnValue : this.burnValue,
+                marketCap : this.marketCap,
+                emission : this.emissionRate,
+                totalValue: this.poolsValue
+            }
+            const stream  = JSON.stringify(fileData);
 
-        //     const uploadedFile = await fleekStorage.streamUpload({
-        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-        //         key: 'StarSeeds/StarSeedsStatsBackup.json',
-        //         stream,
-        //     });
-        //     console.log("Updated Backup")
-        // },
-        // async readBackup(){
-        //     const myFile = await fleekStorage.get({
-        //         apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
-        //         apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
-        //         key: 'StarSeeds/StarSeedsStatsBackup.json',
-        //         getOptions: [
-        //             'data'
-        //         ],
-        //     })
-        //     var data = myFile.data
-        //     //console.log(data)
-        //     var text = ""
-        //     data.forEach(element =>text = text.concat(String.fromCharCode(element)))
-        //     //console.log("text: "+text)
-        //     var data = JSON.parse(text)
-        //     console.log("Loaded Backup")
-        //     this.starValue = data.starPrice
-        //     this.currentSupply = data.circulatingSupply
-        //     this.burnedStar = data.totalBurned
-        //     this.burnValue = data.burnValue
-        //     this.marketCap = data.marketCap
-        //     this.emissionRate = data.emission
-        //     this.poolsValue = data.totalValue
-        // }
+            const uploadedFile = await fleekStorage.streamUpload({
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+                key: 'StarSeeds/StarSeedsStatsBackup.json',
+                stream,
+            });
+            console.log("Updated Backup")
+        },
+        async readBackup(){
+            const myFile = await fleekStorage.get({
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+                key: 'StarSeeds/StarSeedsStatsBackup.json',
+                getOptions: [
+                    'data'
+                ],
+            })
+            var data = myFile.data
+            //console.log(data)
+            var text = ""
+            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+            //console.log("text: "+text)
+            var data = JSON.parse(text)
+            console.log("Loaded Backup")
+            this.starValue = data.starPrice
+            this.currentSupply = data.circulatingSupply
+            this.burnedStar = data.totalBurned
+            this.burnValue = data.burnValue
+            this.marketCap = data.marketCap
+            this.emissionRate = data.emission
+            this.poolsValue = data.totalValue
+        }
     }
 }
 </script>
