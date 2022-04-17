@@ -79,7 +79,7 @@
                                 <div class="label colored">
                                     <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
                                     <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.amount = (matic.balance-(4/(10**(matic.decimals - 4)))).toFixed(matic.decimals)">MAX</button>
+                                        <button v-if="connected" @click="maxButton(matic)">MAX</button>
                                     </div>
                                 </div>
                             </div>
@@ -495,10 +495,12 @@ export default {
             //}
         },
         maxButton(itm){
-            if(item.name = "DAO"){
+            if(itm.name = "DAO"){
                 itm.amount = (itm.balance-0.001).toFixed(itm.decimals)
             }
-            itm.amount = (itm.balance-(4/(10**(itm.decimals - 4)))).toFixed(itm.decimals)
+            else{
+                itm.amount = (itm.balance-(4/(10**(itm.decimals - 4)))).toFixed(itm.decimals)
+            }
         },
         async updateBackup(){
             //console.log("update backup")

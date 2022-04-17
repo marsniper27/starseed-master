@@ -206,9 +206,7 @@ export default {
         }
     },
     async created() {
-        console.log(this.lpPools[0].apr)
         await this.readBackup()
-        console.log(this.lpPools[0].apr)
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -475,7 +473,7 @@ export default {
             }
         },
         getLp(itm){
-            console.log("get lp item: "+itm)
+            console.log("get lp item: "+itm.name)
             window.open(
                 itm.pool,
                 '_blank' // <- This is what makes it open in a new window.
@@ -507,7 +505,7 @@ export default {
                 '_blank' // <- This is what makes it open in a new window.
             );
         },
-        async update (){
+        async updateBackup (){
             //console.log("update backup")
             var fileData =[];
             for(const pool of Pools.lpPools){
