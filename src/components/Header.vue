@@ -227,9 +227,9 @@ export default {
                             this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                             console.log(this.account);
                             this.messages = false;
-                            for( const itm of this.starSeed){
-                                this.getUserPoolStats(itm);
-                            }
+                            // for( const itm of this.starSeed){
+                            //     this.getUserPoolStats(itm);
+                            // }
                         }else{
                             this.messages = "No account Connected"
                             console.log("no account connected")
