@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button v-if="connected" @click="Functions.withdraw(matic,web3,account)">Withdraw</button>
+                            <button v-if="connected" @click="Functions.withdraw(matic,account,0)">Withdraw</button>
                         </div>
                         <hr>
                         <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
@@ -122,7 +122,7 @@
                                 <div class="label colored">
                                     <div class="cont sm-text">
                                         Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
-                                    <button v-if="connected" @click="Functions.emergencyWithdraw(matic,web3,account)">Emergency withdraw</button>
+                                    <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,0)">Emergency withdraw</button>
                                     </div>
                                 </div>
                             </div>
@@ -203,12 +203,22 @@ export default {
     async created() {
         await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
+            window.addEventListener("load", function() {
+                window.ethereum.on('chainChanged', function(networkId){
+                    console.log('chainChanged',networkId);
+                    methods.refresh();
+                });
+                window.ethereum.on('accountsChanged', function (accounts) {
+                    console.log('accountsChanges',accounts);
+                    this.refresh();
+                });
+            })
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set pool");
-                await initMasterchef();
                 //await getTotalAllocation();
                 await this.metaMaskWallet();
+                await initMasterchef(this.web3,0);
                 await this.updateBackup();
             }
             else{
@@ -216,14 +226,15 @@ export default {
                 console.log("account already set pool");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
-                await initMasterchef();
+                var chainId = new this.web3.eth.getChainId();
+                if(chainId != 0x89){await Functions.setChain('0x89')
+                    this.$router.go();};
+                await initMasterchef(this.web3,0);
                 //await getTotalAllocation();
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
-                var chainId = new this.web3.eth.getChainId();
-                if(chainId != 0x89){Functions.setChain()};
                 //this.getTotalAllocation();
-                await Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                await Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
                 this.messages = false;
                 await this.updateBackup();
             }
@@ -250,11 +261,11 @@ export default {
                 this.messages = " Pending..."
                 const web3 = result;// we instantiate our contract next
                 this.web3 = web3;
+                var chainId = new web3.eth.getChainId();
+                if(chainId != 0x89){Functions.setChain('0x89')};
                 //console.log("web3 set")
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.$route.params.web3 = web3;
-                var chainId = new web3.eth.getChainId();
-                if(chainId != 0x89){Functions.setChain()};
                 web3.eth.getAccounts()
                 .then((accounts) => {
                     if(accounts.length > 0){
@@ -264,7 +275,7 @@ export default {
                         this.messages = false;
                         this.messages = "Loading user Details";
                         //this.getTotalAllocation();
-                        Functions.getUserPoolStats(this.pools,this.web3,this.account);
+                        Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
                         setTimeout(d=>{
                             this.messages = false
                         },1000)
@@ -352,13 +363,13 @@ export default {
             }
         },
         async StakeLP(itm){
-            await Functions.StakeLP(itm,this.web3,this.account);
-            Functions.getUserPoolStats(this.pools,this.web3,this.account);
+            await Functions.StakeLP(itm,this.web3,this.account,0);
+            Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
         },
         async compoundReward(itm){
             if(itm.starEarned > 0){
                 try{
-                    var result = await Functions.compoundReward(itm,this.web3,this.account);
+                    var result = await Functions.compoundReward(itm,this.account,0);
                     switch(result[0]){
                         case 0:
                             this.messages = "Compound not available until: "+ result[1].message;
@@ -409,7 +420,7 @@ export default {
                     }
                     console.log("can harvest: " + harvest);
                     if(harvest){
-                        Functions.harvest(itm,this.web3,this.account);
+                        Functions.harvest(itm,this.account,0);
                     }
                 }catch(error){
                     console.log("can harvest error: " + error);
@@ -544,6 +555,9 @@ export default {
                 count++;
             }
             console.log("Loaded Backup")
+        },
+        refresh(){
+            this.$router.go();
         }
     }
 }

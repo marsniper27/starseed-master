@@ -28,7 +28,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "shopeng-affiliate",
+    "name": "starseeds.exchange",
     "version": "0.1.0",
     "private": true,
     "scripts": {

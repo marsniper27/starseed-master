@@ -29,6 +29,14 @@
                                 {{starHarvest}}
                             </div>
                         </div>
+                        <!-- <div class="grid">
+                            <div class="label">
+                                Star Dollars to Harvest :
+                            </div>
+                            <div class="starHarvest">
+                                {{stardHarvest}}
+                            </div>
+                        </div> -->
                         <div class="grid">
                             <div class="label">
                                 Star in Wallet :
@@ -37,6 +45,14 @@
                                 {{availStar}}
                             </div>
                         </div>
+                        <!-- <div class="grid">
+                            <div class="label">
+                                Star Dollars in Wallet :
+                            </div>
+                            <div v-if="availStar" class="availStar">
+                                {{availStar}}
+                            </div>
+                        </div> -->
                         <button v-if="!connected" @click="matics()">Unlock Wallet</button>
                     </div>
                 </div>
@@ -181,6 +197,7 @@ import * as Functions from "../components/functions.js";
 import {initMasterchef} from "../components/masterchef";
 
 var pools = require( "./pools.js");
+var fantomPools = require( "../components/fantomPools.js");
 var starStats = require("../components/starStats.js");
 const fleekStorage = require('@fleekhq/fleek-storage-js')
 var fs = require('fs');
@@ -198,6 +215,7 @@ export default {
             messages:false,
             availStar:"Connect Wallet",
             starHarvest:"Connect Wallet",
+            stardHarvest:"Connect Wallet",
             connected:false,
             totalMinted:null,
             starAdded:false,
@@ -255,7 +273,7 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
                 await this.matics();
-                initMasterchef();
+                initMasterchef(this.web3,0);
             }
             else{
                 console.log("account already set");
@@ -263,10 +281,11 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 var chainId = new this.web3.eth.getChainId();
-                initMasterchef();
+                if(chainId != 0x89){await Functions.setChain('0x89')
+                    this.$router.go();};
+                initMasterchef(this.web3,0);
                 this.starContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
-                if(chainId != 0x89){Functions.setChain()};
                 await this.getBalance();
                 await this.getPendingStar()
                 await this.updateBackup()
@@ -321,7 +340,7 @@ export default {
                     this.web3 = web3;
                     this.$route.params.web3 = web3;
                     var chainId = new web3.eth.getChainId();
-                    if(chainId != 0x89){Functions.setChain()};
+                    if(chainId != 0x89){Functions.setChain('0x89')};
                     web3.eth.getAccounts().then((accounts) => {
                         if(accounts.length > 0){
                             this.$route.params.account = accounts[0];
@@ -409,21 +428,33 @@ export default {
             }
         },
         async getPendingStar(){
-           let pending = 0
+            //await initMasterchef(this.web3,0);
+            let pending = 0
             for(var pool of pools.lpPools){
                 try{
-                    var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
+                    var reciept = await Functions.getPendingStar(pool.pid,this.account,0);
                     pending += parseInt (reciept);
                     //console.log("pending star for " + pool.name + ": " + pending)
                 }catch(error){console.log("pending lp error: " + error)}
             };
             for(var pool of pools.tokenPools){
-                var reciept = await Functions.getPendingStar(pool.pid,this.web3,this.account);
+                var reciept = await Functions.getPendingStar(pool.pid,this.account,0);
                     pending += parseInt (reciept);
                 //console.log("pending star for " + pool.name + ": " + pending)
             };
             //console.log("pending: " + pending)
             this.starHarvest = (pending*10**-18).toFixed(6)
+            // pending=0;
+            // await initMasterchef(this.web3,1);
+            // for(var pool of fantomPools.Pools){
+            //     try{
+            //         var reciept = await Functions.getPendingStar(pool.pid,this.account,1);
+            //         pending += parseInt (reciept);
+            //         //console.log("pending star for " + pool.name + ": " + pending)
+            //     }catch(error){console.log("pending lp error: " + error)}
+            // };
+            // this.stardHarvest = (pending*10**-18).toFixed(6)
+            // await initMasterchef(this.web3,0);
         },
         async getBurnedStar(){
             try{

@@ -1,0 +1,617 @@
+<template>
+<main id="main">
+    <div class="content">
+            <h3 class="account">
+                Connected Account <span id="account" class="purple">{{account}}</span>
+                <button v-if="!stardAdded" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="!MaiAdded" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <div v-if="!connected" class="connect">
+                    <button  @click="metaMaskWallet()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
+                </div>
+                <div v-if="connected" class="disconnect">
+                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
+                </div>
+            </h3>
+        
+        <h4 class="heading center">Mint STAR Dollars</h4>
+        <div class="cards">            
+            <div class="container">
+                <div class="card" >
+                    <div class="icon">
+                        <img :src=stardLogo> Star Dollars
+                    </div>
+                    <div v-if="connected" class="grid">
+                        <div class="label large-text">
+                            MAI Balance
+                        </div>
+                        <div  class="cont  large-text">
+                            {{(+MAI[0].balance).toFixed(4)}}
+                        </div>
+                    </div>
+                    <div v-if="connected" class="grid">
+                        <div class="label large-text">
+                            STARD Balance
+                        </div>
+                        <div  class="cont  large-text">
+                            {{(+pools[0].balance).toFixed(4)}}
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="label colored">
+                            <input v-if="connected" v-model="MAI[0].Amount" placeholder="Amount to Mint" />
+                            <div class="cont sm-text">
+                                <button v-if="connected" @click="maxButton(MAI[0])">MAX</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button v-if="connected" @click="getStard()">Mint STARD</button>
+                    
+                    <div class="grid">
+                        <div class="cont sm-text">0.3% Minting fee</div>   
+                    </div>                 
+                </div>
+            </div>
+        </div>
+        <h4 class="heading center">Yield Farming</h4>
+        <div class="cards">
+            <div class="container">
+                <div class="card" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
+                    <div v-if="!matic.type">
+                         <div class="icon">
+                            <img :src="matic.img"> {{matic.name}}
+                        </div>
+                        <div class="grid">
+                            <div class="label">
+                                APR :
+                            </div>
+                            <div class="cont">
+                                {{matic.apr}}%
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="label">
+                                Earn :
+                            </div>
+                            <div class="cont">
+                                STARD
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="label large-text">
+                                Deposit Fee :
+                            </div>
+                            <div class="cont  large-text">
+                                {{matic.depositFee}}
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="label colored">
+                                STARD EARNED:
+                            </div>
+                            <div class="cont">
+                                <div class="label colored">
+                                {{(+matic.starEarned).toFixed(4)}}
+                            </div>
+                                <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
+                                <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="label colored">
+                                TOTAL TOKENS STAKED: 
+                            </div>
+                            <div class="cont  large-text">
+                                {{matic.stakedBalance}}
+                            </div>
+                        </div>
+                        <div v-if="connected" class="grid">
+                            <div class="label large-text">
+                                Token Balance
+                            </div>
+                            <div  class="cont  large-text">
+                                {{(+matic.balance).toFixed(4)}}
+                            </div>
+                        </div>
+                        <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>
+                        <div v-if="matic.balance>0">
+                            <div class="grid">
+                                <div class="label colored">
+                                    <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
+                                    <div class="cont sm-text">
+                                        <button v-if="connected" @click="maxButton(matic)">MAX</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button v-if="connected" @click="confirm(matic)">Stake</button>
+                        </div>
+                        <div v-if="matic.stakedBalance>0">
+                            <div class="grid">
+                                <div class="label colored">
+                                    <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
+                                    <div class="cont sm-text">
+                                        <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
+                        </div>
+                        <hr>
+                        <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
+                        <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
+                        <div class="info" v-if="matic.show">
+                            <div class="grid">
+                            </div>
+                            <div class="grid">
+                                <div class="label colored">
+                                    Total Liquidity: {{matic.totalLiquidity}}
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="label colored">
+                                    <div class="cont sm-text">
+                                        Get LP tokens from quickswap.
+                                        <button @click="getLp(matic)">Get Tokens</button>
+                                    </div>
+                                    <div class="cont sm-text">
+                                        <button @click="viewExplorer(matic)">View on Matic Explorer</button>
+                                    </div>                               
+                                </div>
+                            </div>
+                            <div class="grid" v-if="matic.stakedBalance>0">
+                                <div class="label colored">
+                                    <div class="cont sm-text">
+                                        Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
+                                    <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,1)">Emergency withdraw</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-html="matic.url" v-if="matic.type" style="width:100%;height:100%;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="pops" v-if="showPops">
+        <div class="head">
+            <h6>Connect to a wallet</h6>
+            <i class="fa fa-close"></i>
+        </div>
+        <ul class="cont">
+            <li @click="metaMaskWallet()">
+                <h4>MetaMask</h4>
+                <svg viewBox="0 0 96 96" width="32px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ exWFUV"><circle cx="48" cy="48" r="48" fill="white"></circle><path d="M77.7602 16.9155L51.9419 36.0497L56.7382 24.7733L77.7602 16.9155Z" fill="#E17726"></path><path d="M18.2656 16.9155L43.8288 36.2283L39.2622 24.7733L18.2656 16.9155Z" fill="#E27625"></path><path d="M68.4736 61.2808L61.6108 71.7918L76.3059 75.8482L80.4899 61.5104L68.4736 61.2808Z" fill="#E27625"></path><path d="M15.5356 61.5104L19.6941 75.8482L34.3892 71.7918L27.5519 61.2808L15.5356 61.5104Z" fill="#E27625"></path><path d="M33.5984 43.5251L29.491 49.699L44.0584 50.3624L43.5482 34.6724L33.5984 43.5251Z" fill="#E27625"></path><path d="M62.4274 43.525L52.2991 34.4937L51.9419 50.3622L66.5094 49.6989L62.4274 43.525Z" fill="#E27625"></path><path d="M34.3892 71.7922L43.1654 67.5316L35.6137 61.6128L34.3892 71.7922Z" fill="#E27625"></path><path d="M52.8345 67.5316L61.6107 71.7922L60.3861 61.6128L52.8345 67.5316Z" fill="#E27625"></path><path d="M61.6107 71.7923L52.8345 67.5317L53.5233 73.2465L53.4468 75.6446L61.6107 71.7923Z" fill="#D5BFB2"></path><path d="M34.3892 71.7923L42.5531 75.6446L42.502 73.2465L43.1654 67.5317L34.3892 71.7923Z" fill="#D5BFB2"></path><path d="M42.7062 57.8369L35.4097 55.6939L40.5631 53.3213L42.7062 57.8369Z" fill="#233447"></path><path d="M53.2937 57.8369L55.4367 53.3213L60.6412 55.6939L53.2937 57.8369Z" fill="#233447"></path><path d="M34.3893 71.7918L35.6649 61.2808L27.552 61.5104L34.3893 71.7918Z" fill="#CC6228"></path><path d="M60.3352 61.2808L61.6108 71.7918L68.4736 61.5104L60.3352 61.2808Z" fill="#CC6228"></path><path d="M66.5094 49.6987L51.9419 50.362L53.294 57.8371L55.4371 53.3215L60.6416 55.6941L66.5094 49.6987Z" fill="#CC6228"></path><path d="M35.4098 55.6941L40.5633 53.3215L42.7063 57.8371L44.0584 50.362L29.491 49.6987L35.4098 55.6941Z" fill="#CC6228"></path><path d="M29.491 49.6987L35.6139 61.6129L35.4098 55.6941L29.491 49.6987Z" fill="#E27525"></path><path d="M60.6414 55.6941L60.3862 61.6129L66.5092 49.6987L60.6414 55.6941Z" fill="#E27525"></path><path d="M44.0584 50.3618L42.7063 57.8369L44.4156 66.6641L44.7728 55.0305L44.0584 50.3618Z" fill="#E27525"></path><path d="M51.9415 50.3618L51.2527 55.005L51.5843 66.6641L53.2937 57.8369L51.9415 50.3618Z" fill="#E27525"></path><path d="M53.2938 57.8374L51.5845 66.6646L52.8346 67.532L60.3862 61.6132L60.6413 55.6943L53.2938 57.8374Z" fill="#F5841F"></path><path d="M35.4097 55.6943L35.6138 61.6132L43.1654 67.532L44.4155 66.6646L42.7062 57.8374L35.4097 55.6943Z" fill="#F5841F"></path><path d="M53.4468 75.6443L53.5233 73.2462L52.8855 72.6849H43.1143L42.502 73.2462L42.5531 75.6443L34.3892 71.792L37.2465 74.1391L43.0378 78.1445H52.962L58.7533 74.1391L61.6107 71.792L53.4468 75.6443Z" fill="#C0AC9D"></path><path d="M52.8346 67.5315L51.5845 66.6641H44.4156L43.1655 67.5315L42.5022 73.2462L43.1145 72.6849H52.8857L53.5235 73.2462L52.8346 67.5315Z" fill="#161616"></path><path d="M78.8314 37.2998L80.9999 26.7377L77.7599 16.9155L52.8345 35.4119L62.4271 43.5247L75.9485 47.4791L78.9335 43.984L77.6323 43.04L79.7243 41.1521L78.1426 39.902L80.2091 38.3458L78.8314 37.2998Z" fill="#763E1A"></path><path d="M15 26.7377L17.194 37.2998L15.7909 38.3458L17.8574 39.902L16.2756 41.1521L18.3676 43.04L17.0665 43.984L20.0514 47.4791L33.5984 43.5247L43.1655 35.4119L18.2656 16.9155L15 26.7377Z" fill="#763E1A"></path><path d="M75.9487 47.4793L62.4272 43.5249L66.5092 49.6989L60.3862 61.613L68.4736 61.511H80.4898L75.9487 47.4793Z" fill="#F5841F"></path><path d="M33.5983 43.5249L20.0513 47.4793L15.5356 61.511H27.5519L35.6137 61.613L29.4908 49.6989L33.5983 43.5249Z" fill="#F5841F"></path><path d="M51.9415 50.3617L52.8344 35.4115L56.7378 24.7729H39.262L43.1653 35.4115L44.0583 50.3617L44.3899 55.0559L44.4154 66.664H51.5843L51.6099 55.0559L51.9415 50.3617Z" fill="#F5841F"></path></svg>
+            </li>
+            <li @click="trustWallet()">
+                <h4>TrustWallet</h4>
+                <svg viewBox="0 0 96 96" width="32px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ exWFUV"><g clip-path="url(#clip0)"><path d="M48.0048 96.0097C74.5172 96.0097 96.0097 74.5172 96.0097 48.0048C96.0097 21.4925 74.5172 0 48.0048 0C21.4925 0 0 21.4925 0 48.0048C0 74.5172 21.4925 96.0097 48.0048 96.0097Z" fill="#3375BB"></path><path d="M48.0048 22.8922L49.3179 21.1833C48.9399 20.8928 48.4766 20.7354 48 20.7354C47.5233 20.7354 47.06 20.8928 46.682 21.1833L48.0048 22.8922ZM70.5783 29.5252H72.7313C72.7352 29.2396 72.6824 28.9561 72.576 28.6909C72.4696 28.4258 72.3118 28.1844 72.1116 27.9806C71.9114 27.7769 71.6729 27.6148 71.4097 27.5037C71.1465 27.3926 70.8639 27.3348 70.5783 27.3335V29.5252ZM48.0048 75.6377L46.8076 77.4335C47.1604 77.6697 47.5754 77.7958 48 77.7958C48.4245 77.7958 48.8395 77.6697 49.1924 77.4335L48.0048 75.6377ZM25.4506 29.5252V27.3625C25.165 27.3638 24.8824 27.4216 24.6192 27.5327C24.356 27.6437 24.1175 27.8058 23.9173 28.0096C23.7171 28.2134 23.5593 28.4548 23.4529 28.7199C23.3465 28.985 23.2937 29.2686 23.2976 29.5542L25.4506 29.5252ZM46.6917 24.5915C56.4626 32.1611 67.6528 31.6783 70.5879 31.6783V27.3625C67.5466 27.3625 57.8047 27.7487 49.3468 21.1833L46.6917 24.5915ZM68.4348 29.4866C68.2707 39.4892 67.8459 46.5471 67.0349 51.7704C66.2238 56.9938 65.1039 60.0448 63.6266 62.2268C62.1494 64.4089 60.257 65.8282 57.486 67.4792C54.715 69.1302 51.1716 70.9646 46.8076 73.8515L49.2406 77.4335C53.373 74.6818 56.8102 72.9246 59.7357 71.1771C62.6835 69.5717 65.2416 67.3367 67.228 64.6309C69.159 61.7344 70.4817 57.8724 71.3314 52.427C72.181 46.9815 72.6155 39.6534 72.7796 29.5542L68.4348 29.4866ZM49.2406 73.8515C44.9055 70.955 41.3718 69.1592 38.6201 67.4888C35.8684 65.8185 33.976 64.4861 32.4892 62.2268C31.0023 59.9676 29.7954 56.9648 28.9651 51.7704C28.1347 46.576 27.7678 39.4892 27.6037 29.4866L23.2976 29.5542C23.4617 39.6534 23.9058 47.0009 24.7458 52.427C25.5858 57.8531 26.8699 61.7151 28.8395 64.6309C30.8164 67.3382 33.3686 69.5739 36.3125 71.1771C39.2091 72.9246 42.6752 74.6818 46.8076 77.4335L49.2406 73.8515ZM25.4506 31.6783C28.3471 31.6783 39.547 32.1611 49.3179 24.5915L46.682 21.1833C38.2049 27.7487 28.463 27.3625 25.441 27.3625L25.4506 31.6783Z" fill="white"></path></g><defs><clipPath id="clip0"><rect width="96" height="96" fill="white"></rect></clipPath></defs></svg>
+            </li>
+        </ul>
+    </div>
+    <div v-if="messages" class="messages">
+            <h4>{{messages}}</h4>
+    </div>
+</main>
+</template>
+
+<script>
+import getWeb3 from './web3.js';
+import {ethers} from "ethers";
+var Pools = require("../components/fantomPools.js");
+import * as Functions from "../components/functions.js";
+import {initMasterchef} from "../components/masterchef.js";
+const fleekStorage = require('@fleekhq/fleek-storage-js')
+import logoMain from '../assets/logo.png';
+var fs = require('fs');
+
+export default {
+    components: {},
+    data() {
+        return {
+            stardLogo:logoMain,
+            Functions:Functions,
+            pools:Pools.Pools,
+            MAI:Pools.Mai,
+            stardAdded:false,
+            MaiAdded: false,
+            connected:false,
+            web3:false,
+            account: "Not Connected",
+            selectedABI:false,
+            selectedContractAddress:false,
+            selectedPid:false,
+            showPops:false,
+            showStake:false,
+            showModal: false,
+            messages:false,
+            starEarned:"connect wallet",
+            lpContractInstance : false,            
+            masterChefContractAbi : [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"BonusMupltiplier","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"EmissionRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBalance","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOperator","type":"address"},{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amountLockedUp","type":"uint256"}],"name":"RewardLockedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_DEPOSIT_FEE_RATE","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_HARVEST_INTERVAL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_STARD_PER_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"canHarvest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"collectFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"compound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"fundMasterChef","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getDepositFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvestStard","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingStard","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accStardPerShare","type":"uint256"},{"internalType":"uint256","name":"depositFeeBP","type":"uint256"},{"internalType":"uint256","name":"harvestInterval","type":"uint256"},{"internalType":"uint256","name":"totalLp","type":"uint256"},{"internalType":"uint256","name":"depositFees","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"remainingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stard","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startFarming","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocation","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLockedUpRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStardInPools","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOperator","type":"address"}],"name":"transferOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"updateAllocPoint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bonus","type":"uint256"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_stardPerBlock","type":"uint256"}],"name":"updateEmissionRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"rewardLockedUp","type":"uint256"},{"internalType":"uint256","name":"nextHarvestUntil","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}],
+            masterChefContractAddress : "0x56658E666Da404dD23107306453c7c8dE6351776",
+            masterChefContractInstance : false,
+            totalAllocation:null,
+            dailyEmission: 182.9059829,
+            stardPrice:1,
+            maiAmount:0,
+            maiBalance:10
+        }
+    },
+    watch: {
+        '$route': {
+            handler(newValue, oldValue) {
+
+            }
+        }
+    },
+    async created() {
+        await this.readBackup()
+        if (typeof window.ethereum !== 'undefined') {
+            window.addEventListener("load", function() {
+                window.ethereum.on('chainChanged', function(networkId){
+                    console.log('chainChanged',networkId);
+                    this.refresh();
+                });
+                window.ethereum.on('accountsChanged', function (accounts) {
+                    console.log('accountsChanges',accounts);
+                    this.refresh();
+                });
+            })
+            console.log('MetaMask is installed!');
+            if(this.$route.params.web3 == null || this.$route.params.account == null){
+                console.log("account not set stard");
+                //await getTotalAllocation();
+                await this.metaMaskWallet();
+                await initMasterchef(this.web3,1);
+                await this.updateBackup();
+            }
+            else{
+                this.messages = "Loading user Details";
+                console.log("account already set stard");
+                this.account = this.$route.params.account;
+                this.web3 = this.$route.params.web3;
+                var chainId = new this.web3.eth.getChainId();
+                if(chainId != 0xfa){
+                    await Functions.setChain('0xfa');
+                    this.$router.go();
+                }; 
+                await initMasterchef(this.web3,1);
+                //await getTotalAllocation();
+                this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                this.connected = true;
+                //this.getTotalAllocation();
+                await Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
+                this.messages = false;
+                await this.updateBackup();
+            }
+        }
+        else{
+            //this.matics();
+            if(confirm("Would you like to get MetaMask?")){
+                Functions.getMetamask();
+            }
+        }
+        console.log(this.pools[0].starEarned)
+    },
+    methods: {
+         async pops(itm){
+            if(itm.address){
+                this.selectedABI = itm.ABI;
+                this.selectedContractAddress = itm.address;
+                this.showPops = true
+            }
+           
+        },
+        async metaMaskWallet(){
+            this.showPops = false
+            getWeb3().then((result) => {
+                this.messages = " Pending..."
+                const web3 = result;// we instantiate our contract next
+                this.web3 = web3;
+                var chainId = new web3.eth.getChainId();
+                if(chainId != 0xfa){
+                    Functions.setChain('0xfa');
+                };
+                //console.log("web3 set")
+                this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                this.$route.params.web3 = web3;
+                web3.eth.getAccounts()
+                .then((accounts) => {
+                    if(accounts.length > 0){
+                        this.account = accounts[0];
+                        this.$route.params.account = accounts[0];
+                        this.connected = true;
+                        this.messages = false;
+                        this.messages = "Loading user Details";
+                        //this.getTotalAllocation();
+                        Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
+                        console.log(this.pools[0].starEarned)
+                        setTimeout(d=>{
+                            this.messages = false
+                        },1000)
+                    }else{
+                        this.messages = "No account Connected"
+                        console.log("no account connected")
+                        setTimeout(d=>{
+                            this.messages = false
+                        },3000)
+                    }             
+                })
+            })
+        },
+        async trustWallet(){
+             this.showPops = false
+            const accounts = await ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            console.log(accounts)
+            this.account = accounts[0];
+            const maticProvider = new WalletConnectProvider(
+                {
+                    host: "https://rpc-mumbai.matic.today",
+                    callbacks: {
+                    onConnect: console.log('connected'),
+                    onDisconnect: console.log('disconnected!')
+                    }
+                }
+                )
+            const ropstenProvider = new WalletConnectProvider({
+                host: "https://ropsten.infura.io/v3/70645f042c3a409599c60f96f6dd9fbc",
+                callbacks: {
+                    onConnect: console.log('connected'),
+                    onDisconnect: console.log('disconnected')
+                }
+                })
+            const maticWeb3 = new Web3(maticProvider)
+            const myContractAbi = this.selectedABI
+            const myContractAddress = this.selectedContractAddress; 
+            const myContractInstance = new maticWeb3.eth.Contract(myContractAbi, myContractAddress)
+            const tx = {
+                            from: this.account,
+                            to: myContractAddress,
+                            gas: 800000,
+                            data: myContractInstance.methods.balanceOf(this.account).encodeABI(),
+                       }
+                maticWeb3.eth.signTransaction(tx)
+                .then((result) =>{
+                    maticWeb3.eth.sendSignedTransaction(result)
+                    .then((receipt) => 
+                    console.log (receipt)
+                )
+                })
+
+        },
+        async CustomToken() {
+            var tokens  = await this.MetaMask()
+            const tokenAddress = '0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E';
+            const tokenSymbol = 'STARD';
+            const tokenDecimals = 18;
+            const tokenImage = 'https://upwork-usw2-prod-file-storage-wp1.s3.us-west-2.amazonaws.com/workplace/attachment/fa082a5b2e94bf1e76ca0f9b5fc23411?response-content-disposition=inline%3B%20filename%3D%22Starseed-Dimension1.jpg%22%3B%20filename%2A%3Dutf-8%27%27Starseed-Dimension1.jpg&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGAaCXVzLXdlc3QtMiJHMEUCIGw2APTHGT%2BDzrP4FrawkgDvU5hD%2Fr2hbDHPVM074KpkAiEAw3sFP5RDbQn1YefTCH8FISnhl724N4UQ0KBQPmIKouAq1gQIyP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw3Mzk5MzkxNzM4MTkiDAImma6YwmGQI3Wu3SqqBIuFEDzBiTY5AOjndBtNhTUDamknRsuB4AX8IDsrm6bMNu8sVHOhQFMJ7UiFK155cMYs%2FM6IfhxFJUqzZuAZsks4dLdKMe%2FVpe10XlmbulaYyJXKY577ULBsuhh56ba3Jx4UVWydotee0NMbjZOb%2FBuHXlogYtBvmk258j8mqjuVVxsgdo8slUfw85os%2Bzmk7%2F%2B3onTI2vl2BdTmI3oD1cpCz334mNvsxMLsAwTSl8f2A7L12W3MWuNAQtvNh%2By7Q5LSPn9cyqb1raUIoF2jS%2FRvH%2BaulGp2bhn733qJGqzwUNLYmi9pQyVnpJg66V5dPjF1t168QLbbSjEx9t7fp%2FWidZK08yL0%2FAy1doNH2FzNkPKmrhmiPAYqoohEgLlIeBqACzy70MLA9YJcsL%2Fe5Xh%2F7tkmYUdPk%2BtfKbMVo9fOxsibrmYaZ0vOr%2F5VdpckU%2FW%2FE2VUS%2BJwi21h%2Bee7UXXSsdSQBIBisOPhRj4dEn6skev41s49kmtHgsQvzCNvCzMc4kAteI87c7WnUb9CQjDVPxgpcMuLrR8xzh9Hd1PpOhB5aObvxaWJpCiAbDt8NgpcxUNWAr0HTxHmCRNV4iRz4GxwODTx9OHTv8xpkWsOlBMGw0%2BKgwZ9KKD1BvFu%2BsktKg2pLg3lkU0Er0%2FZe1fo%2Bs2STOPpoax8%2BlXU1w11R5XaC34KnJW0zz%2BUx6twfOy%2F7cFI4CF1Qsj%2BVD0%2BhLjJYu0%2BTKFJFo3SMNPp04oGOqcB%2Bg0mDvadqMC65u%2FMo3EWEkRwlPAByx8QTbIbNLPzVOcY5lqCEVhQVBYoXs2%2FbsNhKdUH3y5FjRewUPsk0grVBvanllaDyu6wHbCWcjcclKm8TmSKCOFFqCszfbqOU6nvOhnTL6sawLSx7f%2FGQI1FuYgqJIBTnuujPxGYrmq55XnVg%2Fdi30ijaSDj9VhpHqwukthXwNAlUUQnTsFvqzwOdkG6G2JvNSQ%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210930T001840Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIA2YR6PYW54ATYNRN4%2F20210930%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=b071723508914fffe021f4069504334a80e996e73e3079cc6b01ea48879aa57a';
+
+            try {
+                // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+                const wasAdded = await ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                        options: {
+                            address: tokenAddress, // The address that the token is at.
+                            symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                            decimals: tokenDecimals, // The number of decimals in the token
+                            image: tokenImage, // A string url of the token logo
+                        },
+                    },
+                });
+
+                if (wasAdded) {
+                    console.log('Thanks for your interest!');
+                } else {
+                    console.log('Your loss!');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async StakeLP(itm){
+            console.log("staking " + itm.name)
+            await Functions.StakeLP(itm,this.web3,this.account,1);
+            console.log("get stats")
+            await Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
+        },
+        async compoundReward(itm){
+            if(itm.starEarned > 0){
+                try{
+                    var result = await Functions.compoundReward(itm,this.account,1);
+                    switch(result[0]){
+                        case 0:
+                            this.messages = "Compound not available until: "+ result[1].message;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 1:
+                            this.messages = "Compound rewards error: "+ result[1].message;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 2:
+                            this.messages = "EIP-1559: "+ result[1].message;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                        case 3:
+                            this.messages = "Compound can harvest error: "+ result[1].message;
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                            break;
+                    }
+                }catch(error){
+                    this.messages = "Compound failed: "+ error.message;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    console.log("first compound can harvest error: " + error.message);
+                }
+            }
+        },
+        async harvest(itm){
+            if(itm.starEarned > 0){
+                try{
+                    var harvest = await this.masterChefContractInstance.methods.canHarvest(itm.pid,this.account).call()
+                    if(!harvest){
+                        var userinfo = await this.masterChefContractInstance.methods.userInfo(itm.pid,this.account).call()
+                        var date = new Date(userinfo.nextHarvestUntil * 1000);
+                        console.log("next harvest time: " + date)
+                        this.messages = "Harvest not available until: "+ date;
+                        setTimeout(d=>{
+                            this.messages = false
+                        },5000)
+                    }
+                    console.log("can harvest: " + harvest);
+                    if(harvest){
+                        Functions.harvest(itm,this.account,1);
+                    }
+                }catch(error){
+                    console.log("can harvest error: " + error);
+                }
+            }
+        },
+        async getBalance(itm){
+            this.lpContractInstance = new this.web3.eth.Contract(itm.ABI, itm.address);
+            try{
+                var receipt = await this.lpContractInstance.methods.totalSupply().call();
+                    //console.log("get totalsupply: " + receipt);
+                    if(receipt == undefined){receipt = 0;}
+                    itm.supply = receipt;
+            }catch(error){
+                console.log("get totalsupply error: " + error);
+            }            
+            try{
+                var receipt = await this.lpContractInstance.methods.balanceOf(this.account).call();
+                    console.log(itm.name +" get balance: " + receipt);
+                    if(receipt == undefined){receipt = 0;}
+                    return ethers.utils.formatUnits(receipt,itm.decimals);
+            }catch(error){
+                console.log("get balance error: " + error);
+            }
+            this.lpContractInstance =null;
+        },
+        // async getPoolInfo(itm){
+        //     try{
+        //         var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
+        //         if(receipt.totalLp == undefined){receipt.totalLp = 0;}
+        //         //console.log("total liquidity: " + (receipt.totalLp));
+        //         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
+        //         itm.stakedLP = receipt.totalLp;
+        //         itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*Pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
+        //     }catch(error){
+        //         console.log("get pool total liquidity  error: " + error);
+        //     }
+        // },
+        async disconnect(){
+            this.account = "Not Connected";
+            this.$route.params.account = null;
+            this.$route.params.web3 = null;
+            this.web3 = null;
+            this.connected = false;
+            this.availStar="Connect Wallet";
+            this.starHarvest="Connect Wallet";
+            this.lpContractInstance = false;
+            this.masterChefContractInstance = false;
+        },
+        async getTotalAllocation(){
+            try{
+                var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
+                console.log("master total allocation: " + receipt);
+                this.totalAllocation = receipt;
+            }catch(error){
+                console.log("get master total allocation  error: " + error);
+            }
+        },
+        getLp(itm){
+            console.log("get lp item: "+itm.name)
+            window.open(
+                'https://quickswap.exchange/#/swap?outputCurrency='+itm.address,
+                '_blank' // <- This is what makes it open in a new window.
+            );         
+            //location.href = itm.pool;
+        },
+        viewExplorer(itm){ 
+            console.log("item: "+itm)
+            window.open(
+                'https://polygonscan.com/token/' + itm.address,
+                '_blank' // <- This is what makes it open in a new window.
+            );           
+        },
+        sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            });
+         },
+        confirm(matic) {
+            if(matic.amount == null){return}
+           // if(confirm("Minimum Stake Time is 8 Hours")){
+                this.StakeLP(matic);
+            //}
+        },
+        maxButton(itm){
+            if(itm.name = "DAO"){
+                itm.amount = (itm.balance-0.001).toFixed(itm.decimals)
+            }
+            else{
+                itm.amount = (itm.balance-(4/(10**(itm.decimals - 4)))).toFixed(itm.decimals)
+            }
+        },
+        async updateBackup(){
+            // //console.log("update backup")
+            // var fileData =[];
+            // for(const pool of Pools.tokenPools){
+            //     fileData.push( 
+            //         {                
+            //             apr: pool.apr,
+            //             stakedTokens: pool.totalLiquidity
+            //         })
+            // }
+            // const stream  = JSON.stringify(fileData);
+
+            // const uploadedFile = await fleekStorage.streamUpload({
+            //     apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+            //     apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+            //     key: 'StarSeeds/PoolBackup.json',
+            //     stream,
+            // });
+            // console.log("Updated Backup")
+        },
+        async readBackup(){
+            const myFile = await fleekStorage.get({
+                apiKey: "uE4l7SIn9LfNqIThdsx8Iw==",
+                apiSecret: "6rnSToT9mYWkHvtS9CztFSyTvlRLWFPSfxlUrIwx90U=",
+                key: 'StarSeeds/PoolBackup.json',
+                getOptions: [
+                    'data'
+                ],
+            })
+            var data = myFile.data
+            //console.log(data)
+            var text = ""
+            data.forEach(element =>text = text.concat(String.fromCharCode(element)))
+            //console.log("text: "+text)
+            var data = JSON.parse(text)
+            var count =0
+            for(const pool of this.pools){
+                pool.apr = data[count].apr,
+                pool.totalLiquidity = data[count].stakedTokens
+                count++;
+            }
+            console.log("Loaded Backup")
+        },
+        refresh(){
+            this.$router.go();
+        }        
+    }
+}
+</script>
+

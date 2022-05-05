@@ -20,6 +20,11 @@ const routes = [
     component: () => import('../views/Pool.vue')
   },
   {
+    path: '/stard',
+    name: 'Star Dollars',
+    component: () => import('../views/STARD.vue')
+  },
+  {
     path: '/fleet',
     name: 'StarSeed Fleet',
     component: () => import('../views/StarSeed Fleet.vue')
