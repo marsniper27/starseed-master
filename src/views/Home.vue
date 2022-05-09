@@ -206,7 +206,6 @@ export default {
     components: {},
     data() {
         return {
-            //lpPools:lpPools,
             Functions:Functions,
             Announcement:Announcement,
             logoMain:logoMain,
@@ -311,7 +310,7 @@ export default {
             await this.getBurnedStar();
             await this.getTotalSupply();
             await this.getEmissionRate();
-            await this.getLpPoolValue();
+            //await this.getLpPoolValue();
             await this.getPoolValue();
             this.poolsValue = this.tempValue;
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
@@ -430,13 +429,13 @@ export default {
         async getPendingStar(){
             //await initMasterchef(this.web3,0);
             let pending = 0
-            for(var pool of pools.lpPools){
-                try{
-                    var reciept = await Functions.getPendingStar(pool.pid,this.account,0);
-                    pending += parseInt (reciept);
-                    //console.log("pending star for " + pool.name + ": " + pending)
-                }catch(error){console.log("pending lp error: " + error)}
-            };
+            // for(var pool of pools.lpPools){
+            //     try{
+            //         var reciept = await Functions.getPendingStar(pool.pid,this.account,0);
+            //         pending += parseInt (reciept);
+            //         //console.log("pending star for " + pool.name + ": " + pending)
+            //     }catch(error){console.log("pending lp error: " + error)}
+            // };
             for(var pool of pools.tokenPools){
                 var reciept = await Functions.getPendingStar(pool.pid,this.account,0);
                     pending += parseInt (reciept);
@@ -502,32 +501,32 @@ export default {
                 console.log("get star per block error: " + error);
             }
         },
-        async getLpPoolValue(){
-            //console.log(pools.lpPools)
-            //console.log("num lp pools: " +pools.lpPools.length)
-            for(var pool of pools.lpPools){
-                //console.log(pool.name)
-                try{
-                    var receipt = await this.moralisMasterChefContractInstance.methods.poolInfo(pool.pid).call();
-                    if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-                    var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
-                    //console.log("tokens staked: " + numTokens);
-                    try{
-                        var tokenPrice = await Functions.getPrice(pool.address);
-                        if (tokenPrice = "no liquidity"){
-                            tokenPrice = pool.price;
-                        }
-                    }catch(error){
-                        console.log("couldn't fetch price")
-                    }
-                    //console.log("token Price: $"+tokenPrice);
-                    //console.log("pools Value: $" + (numTokens*tokenPrice));
-                    this.tempValue += (numTokens*tokenPrice)
-                }catch(error){
-                    console.log("get pool total liquidity  error: " + error);
-                }
-            }
-        },
+        // async getLpPoolValue(){
+        //     //console.log(pools.lpPools)
+        //     //console.log("num lp pools: " +pools.lpPools.length)
+        //     for(var pool of pools.lpPools){
+        //         //console.log(pool.name)
+        //         try{
+        //             var receipt = await this.moralisMasterChefContractInstance.methods.poolInfo(pool.pid).call();
+        //             if(receipt.totalLp == undefined){receipt.totalLp = 0;}
+        //             var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
+        //             //console.log("tokens staked: " + numTokens);
+        //             try{
+        //                 var tokenPrice = await Functions.getPrice(pool.address);
+        //                 if (tokenPrice = "no liquidity"){
+        //                     tokenPrice = pool.price;
+        //                 }
+        //             }catch(error){
+        //                 console.log("couldn't fetch price")
+        //             }
+        //             //console.log("token Price: $"+tokenPrice);
+        //             //console.log("pools Value: $" + (numTokens*tokenPrice));
+        //             this.tempValue += (numTokens*tokenPrice)
+        //         }catch(error){
+        //             console.log("get pool total liquidity  error: " + error);
+        //         }
+        //     }
+        // },
         async getPoolValue(){
             //console.log(pools.tokenPools)
             //console.log("num lp pools: " +pools.tokenPools.length)

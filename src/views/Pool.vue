@@ -116,6 +116,9 @@
                                     <div class="cont sm-text">
                                         <button @click="viewExplorer(matic)">View on Matic Explorer</button>
                                     </div>                               
+                                    <div class="cont sm-text">
+                                        <button @click="dextools(matic)">View chart on Dextools</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="grid" v-if="matic.stakedBalance>0">
@@ -482,7 +485,7 @@ export default {
         getLp(itm){
             console.log("get lp item: "+itm.name)
             window.open(
-                'https://quickswap.exchange/#/swap?outputCurrency='+itm.address,
+                itm.pool,
                 '_blank' // <- This is what makes it open in a new window.
             );         
             //location.href = itm.pool;
@@ -512,6 +515,13 @@ export default {
             else{
                 itm.amount = (itm.balance-(4/(10**(itm.decimals - 4)))).toFixed(itm.decimals)
             }
+        },
+        dextools(itm){
+            console.log(itm)
+            window.open(
+                'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
+                '_blank' // <- This is what makes it open in a new window.
+            );
         },
         async updateBackup(){
             //console.log("update backup")
