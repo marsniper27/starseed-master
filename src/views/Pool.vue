@@ -1,7 +1,7 @@
 <template>
 <main id="main">
     <div class="content">
-            <h3 class="account">
+            <!-- <h3 class="account">
                 Connected Account <span id="account" class="purple">{{account}}</span>
                 <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
@@ -11,7 +11,7 @@
                 <div v-if="connected" class="disconnect">
                     <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
                 </div>
-            </h3>
+            </h3> -->
 
         <h4 class="heading center">Yield Farming</h4>
         <div class="cards">

@@ -1,17 +1,17 @@
 <template>
 <main id="main">
     <div class="content">
-            <h3 class="account">
+            <!-- <h3 class="account">
                 Connected Account: <span id="account" class="purple">{{account}}</span>
                 <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <div v-if="!connected" class="connect">
-                    <button  @click="matics()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
+                    <button width="30px" @click="matics()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
                 </div>
                 <div v-if="connected" class="disconnect">
-                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
+                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
                 </div>
-            </h3>
+            </h3> -->
         <h4 class="heading center">Welcome to the Starseed Exchange</h4>
         <p class="sm-heading center">The future is now.</p>
         <div class="cards">

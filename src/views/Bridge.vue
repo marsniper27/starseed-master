@@ -1,7 +1,7 @@
 <template>
 <main id="main">
     <div class="content">
-            <h3 class="account">Connected Account <span id="account" class="purple">{{account}}</span><button  @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button></h3>
+            <!-- <h3 class="account">Connected Account <span id="account" class="purple">{{account}}</span><button  @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button></h3> -->
 
         <h4 class="heading center">Simpleswap Multi-Bridge</h4>
         <div class="cards">
