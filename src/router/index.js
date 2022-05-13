@@ -35,6 +35,11 @@ const routes = [
     component: () => import('../views/Bridge.vue')
   },
   {
+    path: '/info',
+    name: 'More Info',
+    component: () => import('../views/Info.vue')
+  },
+  {
     path: '/operator',
     name: 'Operator',
     component: () => import('../views/Operator.vue')

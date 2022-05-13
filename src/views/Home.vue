@@ -12,8 +12,8 @@
                     <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
                 </div>
             </h3> -->
-        <h4 class="heading center">Welcome to the Starseed Exchange</h4>
-        <p class="sm-heading center">The future is now.</p>
+        <h4 class="heading center">Welcome to the Starseed's Exchange</h4>
+        <p class="sm-heading center">A decentralized finance protocol</p>
         <div class="cards">
             <div class="container">
                 <div class="card" style="min-width:40%">
@@ -478,7 +478,7 @@ export default {
         },
         getCurrentSupply(){            
             this.currentSupply = (+this.totalMinted) - (+this.burnedStar);
-            this.marketCap = commify((this.totalMinted*this.starValue).toFixed(4));
+            this.marketCap = commify((this.currentSupply*this.starValue).toFixed(4));
             //console.log("currentsupply : " +this.currentSupply);
         },
         getStar(){

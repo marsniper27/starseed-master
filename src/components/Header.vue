@@ -6,10 +6,12 @@
         <img src="../assets/logo-3.png" class="logo">
             <h3 class="account">
                 Connected Account: <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="pool" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="pool" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="stard" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <div v-if="!connected" class="connect">
-                    <button width="30px" @click="matics()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
+                    <button width="30px" @click="MetaMask()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
                 </div>
                 <div v-if="connected" class="disconnect">
                     <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
@@ -75,6 +77,12 @@
                     <span>Audit</span>
                 </a>
             </li>
+            <li @click="toggleMenu" v-bind:class="{'active':$route.path == '/info'}">
+                <router-link :to="{path:'/info'}">
+                    <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M5 7C5 6.44772 4.55228 6 4 6C3.44772 6 3 6.44772 3 7V18C3 19.1046 3.89543 20 5 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H5V7Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19 17H7C6.44772 17 6 16.5523 6 16V12C6 11.4477 6.44772 11 7 11H10V10C10 9.44772 10.4477 9 11 9H14V7C14 6.44772 14.4477 6 15 6H19C19.5523 6 20 6.44772 20 7V16C20 16.5523 19.5523 17 19 17ZM16 8H18V15H16V8ZM12 15H14V11H12V15ZM10 13H8V15H10V13Z"></path></svg>
+                    <span>More Info</span>
+                </router-link>
+            </li>
             <li v-if="this.account ==  0x1f42Ad4C83ff23fD1a7bf5527FD74B731083cFaB || this.account == 0xf60de76791c2f09995df52aa1c6e2e7dcf1e75d7" @click="toggleMenu" v-bind:class="{'active':$route.path == '/operator'}">
                 <router-link :to="{path:'/operator'}">
                     <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M5 7C5 6.44772 4.55228 6 4 6C3.44772 6 3 6.44772 3 7V18C3 19.1046 3.89543 20 5 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H5V7Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19 17H7C6.44772 17 6 16.5523 6 16V12C6 11.4477 6.44772 11 7 11H10V10C10 9.44772 10.4477 9 11 9H14V7C14 6.44772 14.4477 6 15 6H19C19.5523 6 20 6.44772 20 7V16C20 16.5523 19.5523 17 19 17ZM16 8H18V15H16V8ZM12 15H14V11H12V15ZM10 13H8V15H10V13Z"></path></svg>
@@ -115,12 +123,15 @@
 import * as THREE from 'three';
 import getWeb3 from '../views/web3.js';
 var starStats = require("./starStats.js");
-import * as Functions from "../components/functions.js";
+import * as Functions from "./functions.js";
 
 export default {
     data() {
         return {
             camera: false,
+            pool:false,
+            stard:false,
+            Functions:Functions,
             scene: false,
             renderer: false,
             stars: [],
@@ -139,12 +150,23 @@ export default {
         "$route.params": {
             handler(newValue, oldValue) {
                 console.log(this.$route.path)
+                if(this.$route.name == 'Pool'||this.$route.path == '/'){
+                    this.pool = true;
+                    this.stard = false;
+                }
+                else if (this.$route.name == 'Star Dollars'){
+                    this.stard = true;
+                    this.pool = false;
+                }
             },
             immediate: true
         }
     },
     created() {
         this.webGL()
+        console.log(this.$route.name)
+        console.log(this.pool)
+        console.log(this.stard)
         if (typeof window.ethereum !== 'undefined') {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
@@ -269,6 +291,17 @@ export default {
                 this.currentStarPrice = (starStats.stats.price).toFixed(4)
                 console.log(error)
             }
+        },
+        async disconnect(){
+            this.account = "Not Connected";
+            this.$route.params.account = null;
+            this.$route.params.web3 = null;
+            this.web3 = null;
+            this.connected = false;
+            this.availStar="Connect Wallet";
+            this.starHarvest="Connect Wallet";
+            this.lpContractInstance = false;
+            this.masterChefContractInstance = false;
         }
     }
 }

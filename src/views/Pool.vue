@@ -509,7 +509,7 @@ export default {
             //}
         },
         maxButton(itm){
-            if(itm.name = "DAO"){
+            if(itm.name == "DAO"){
                 itm.amount = (itm.balance-0.001).toFixed(itm.decimals)
             }
             else{
