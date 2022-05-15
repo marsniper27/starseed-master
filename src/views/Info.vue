@@ -96,6 +96,44 @@
                     </div>
                 </div>
             </div>
+            <div class="container">
+                <div class="card" style="min-width:40%">
+                    <div>
+                        <div class="icon">
+                            <img :src="logoMain">StarSeeds Protocole Documentation
+                        </div>
+                        <div class="grid">
+                            <div class="label">
+                                Documentation:
+                            </div>
+                            <div >
+                                <a href="http://docs.starseeds.exchange" target="_new">
+                                    <button>Docs</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="card" style="min-width:40%">
+                    <div>
+                        <div class="icon">
+                            <img :src="logoMain">Audit Results
+                        </div>
+                        <div class="grid">
+                            <div class="label">
+                               STAR Audit:
+                            </div>
+                            <div >
+                                <a href="https://solidity.finance/audits/StarToken/" target="_new">
+                                    <button>Solidity.Finance</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 </main>
 </template>https://ftmscan.com/address/0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E#writeContract

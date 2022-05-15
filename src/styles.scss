@@ -184,13 +184,13 @@ body,html {
 
 .sideBar {
   position: fixed;
-  top: 55px;
+  top: 70px;
   left: 0;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: calc(100vh - 55px);
+  height: calc(100% - 120px);
   background: rgb(0 0 0 / 78%);
   width: 155px;
 }
@@ -200,6 +200,7 @@ body,html {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  height: calc(100% - 70px);
   margin: 0;
   flex-direction: column;
   margin: 0;
@@ -253,17 +254,19 @@ a:hover{
   bottom: 0;
   left: 0;
   color: #040304;
+  height: 50px;
   width: 155px;
   text-align: center;
-  /* background: #fff; */
+  background: rgb(0 0 0 / 78%);
   padding: 9px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   font-size: 12px;
   color: #fff;
   border-top: 1px solid rgba(204, 204, 204, 0.315);
+  fill: rgba(255, 255, 255, 0.644);
   div{
     display: flex;
     min-width: 45%;

@@ -1,7 +1,7 @@
 var masterChef = require("./masterchef.js");
 var stats=[{
     totalAllocation : 0,
-    dailyEmission : 182.9059829,
+    dailyEmission : 10,
     stardPrice : 1,
     totalBurned:103.1313
 }]

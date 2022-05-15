@@ -1,17 +1,6 @@
 <template>
 <main id="main">
     <div class="content">
-            <!-- <h3 class="account">
-                Connected Account: <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <div v-if="!connected" class="connect">
-                    <button width="30px" @click="matics()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
-                </div>
-                <div v-if="connected" class="disconnect">
-                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
-                </div>
-            </h3> -->
         <h4 class="heading center">Welcome to the Starseed's Exchange</h4>
         <p class="sm-heading center">A decentralized finance protocol</p>
         <div class="cards">
@@ -222,7 +211,7 @@ export default {
             burnedStar:null,
             currentSupply: 9000,
             burnValue:null,
-            starValue:null,
+            starValue:starStats.stats.starPrice,
             emissionRate: null,
             emissionValue:null,
             poolsValue:0,
@@ -300,7 +289,7 @@ export default {
             const serverUrl = "https://vwtvxfrruomo.usemoralis.com:2053/server";
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
             Moralis.start({ serverUrl, appId });
-            var price =  await Functions.getPrice(this.starContractAddress);
+            var price =  await Functions.getPrice(this.starContractAddress,0);
             if(price != undefined){
                 this.starValue = price;
             }

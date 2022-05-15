@@ -466,15 +466,16 @@ function sleep(ms) {
 
 export async function getUserPoolStats(pools,web3,account,chain){
     if(chain == 0){
-        await star.getDailyEmmission();
-        await star.getTotalAllocation();
+        await starStats.getDailyEmmission();
+        await starStats.getTotalAllocation();
     }
     else if(chain == 1){
-        await stard.getDailyEmmission();
-        await stard.getTotalAllocation();
+        await stardStats.getDailyEmmission();
+        await stardStats.getTotalAllocation();
     }
     //console.log("starStats emmission: " + starStats.dailyEmission);
     //console.log("starStats total allocation: " + starStats.totalAllocation);
+
     for( const itm of pools){
         getPoolInfo(itm,chain);
         //console.log("getting stats for:" + itm.name);
@@ -499,14 +500,14 @@ async function getPoolInfo(itm,chain){
         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
         itm.stakedLP = receipt.totalLp;
         if(itm.pid>4){
-            var price = await getPrice(itm.address);
+            var price = await getPrice(itm.address,chain);
             if(price != "no liquidity"){
                 itm.price = price;
             }
         }
         //console.log(itm.price);
         if(chain == 0){
-            itm.apr = (((((starStats.stats.dailyEmission*(receipt.allocPoint/starStats.stats.totalAllocation))*pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
+            itm.apr = (((((starStats.stats.dailyEmission*(receipt.allocPoint/starStats.stats.totalAllocation))*pools.tokenPools[0].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
         }
         else if(chain == 1){
             itm.apr = (((((stardStats.stats.dailyEmission*(receipt.allocPoint/stardStats.stats.totalAllocation))*fantomPools.Pools[0].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
@@ -517,13 +518,23 @@ async function getPoolInfo(itm,chain){
     }
 }
 
-export async function getPrice(address){
+export async function getPrice(address,chain){
     //console.log("getting token price: " + address)
-    const options = {
-        address: address,
-        chain: "polygon",
-        exchange: "quickswap"
-    };
+    var options;
+    if(chain == 0){
+        options = {
+            address: address,
+            chain: "polygon",
+            exchange: "quickswap"
+        };
+    }
+    if(chain == 1){
+        options = {
+            address: address,
+            chain: "fantom",
+            exchange: "spookyswap"
+        };
+    }
     try{
         const price = await moralis.fetchPrice(options);//Moralis.Moralis.Web3API.token.getTokenPrice(options);
         //console.log(price);

@@ -1,18 +1,6 @@
 <template>
 <main id="main">
     <div class="content">
-            <!-- <h3 class="account">
-                Connected Account <span id="account" class="purple">{{account}}</span>
-                <button v-if="!stardAdded" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <button v-if="!MaiAdded" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <div v-if="!connected" class="connect">
-                    <button  @click="metaMaskWallet()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
-                </div>
-                <div v-if="connected" class="disconnect">
-                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
-                </div>
-            </h3> -->
-        
         <h4 class="heading center">Mint STAR Dollars</h4>
         <div class="cards">            
             <div class="container">
@@ -30,7 +18,7 @@
                     </div>
                     <div  class="grid">
                         <div class="label large-text">
-                            STARD Balance
+                            Star Dollars Balance
                         </div>
                         <div  class="cont  large-text">
                             {{(+pools[0].balance).toFixed(4)}}
@@ -44,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    <button @click="getStard()">Mint STARD</button>
+                    <button @click="getStard()">Mint Star Dollars</button>
                     
                     <div class="grid">
                         <div class="cont sm-text">0.3% Minting fee</div>   
@@ -54,122 +42,122 @@
         </div>
         <h4 class="heading center">Yield Farming</h4>
         <div class="cards">
-            <div class="container">
-                <div class="card" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
-                    <div v-if="!matic.type">
-                         <div class="icon">
-                            <img :src="matic.img"> {{matic.name}}
-                        </div>
-                        <div class="grid">
-                            <div class="label">
-                                APR :
+            <!-- <div class="container"> -->
+                <div class="container" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
+                        <div class="card" style="min-width:40%">
+                        <div v-if="!matic.type">
+                            <div class="icon">
+                                <img :src="matic.img"> {{matic.name}}
                             </div>
-                            <div class="cont">
-                                {{matic.apr}}%
+                            <div class="grid">
+                                <div class="label">
+                                    APR :
+                                </div>
+                                <div class="cont">
+                                    {{matic.apr}}%
+                                </div>
                             </div>
-                        </div>
-                        <div class="grid">
-                            <div class="label">
-                                Earn :
+                            <div class="grid">
+                                <div class="label">
+                                    Earn :
+                                </div>
+                                <div class="cont">
+                                    Star Dollars
+                                </div>
                             </div>
-                            <div class="cont">
-                                STARD
+                            <div class="grid">
+                                <div class="label large-text">
+                                    Deposit Fee :
+                                </div>
+                                <div class="cont  large-text">
+                                    {{matic.depositFee}}
+                                </div>
                             </div>
-                        </div>
-                        <div class="grid">
-                            <div class="label large-text">
-                                Deposit Fee :
-                            </div>
-                            <div class="cont  large-text">
-                                {{matic.depositFee}}
-                            </div>
-                        </div>
-                        <div class="grid">
-                            <div class="label colored">
-                                STARD EARNED:
-                            </div>
-                            <div class="cont">
-                                <div class="label colored">
-                                {{(+matic.starEarned).toFixed(4)}}
-                            </div>
-                                <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
-                                <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
-                            </div>
-                        </div>
-                        <div class="grid">
-                            <div class="label colored">
-                                TOTAL TOKENS STAKED: 
-                            </div>
-                            <div class="cont  large-text">
-                                {{matic.stakedBalance}}
-                            </div>
-                        </div>
-                        <div v-if="connected" class="grid">
-                            <div class="label large-text">
-                                Token Balance
-                            </div>
-                            <div  class="cont  large-text">
-                                {{(+matic.balance).toFixed(4)}}
-                            </div>
-                        </div>
-                        <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>
-                        <div v-if="matic.balance>0">
                             <div class="grid">
                                 <div class="label colored">
-                                    <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
-                                    <div class="cont sm-text">
-                                        <button v-if="connected" @click="maxButton(matic)">MAX</button>
+                                    Star Dollars EARNED:
+                                </div>
+                                <div class="cont">
+                                    <div class="label colored">
+                                    {{(+matic.starEarned).toFixed(4)}}
+                                </div>
+                                    <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
+                                    <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="label colored">
+                                    TOTAL TOKENS STAKED: 
+                                </div>
+                                <div class="cont  large-text">
+                                    {{matic.stakedBalance}}
+                                </div>
+                            </div>
+                            <div v-if="connected" class="grid">
+                                <div class="label large-text">
+                                    Token Balance
+                                </div>
+                                <div  class="cont  large-text">
+                                    {{(+matic.balance).toFixed(4)}}
+                                </div>
+                            </div>
+                            <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>
+                            <div v-if="matic.balance>0">
+                                <div class="grid">
+                                    <div class="label colored">
+                                        <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
+                                        <div class="cont sm-text">
+                                            <button v-if="connected" @click="maxButton(matic)">MAX</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button v-if="connected" @click="confirm(matic)">Stake</button>
+                            </div>
+                            <div v-if="matic.stakedBalance>0">
+                                <div class="grid">
+                                    <div class="label colored">
+                                        <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
+                                        <div class="cont sm-text">
+                                            <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
+                            </div>
+                            <hr>
+                            <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
+                            <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
+                            <div class="info" v-if="matic.show">
+                                <div class="grid">
+                                </div>
+                                <div class="grid">
+                                    <div class="label colored">
+                                        Total Liquidity: {{matic.totalLiquidity}}
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <div class="label colored">
+                                        <div class="cont sm-text">
+                                            Get LP tokens from quickswap.
+                                            <button @click="getLp(matic)">Get Tokens</button>
+                                        </div>
+                                        <div class="cont sm-text">
+                                            <button @click="viewExplorer(matic)">View on Matic Explorer</button>
+                                        </div>                               
+                                    </div>
+                                </div>
+                                <div class="grid" v-if="matic.stakedBalance>0">
+                                    <div class="label colored">
+                                        <div class="cont sm-text">
+                                            Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
+                                        <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,1)">Emergency withdraw</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <button v-if="connected" @click="confirm(matic)">Stake</button>
                         </div>
-                        <div v-if="matic.stakedBalance>0">
-                            <div class="grid">
-                                <div class="label colored">
-                                    <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
-                                    <div class="cont sm-text">
-                                        <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
-                        </div>
-                        <hr>
-                        <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
-                        <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
-                        <div class="info" v-if="matic.show">
-                            <div class="grid">
-                            </div>
-                            <div class="grid">
-                                <div class="label colored">
-                                    Total Liquidity: {{matic.totalLiquidity}}
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="label colored">
-                                    <div class="cont sm-text">
-                                        Get LP tokens from quickswap.
-                                        <button @click="getLp(matic)">Get Tokens</button>
-                                    </div>
-                                    <div class="cont sm-text">
-                                        <button @click="viewExplorer(matic)">View on Matic Explorer</button>
-                                    </div>                               
-                                </div>
-                            </div>
-                            <div class="grid" v-if="matic.stakedBalance>0">
-                                <div class="label colored">
-                                    <div class="cont sm-text">
-                                        Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
-                                    <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,1)">Emergency withdraw</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div v-html="matic.url" v-if="matic.type" style="width:100%;height:100%;"></div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -213,8 +201,6 @@ export default {
             Functions:Functions,
             pools:Pools.Pools,
             MAI:Pools.Mai,
-            stardAdded:false,
-            MaiAdded: false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -222,19 +208,12 @@ export default {
             selectedContractAddress:false,
             selectedPid:false,
             showPops:false,
-            showStake:false,
-            showModal: false,
             messages:false,
             starEarned:"connect wallet",
             lpContractInstance : false,            
             masterChefContractAbi : [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"BonusMupltiplier","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"EmissionRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBalance","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOperator","type":"address"},{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amountLockedUp","type":"uint256"}],"name":"RewardLockedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_DEPOSIT_FEE_RATE","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_HARVEST_INTERVAL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_STARD_PER_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"canHarvest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"collectFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"compound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"fundMasterChef","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getDepositFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvestStard","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingStard","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accStardPerShare","type":"uint256"},{"internalType":"uint256","name":"depositFeeBP","type":"uint256"},{"internalType":"uint256","name":"harvestInterval","type":"uint256"},{"internalType":"uint256","name":"totalLp","type":"uint256"},{"internalType":"uint256","name":"depositFees","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"remainingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stard","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startFarming","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocation","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLockedUpRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStardInPools","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOperator","type":"address"}],"name":"transferOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"updateAllocPoint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bonus","type":"uint256"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_stardPerBlock","type":"uint256"}],"name":"updateEmissionRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"rewardLockedUp","type":"uint256"},{"internalType":"uint256","name":"nextHarvestUntil","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}],
             masterChefContractAddress : "0xDb963911Ce3459B3e73598FBAad6927E8Ee2ee20",//"0x5F09606F9A2e21c36a9e1EFf50720cC841f13852",0x82cECaf2Dd71D65f24CEFEA130bf0f86F720954f,0xDb963911Ce3459B3e73598FBAad6927E8Ee2ee20
             masterChefContractInstance : false,
-            totalAllocation:null,
-            dailyEmission: 182.9059829,
-            stardPrice:1,
-            maiAmount:0,
-            maiBalance:10
         }
     },
     watch: {
@@ -260,7 +239,6 @@ export default {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set stard");
-                //await getTotalAllocation();
                 await this.metaMaskWallet();
                 await initMasterchef(this.web3,1);
                 await this.updateBackup();
@@ -276,10 +254,8 @@ export default {
                     this.$router.go();
                 }; 
                 await initMasterchef(this.web3,1);
-                //await getTotalAllocation();
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
-                //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
                 await Functions.getUserPoolStats(this.MAI,this.web3,this.account,1);
                 this.messages = false;
@@ -292,7 +268,6 @@ export default {
                 Functions.getMetamask();
             }
         }
-        console.log(this.pools[0].starEarned)
     },
     methods: {
          async pops(itm){
@@ -324,7 +299,6 @@ export default {
                         this.connected = true;
                         this.messages = false;
                         this.messages = "Loading user Details";
-                        //this.getTotalAllocation();
                         Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
                         Functions.getUserPoolStats(this.MAI,this.web3,this.account,1);
                         console.log(this.pools[0].starEarned)
@@ -340,48 +314,6 @@ export default {
                     }             
                 })
             })
-        },
-        async trustWallet(){
-             this.showPops = false
-            const accounts = await ethereum.request({
-                method: 'eth_requestAccounts'
-            });
-            console.log(accounts)
-            this.account = accounts[0];
-            const maticProvider = new WalletConnectProvider(
-                {
-                    host: "https://rpc-mumbai.matic.today",
-                    callbacks: {
-                    onConnect: console.log('connected'),
-                    onDisconnect: console.log('disconnected!')
-                    }
-                }
-                )
-            const ropstenProvider = new WalletConnectProvider({
-                host: "https://ropsten.infura.io/v3/70645f042c3a409599c60f96f6dd9fbc",
-                callbacks: {
-                    onConnect: console.log('connected'),
-                    onDisconnect: console.log('disconnected')
-                }
-                })
-            const maticWeb3 = new Web3(maticProvider)
-            const myContractAbi = this.selectedABI
-            const myContractAddress = this.selectedContractAddress; 
-            const myContractInstance = new maticWeb3.eth.Contract(myContractAbi, myContractAddress)
-            const tx = {
-                            from: this.account,
-                            to: myContractAddress,
-                            gas: 800000,
-                            data: myContractInstance.methods.balanceOf(this.account).encodeABI(),
-                       }
-                maticWeb3.eth.signTransaction(tx)
-                .then((result) =>{
-                    maticWeb3.eth.sendSignedTransaction(result)
-                    .then((receipt) => 
-                    console.log (receipt)
-                )
-                })
-
         },
         async CustomToken() {
             var tokens  = await this.MetaMask()
@@ -415,9 +347,7 @@ export default {
             }
         },
         async StakeLP(itm){
-            console.log("staking " + itm.name)
             await Functions.StakeLP(itm,this.web3,this.account,1);
-            console.log("get stats")
             await Functions.getUserPoolStats(this.pools,this.web3,this.account,1);
         },
         async compoundReward(itm){
@@ -501,18 +431,6 @@ export default {
             }
             this.lpContractInstance =null;
         },
-        // async getPoolInfo(itm){
-        //     try{
-        //         var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
-        //         if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-        //         //console.log("total liquidity: " + (receipt.totalLp));
-        //         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
-        //         itm.stakedLP = receipt.totalLp;
-        //         itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*Pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
-        //     }catch(error){
-        //         console.log("get pool total liquidity  error: " + error);
-        //     }
-        // },
         async disconnect(){
             this.account = "Not Connected";
             this.$route.params.account = null;
@@ -523,15 +441,6 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
-        },
-        async getTotalAllocation(){
-            try{
-                var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
-                console.log("master total allocation: " + receipt);
-                this.totalAllocation = receipt;
-            }catch(error){
-                console.log("get master total allocation  error: " + error);
-            }
         },
         getLp(itm){
             console.log("get lp item: "+itm.name)

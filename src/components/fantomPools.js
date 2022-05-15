@@ -8,7 +8,7 @@ import dao from "../assets/DAO.jpg"
 
 var Pools= [
     {
-        name: "STARD",
+        name: "Star Dollars",
         color: "orange",
         img: logoMain,
         show: false,
@@ -31,7 +31,7 @@ var Pools= [
         price:1
     },
     {
-        name: "STARD - MAI",
+        name: "Star Dollars - MAI",
         color: "orange",
         img: logoMain,
         show: false,

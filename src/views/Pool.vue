@@ -1,18 +1,6 @@
 <template>
 <main id="main">
     <div class="content">
-            <!-- <h3 class="account">
-                Connected Account <span id="account" class="purple">{{account}}</span>
-                <button v-if="!starAdded" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <button v-if="!DAOAdded" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <div v-if="!connected" class="connect">
-                    <button  @click="metaMaskWallet()" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
-                </div>
-                <div v-if="connected" class="disconnect">
-                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired"></i>Disconnect</button>
-                </div>
-            </h3> -->
-
         <h4 class="heading center">Yield Farming</h4>
         <div class="cards">
             <div class="container">
@@ -174,8 +162,6 @@ export default {
         return {
             Functions:Functions,
             pools:Pools.tokenPools,
-            starAdded:false,
-            DAOAdded: false,
             connected:false,
             web3:false,
             account: "Not Connected",
@@ -183,17 +169,12 @@ export default {
             selectedContractAddress:false,
             selectedPid:false,
             showPops:false,
-            showStake:false,
-            showModal: false,
             messages:false,
             starEarned:"connect wallet",
             lpContractInstance : false,            
             masterChefContractAbi : [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"BonusMupltiplier","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"EmissionRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBalance","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOperator","type":"address"},{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amountLockedUp","type":"uint256"}],"name":"RewardLockedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_DEPOSIT_FEE_RATE","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_HARVEST_INTERVAL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_STAR_PER_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"canHarvest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"collectFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"compound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"fundMasterChef","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getDepositFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvestStar","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingStar","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accStarPerShare","type":"uint256"},{"internalType":"uint16","name":"depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"harvestInterval","type":"uint256"},{"internalType":"uint256","name":"totalLp","type":"uint256"},{"internalType":"uint256","name":"depositFees","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"remainingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_devAddress","type":"address"}],"name":"setDevAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"setStarId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"setstarContractAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"star","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"starPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startFarming","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocation","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLockedUpRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStarInPools","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOperator","type":"address"}],"name":"transferOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"updateAllocPoint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bonus","type":"uint256"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_starPerBlock","type":"uint256"}],"name":"updateEmissionRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"rewardLockedUp","type":"uint256"},{"internalType":"uint256","name":"nextHarvestUntil","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}],
             masterChefContractAddress : "0x16E76500f1E6C943FEd150bF56403d91A91dCD55",
             masterChefContractInstance : false,
-            totalAllocation:null,
-            dailyEmission: 182.9059829,
-            starPrice:11
         }
     },
     watch: {
@@ -219,7 +200,6 @@ export default {
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set pool");
-                //await getTotalAllocation();
                 await this.metaMaskWallet();
                 await initMasterchef(this.web3,0);
                 await this.updateBackup();
@@ -230,13 +210,13 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 var chainId = new this.web3.eth.getChainId();
-                if(chainId != 0x89){await Functions.setChain('0x89')
-                    this.$router.go();};
+                if(chainId != 0x89){
+                    await Functions.setChain('0x89')
+                    this.$router.go();
+                };
                 await initMasterchef(this.web3,0);
-                //await getTotalAllocation();
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.connected = true;
-                //this.getTotalAllocation();
                 await Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
                 this.messages = false;
                 await this.updateBackup();
@@ -277,7 +257,6 @@ export default {
                         this.connected = true;
                         this.messages = false;
                         this.messages = "Loading user Details";
-                        //this.getTotalAllocation();
                         Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
                         setTimeout(d=>{
                             this.messages = false
@@ -291,48 +270,6 @@ export default {
                     }                
                 })
             })
-        },
-        async trustWallet(){
-             this.showPops = false
-            const accounts = await ethereum.request({
-                method: 'eth_requestAccounts'
-            });
-            console.log(accounts)
-            this.account = accounts[0];
-            const maticProvider = new WalletConnectProvider(
-                {
-                    host: "https://rpc-mumbai.matic.today",
-                    callbacks: {
-                    onConnect: console.log('connected'),
-                    onDisconnect: console.log('disconnected!')
-                    }
-                }
-                )
-            const ropstenProvider = new WalletConnectProvider({
-                host: "https://ropsten.infura.io/v3/70645f042c3a409599c60f96f6dd9fbc",
-                callbacks: {
-                    onConnect: console.log('connected'),
-                    onDisconnect: console.log('disconnected')
-                }
-                })
-            const maticWeb3 = new Web3(maticProvider)
-            const myContractAbi = this.selectedABI
-            const myContractAddress = this.selectedContractAddress; 
-            const myContractInstance = new maticWeb3.eth.Contract(myContractAbi, myContractAddress)
-            const tx = {
-                            from: this.account,
-                            to: myContractAddress,
-                            gas: 800000,
-                            data: myContractInstance.methods.balanceOf(this.account).encodeABI(),
-                       }
-                maticWeb3.eth.signTransaction(tx)
-                .then((result) =>{
-                    maticWeb3.eth.sendSignedTransaction(result)
-                    .then((receipt) => 
-                    console.log (receipt)
-                )
-                })
-
         },
         async CustomToken() {
             var tokens  = await this.MetaMask()
@@ -450,18 +387,6 @@ export default {
             }
             this.lpContractInstance =null;
         },
-        // async getPoolInfo(itm){
-        //     try{
-        //         var receipt = await this.masterChefContractInstance.methods.poolInfo(itm.pid).call();
-        //         if(receipt.totalLp == undefined){receipt.totalLp = 0;}
-        //         //console.log("total liquidity: " + (receipt.totalLp));
-        //         itm.totalLiquidity = ethers.utils.formatUnits(receipt.totalLp,itm.decimals);
-        //         itm.stakedLP = receipt.totalLp;
-        //         itm.apr = (((((this.dailyEmission*(receipt.allocPoint/this.totalAllocation))*Pools.tokenPools[1].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
-        //     }catch(error){
-        //         console.log("get pool total liquidity  error: " + error);
-        //     }
-        // },
         async disconnect(){
             this.account = "Not Connected";
             this.$route.params.account = null;
@@ -472,15 +397,6 @@ export default {
             this.starHarvest="Connect Wallet";
             this.lpContractInstance = false;
             this.masterChefContractInstance = false;
-        },
-        async getTotalAllocation(){
-            try{
-                var receipt = await this.masterChefContractInstance.methods.totalAllocation().call();
-                console.log("master total allocation: " + receipt);
-                this.totalAllocation = receipt;
-            }catch(error){
-                console.log("get master total allocation  error: " + error);
-            }
         },
         getLp(itm){
             console.log("get lp item: "+itm.name)

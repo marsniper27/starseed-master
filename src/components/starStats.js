@@ -4,9 +4,9 @@ import * as Functions from "../components/functions.js";
 var masterChef = require("./masterchef.js");
 var stats=[{
     totalAllocation : 0,
-    dailyEmission : 182.9059829,
-    starPrice : 11.73,
-    totalBurned:103.1313
+    dailyEmission : 140.6397788,
+    starPrice : 10.59,
+    totalBurned:11442.9280
 }]
 
 

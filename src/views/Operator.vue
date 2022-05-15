@@ -1,15 +1,6 @@
 <template>
 <main id="main">
     <div class="content">
-            <!-- <h3 class="account">
-                Connected Account <span id="account" class="purple">{{account}}</span>
-                <button @click="CustomToken" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <div class="connect">
-                    <button @click="matics" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button>
-                </div>
-            </h3> -->
-            <!-- <button @click="MetaMask" class="connectWallet"><i class="fas fa-network-wired"></i>Connect</button> -->
-
         <h4 class="heading center">Welcome to the Master Chef Control Center</h4>
 
         <div class="cards">
