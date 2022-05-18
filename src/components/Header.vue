@@ -3,7 +3,7 @@
     
         <div class="topBar">
             <i class="fas fa-layer-minus toggle" @click="toggleMenu"></i>
-            <img src="../assets/starseeds-exchange1.svg" class="logo">
+            <img src="../assets/Starseed-Dimension3.jpg" class="logo">
                 <h3 class="account">
                     Connected Account: <span id="account" class="purple">{{account}}</span>
                     <button v-if="pool" @click="Functions.AddStar()" class="addStar">Add Stars to <img width="30px" src="../assets/metamask-fox.svg"></button>

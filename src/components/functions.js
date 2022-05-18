@@ -14,7 +14,6 @@ const masterChefContractAbi = masterChef.masterChefContractAbi;
 const masterChefContractAddress = "0x16E76500f1E6C943FEd150bF56403d91A91dCD55";
 
 export async function getRates(){
-    console.log("getting rates");
     var rates =  await fetch('https://gasstation-mainnet.matic.network/v2').then(response => response.json());
   return (rates);
 }
@@ -233,7 +232,7 @@ export async function getStakedLp(itm,account){
 
 export async function compoundReward(itm,account,chain){
     var rates = await getRates();
-    console.log(rates.fast.maxFee)
+    console.log("rate: " + rates.fast.maxFee)
     try{
         var harvest = await masterChef.masterChefContractInstance.methods.canHarvest(itm.pid,account).call()
         console.log("can harvest: " + harvest);
@@ -362,6 +361,7 @@ export async function StakeLP(itm,web3,account,chain){
     if(allowance < 10*10**itm.decimals || allowance < itm.amount*10**itm.decimals){
         if(chain == 0){
             var rates = await getRates();
+            console.log("staking Rates")
             try{
                 var receipt = await lpContractInstance.methods.approve(masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals))
                     .send({
@@ -407,6 +407,7 @@ export async function StakeLP(itm,web3,account,chain){
     else{
         if(chain == 0){
             try{
+                var rates = await getRates();
                 var receipt = await  masterChef.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
                     .send({
                         maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
@@ -415,7 +416,7 @@ export async function StakeLP(itm,web3,account,chain){
                     });
                 return;
             }catch(error){        
-                console.log("staking error: " +error);
+                console.log("staking error poly: " +error);
             }
         }
         else if(chain == 1){
@@ -424,7 +425,7 @@ export async function StakeLP(itm,web3,account,chain){
                 var receipt = await  masterChef.masterChefContractInstance.methods.deposit(itm.pid,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals)).send({from:account,type:'0x0'});
                 return;
             }catch(error){                    
-                console.log("staking error: " +error);
+                console.log("staking error fantom: " +error);
             }
         }
     }
