@@ -155,11 +155,15 @@
                 </div>
                 <div class="card"  style="min-width:40%">
                     <div>
-                        <div class="grid">
+                        <!-- <div class="grid"> -->
                             <div class="headings">
-                                <span class="purple">${{poolsValue.toFixed(4)}}</span> <br> Across all <br> Farms and Pools
+                                <span class="purple" >${{poolsValue.toFixed(4)}}</span>
                             </div>
-                        </div>
+                            <div class="headings">
+                                <br> Across all <br> 
+                                <br> Farms and Pools</br>
+                            </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>

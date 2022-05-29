@@ -2,7 +2,6 @@
 <main id="main">
     <div class="content">
         <h4 class="heading center">Welcome to the Master Chef Control Center</h4>
-
         <div class="cards">
             <div class="container">
                 <div class="card" style="min-width:100%">
@@ -64,13 +63,13 @@
                             <div class="input">
                                 <input v-model="operatorAddress" placeholder="New Operator Address" />
                             </div>
-                                <button @click="operator()">Transfer Operator</button>;
+                                <button @click="operator(0)">Transfer Operator</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
                                 <h2>Mass update Pools </h2>
                             </div>
-                                <button @click="massUpdate()">Mass update Pools</button>;
+                                <button @click="massUpdate(0)">Mass update Pools</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
@@ -83,7 +82,7 @@
                                     </option>
                                 </select>
                             </div>
-                                <button @click="updatePool()">update pool</button>;
+                                <button @click="updatePool(0)">update pool</button>;
                         </div>
                     </div>
 
@@ -133,7 +132,7 @@
                                         <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                                 </div>
                                 <div>
-                                    <button @click="setPool()">Update Pool</button>;
+                                    <button @click="setPool(0)">Update Pool</button>;
                                 </div>
                             </div>
                         </div>          
@@ -145,7 +144,7 @@
                             <div class="input">
                                 <input v-model="multiplier" placeholder="New Bonus Multiplier" />
                             </div>
-                                <button @click="setMultiplier()">Set Multiplier</button>;
+                                <button @click="setMultiplier(0)">Set Multiplier</button>;
                             </div>
                         </div>          
                         <div class="card"  style="min-width:40%">
@@ -160,7 +159,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <button @click="collectFees()">Collect Fees</button>;
+                                <button @click="collectFees(0)">Collect Fees</button>;
                             </div>
                         </div>
                     </div>        
@@ -229,13 +228,13 @@
                             <div class="input">
                                 <input v-model="operatorAddress" placeholder="New Operator Address" />
                             </div>
-                                <button @click="operator()">Transfer Operator</button>;
+                                <button @click="operator(1)">Transfer Operator</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
                                 <h2>Mass update Pools </h2>
                             </div>
-                                <button @click="massUpdate()">Mass update Pools</button>;
+                                <button @click="massUpdate(1)">Mass update Pools</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
@@ -248,7 +247,7 @@
                                     </option>
                                 </select>
                             </div>
-                                <button @click="updatePool()">update pool</button>;
+                                <button @click="updatePool(1)">update pool</button>;
                         </div>
                     </div>
 
@@ -298,7 +297,7 @@
                                         <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                                 </div>
                                 <div>
-                                    <button @click="setPool()">Update Pool</button>;
+                                    <button @click="setPool(1)">Update Pool</button>;
                                 </div>
                             </div>
                         </div>          
@@ -310,7 +309,7 @@
                                 <div class="input">
                                     <input v-model="multiplier" placeholder="New Bonus Multiplier" />
                                 </div>
-                                <button @click="setMultiplier()">Set Multiplier</button>;
+                                <button @click="setMultiplier(1)">Set Multiplier</button>;
                             </div>
                         </div>          
                         <div class="card"  style="min-width:40%">
@@ -450,6 +449,7 @@ export default {
                             this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                             setTimeout(d=>{
                                 this.messages = false
+                                console.log(this.masterChefContractInstance)
                             },2000);
                         }
                         else{
@@ -463,6 +463,7 @@ export default {
             })
         },
         async fund(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Initiating MasterChef Funding...";
             if(chain == 0){
@@ -533,7 +534,6 @@ export default {
                 }
             }
             else if(chain ==1){
-                masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
                 const starContractInstance = new this.web3.eth.Contract(this.starABI,this.stardAddress);
                 var allowance = await starContractInstance.methods.allowance(this.account,this.fantomMasterChefAddress).call()
                 console.log("allowance is: " + allowance);
@@ -587,6 +587,7 @@ export default {
             }
         },
         async emmission(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Emission rate...";
             if(chain == 0){
@@ -617,7 +618,6 @@ export default {
             }
             else if(chain == 1){
                 try{
-                    masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
                     var result = await masterChefContractInstance.methods.updateEmissionRate(this.emmisionAmount).send({from:this.account, type:'0x0'})
                     if(result.status){
                         var outcome = "successful"
@@ -639,6 +639,7 @@ export default {
             }
         },
         async allocation(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating " +this.allocSelected+" Allocation...";
             setTimeout(d=>{
@@ -655,7 +656,6 @@ export default {
                             })
                     }
                     else if(chain == 1){
-                        masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
                         var result = await masterChefContractInstance.methods.updateAllocPoint(this.allocSelected,this.allocationAmount,true).send({from:this.account, type:'0x0'})
                     }
                 }
@@ -694,6 +694,7 @@ export default {
             }
         },
         async operator(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Operator rate...";
             var result;
@@ -728,16 +729,26 @@ export default {
                 },5000)
             }
         },
-        async setMultiplier(){
+        async setMultiplier(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Bonus Multiplier...";
             try{
-                var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain == 0){
+                    var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                }
+                else if(chain ==1){
+                    var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier)
+                        .send({
+                            from:this.account,
+                            type: '0x0'
+                        })
+                }
                 if(result.status){
                     var outcome = "successful"
                 }
@@ -756,16 +767,26 @@ export default {
                 },5000)
             }
         },
-        async collectFees(){
+        async collectFees(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
+                if(chain == 0){
                 var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID)
                     .send({
                         maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
                         maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
                         from:this.account
                     })
+                }
+                else if(chain == 1){
+                var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID)
+                    .send({
+                        from:this.account,
+                        type: '0x0'
+                    })
+                }
                 if(result.status){
                     var outcome = "successful"
                 }
@@ -784,16 +805,26 @@ export default {
                 },5000)
             }
         },
-        async massUpdate(){
+        async massUpdate(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
+                if(chain == 0){
                 var result = await this.masterChefContractInstance.methods.massUpdatePools()
                     .send({
                         maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
                         maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
                         from:this.account
                     })
+                }
+                if(chain == 1){
+                var result = await this.masterChefContractInstance.methods.massUpdatePools()
+                    .send({
+                        from:this.account,
+                        type: '0x0'
+                    })
+                }
                 if(result.status){
                     var outcome = "successful"
                 }
@@ -812,16 +843,26 @@ export default {
                 },5000)
             }
         },
-        async updatePool(){
+        async updatePool(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                var result = await this.masterChefContractInstance.methods.updatePool(this.updateSelected)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain==0){
+                    var result = await this.masterChefContractInstance.methods.updatePool(this.updateSelected)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                }
+                if(chain==1){
+                    var result = await this.masterChefContractInstance.methods.updatePool(this.updateSelected)
+                        .send({
+                            from:this.account,
+                            type:'0x0'
+                        })
+                }
                 if(result.status){
                     var outcome = "successful"
                 }
@@ -841,40 +882,72 @@ export default {
                 },5000)
             }
         },
-        async changeMxTxAmount(){
+        async changeMxTxAmount(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates(); 
             const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             try{
-                var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000"))
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.masterChefContractInstance.address
-                        })
-                console.log("change mx tx amount: " + receipt);
+                if(chain ==0){
+                    const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
+                    var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000"))
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.masterChefContractInstance.address
+                            })
+                    console.log("change mx tx amount: " + receipt);
+                }
+                if(chain ==1){
+                    const starContractInstance = new this.web3.eth.Contract(this.starABI,this.stardAddress);
+                    var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000"))
+                        .send({
+                            from:this.masterChefContractInstance.address,
+                            type: '0x0'
+                            })
+                    console.log("change mx tx amount: " + receipt);
+                }
             }catch(error){
                 console.log("change mx tx amount error: " + error);
             }
         },
-        async setPool(){
+        async setPool(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                if(this.setChecked){ 
-                    var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,true)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain == 0){
+                    if(this.setChecked){ 
+                        var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,true)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                    }
+                    else{
+                        var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,false)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                    }
                 }
-                else{
-                    var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,false)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain == 1){
+                    if(this.setChecked){ 
+                        var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,true)
+                        .send({
+                            from:this.account,
+                            type:0x0
+                        })
+                    }
+                    else{
+                        var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,false)
+                        .send({
+                            from:this.account,
+                            type:0x0
+                        })
+                    }
                 }
                 if(result.status){
                     var outcome = "successful"
@@ -895,25 +968,44 @@ export default {
             }
         },
         async addPool(chain){
+            await checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             console.log(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,)
             try{
-                if(this.setChecked){ 
-                    var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,true)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain == 0 ){
+                    if(this.setChecked){ 
+                        var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,true)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                    }
+                    else{
+                        var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,false)
+                        .send({
+                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
+                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            from:this.account
+                        })
+                    }
                 }
-                else{
-                    var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,false)
-                    .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
-                        from:this.account
-                    })
+                if(chain == 0 ){
+                    if(this.setChecked){ 
+                        var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,true)
+                        .send({
+                            from:this.account,
+                            tpye:'0x0'
+                        })
+                    }
+                    else{
+                        var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,false)
+                        .send({
+                            from:this.account,
+                            tpye:'0x0'
+                        })
+                    }
                 }
                 if(result.status){
                     var outcome = "successful"
@@ -932,7 +1024,23 @@ export default {
                     this.messages = false
                 },5000)
             }
+        },
+        async checkChain(chain){
+                var chainId = new web3.eth.getChainId();
+                if(chain == 0){
+                    if(chainId != 0x89){
+                        awaitFunctions.setChain('0x89')
+                        this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                    };
+                }
+                else{
+                    if(chainId != 0xfa){
+                        Functions.setChain('0xfa');
+                        this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
+                    };
+                }
         }
+
     }
 }
 </script>

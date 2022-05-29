@@ -25,6 +25,11 @@ const routes = [
     component: () => import('../views/STARD.vue')
   },
   {
+    path: '/starqi',
+    name: 'StarQi',
+    component: () => import('../views/StarQi.vue')
+  },
+  {
     path: '/fleet',
     name: 'StarSeed Fleet',
     component: () => import('../views/StarSeed Fleet.vue')

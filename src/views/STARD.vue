@@ -1,10 +1,30 @@
 <template>
 <main id="main">
     <div class="content">
-        <h4 class="heading center">Mint STAR Dollars</h4>
+        <h4 class="heading center">STAR DOLLAR PROTOCOL</h4>
         <div class="cards">            
-            <div class="container">
-                <div class="card" >
+            <div class="container" style="min-width:100%" >                
+                <div class="card" style="min-width:40%">
+                    <h4 class="heading center">What are STAR DOLLARS?</h4>
+                    <div class = 'p'>STARD is an algorithmic stablecoin that optimizes stable-coin yields across the crypto Multi-verse to get the best rewards. STARD is able to stay at the $1 mark through:</div>
+                    <ul>
+                        <li class = 'p'>Providing Liquidity to small cap tokens</li>
+                        <li class = 'p'>Automatically burning STAR once it reaches a variable threshold to keep the dollar peg consistent, as well as regulating the supply of STAR</li>
+                        <li class = 'p'>STARD is for people who are looking to have a steady income in the crypto world, without having to deal with the swing of the market.</li>
+                    </ul>
+                </div>            
+                <div class="card" style="min-width:40%">
+                    <h4 class="heading center">How to aquire STARD?</h4>
+                    <div class = 'p'>There are a few ways to acquire STARD, please note you must be on the FTM Network to purchase STARD. 2 ways are:</div>
+                    <ul>
+                        <li class = 'p'>Mint MAI, then use minted MAI to buy STARD</li>
+                        <li class = 'p'>Swap and FTM tojen into STARD</li>
+                    </ul>
+                    <div class = 'p'>Token Address</div>
+                    <div class = 'p'>0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E</div>
+                </div>
+                <div class="card" style="min-width:20%">
+                <h4 class="heading center">MINT STAR DOLLARS</h4>
                     <div class="icon">
                         <img :src=stardLogo> Star Dollars
                     </div>
@@ -24,7 +44,7 @@
                             {{(+pools[0].balance).toFixed(4)}}
                         </div>
                     </div>
-                    <div class="grid">
+                    <div class="grid2">
                         <div class="label colored">
                             <input  v-model="MAI[0].Amount" placeholder="Amount to Mint" />
                             <div class="cont sm-text">
@@ -34,133 +54,137 @@
                     </div>
                     <button @click="getStard()">Mint Star Dollars</button>
                     
-                    <div class="grid">
+                    <div class="grid2">
                         <div class="cont sm-text">0.3% Minting fee</div>   
                     </div>                 
                 </div>
-            </div>
-        </div>
-        <h4 class="heading center">Yield Farming</h4>
-        <div class="cards">
-            <!-- <div class="container"> -->
-                <div class="container" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
-                        <div class="card" style="min-width:40%">
-                        <div v-if="!matic.type">
-                            <div class="icon">
-                                <img :src="matic.img"> {{matic.name}}
-                            </div>
-                            <div class="grid">
-                                <div class="label">
-                                    APR :
-                                </div>
-                                <div class="cont">
-                                    {{matic.apr}}%
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="label">
-                                    Earn :
-                                </div>
-                                <div class="cont">
-                                    Star Dollars
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="label large-text">
-                                    Deposit Fee :
-                                </div>
-                                <div class="cont  large-text">
-                                    {{matic.depositFee}}
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="label colored">
-                                    Star Dollars EARNED:
-                                </div>
-                                <div class="cont">
-                                    <div class="label colored">
-                                    {{(+matic.starEarned).toFixed(4)}}
-                                </div>
-                                    <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
-                                    <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="label colored">
-                                    TOTAL TOKENS STAKED: 
-                                </div>
-                                <div class="cont  large-text">
-                                    {{matic.stakedBalance}}
-                                </div>
-                            </div>
-                            <div v-if="connected" class="grid">
-                                <div class="label large-text">
-                                    Token Balance
-                                </div>
-                                <div  class="cont  large-text">
-                                    {{(+matic.balance).toFixed(4)}}
-                                </div>
-                            </div>
-                            <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>
-                            <div v-if="matic.balance>0">
-                                <div class="grid">
-                                    <div class="label colored">
-                                        <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
-                                        <div class="cont sm-text">
-                                            <button v-if="connected" @click="maxButton(matic)">MAX</button>
+                <div class="card" style="min-width:60%">
+                    <h4 class="heading center">Yield Farming</h4>
+                    <div class="cards">
+                        <div class ='grid'>
+                            <div class="container" stlye="width:50%" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
+                                <!-- <div class="card"style="width:50%"> -->
+                                    <div v-if="!matic.type">
+                                        <div class="icon">
+                                            <img :src="matic.img"> {{matic.name}}
+                                        </div>
+                                        <div class="grid">
+                                            <div class="label">
+                                                APR :
+                                            </div>
+                                            <div class="cont">
+                                                {{matic.apr}}%
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="label">
+                                                Earn :
+                                            </div>
+                                            <div class="cont">
+                                                Star Dollars
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="label large-text">
+                                                Deposit Fee :
+                                            </div>
+                                            <div class="cont  large-text">
+                                                {{matic.depositFee}}
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="label colored">
+                                                Star Dollars EARNED:
+                                            </div>
+                                            <div class="cont">
+                                                <div class="label colored">
+                                                    {{(+matic.starEarned).toFixed(4)}}
+                                                </div>
+                                                <button v-if="connected&&matic.starEarned>0" @click="compoundReward(matic)">Compound</button>
+                                                <button v-if="connected&&matic.starEarned>0" @click="harvest(matic)">Harvest</button>
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="label colored">
+                                                TOTAL TOKENS STAKED: 
+                                            </div>
+                                            <div class="cont  large-text">
+                                                {{matic.stakedBalance}}
+                                            </div>
+                                        </div>
+                                        <div v-if="connected" class="grid">
+                                            <div class="label large-text">
+                                                Token Balance
+                                            </div>
+                                            <div  class="cont  large-text">
+                                                {{(+matic.balance).toFixed(4)}}
+                                            </div>
+                                        </div>
+                                        <button v-if="!connected" @click="metaMaskWallet()">Unlock Wallet</button>
+                                        <div v-if="matic.balance>0">
+                                            <div class="grid2">
+                                                <div class="label colored">
+                                                    <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
+                                                    <div class="cont sm-text">
+                                                        <button v-if="connected" @click="maxButton(matic)">MAX</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button v-if="connected" @click="confirm(matic)">Stake</button>
+                                        </div>
+                                        <div v-if="matic.stakedBalance>0">
+                                            <div class="grid2">
+                                                <div class="label colored">
+                                                    <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
+                                                    <div class="cont sm-text">
+                                                        <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
+                                        </div>
+                                        <hr>
+                                        <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
+                                        <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
+                                        <div class="info" v-if="matic.show">
+                                            <div class="grid">
+                                            </div>
+                                            <div class="grid">
+                                                <div class="label colored">
+                                                    Total Liquidity: {{matic.totalLiquidity}}
+                                                </div>
+                                            </div>
+                                            <div class="grid">
+                                                <div class="label colored">
+                                                    <div class="cont sm-text">
+                                                        Get LP tokens from quickswap.
+                                                        <button @click="getLp(matic)">Get Tokens</button>
+                                                    </div>
+                                                    <div class="cont sm-text">
+                                                        <button @click="viewExplorer(matic)">View on Matic Explorer</button>
+                                                    </div>                               
+                                                </div>
+                                            </div>
+                                            <div class="grid" v-if="matic.stakedBalance>0">
+                                                <div class="label colored">
+                                                    <div class="cont sm-text">
+                                                        Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
+                                                    <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,1)">Emergency withdraw</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button v-if="connected" @click="confirm(matic)">Stake</button>
-                            </div>
-                            <div v-if="matic.stakedBalance>0">
-                                <div class="grid">
-                                    <div class="label colored">
-                                        <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
-                                        <div class="cont sm-text">
-                                            <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
-                            </div>
-                            <hr>
-                            <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
-                            <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
-                            <div class="info" v-if="matic.show">
-                                <div class="grid">
-                                </div>
-                                <div class="grid">
-                                    <div class="label colored">
-                                        Total Liquidity: {{matic.totalLiquidity}}
-                                    </div>
-                                </div>
-                                <div class="grid">
-                                    <div class="label colored">
-                                        <div class="cont sm-text">
-                                            Get LP tokens from quickswap.
-                                            <button @click="getLp(matic)">Get Tokens</button>
-                                        </div>
-                                        <div class="cont sm-text">
-                                            <button @click="viewExplorer(matic)">View on Matic Explorer</button>
-                                        </div>                               
-                                    </div>
-                                </div>
-                                <div class="grid" v-if="matic.stakedBalance>0">
-                                    <div class="label colored">
-                                        <div class="cont sm-text">
-                                            Emergency withdraw unstakes your tokens immediatly and you lose any pending reward. Only use for emergency recovery of tokens.                               
-                                        <button v-if="connected" @click="Functions.emergencyWithdraw(matic,account,1)">Emergency withdraw</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <div v-html="matic.url" v-if="matic.type" style="width:100%;height:100%;"></div>
+                            <!-- </div> -->
                         </div>
-                    <div v-html="matic.url" v-if="matic.type" style="width:100%;height:100%;"></div>
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
+
     <div class="pops" v-if="showPops">
         <div class="head">
             <h6>Connect to a wallet</h6>
