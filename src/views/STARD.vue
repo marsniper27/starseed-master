@@ -5,7 +5,7 @@
         <div class="cards">            
             <div class="container" style="min-width:100%" >                
                 <div class="card" style="min-width:40%">
-                    <h4 class="heading center">What are STAR DOLLARS?</h4>
+                    <h4 class="sm-heading center">What are STAR DOLLARS?</h4>
                     <div class = 'p'>STARD is an algorithmic stablecoin that optimizes stable-coin yields across the crypto Multi-verse to get the best rewards. STARD is able to stay at the $1 mark through:</div>
                     <ul>
                         <li class = 'p'>Providing Liquidity to small cap tokens</li>
@@ -14,7 +14,7 @@
                     </ul>
                 </div>            
                 <div class="card" style="min-width:40%">
-                    <h4 class="heading center">How to aquire STARD?</h4>
+                    <h4 class="sm-heading center">How to aquire STARD?</h4>
                     <div class = 'p'>There are a few ways to acquire STARD, please note you must be on the FTM Network to purchase STARD. 2 ways are:</div>
                     <ul>
                         <li class = 'p'>Mint MAI, then use minted MAI to buy STARD</li>
@@ -24,7 +24,7 @@
                     <div class = 'p'>0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E</div>
                 </div>
                 <div class="card" style="min-width:20%">
-                <h4 class="heading center">MINT STAR DOLLARS</h4>
+                <h4 class="sm-heading center">MINT STAR DOLLARS</h4>
                     <div class="icon">
                         <img :src=stardLogo> Star Dollars
                     </div>
@@ -59,12 +59,12 @@
                     </div>                 
                 </div>
                 <div class="card" style="min-width:60%">
-                    <h4 class="heading center">Yield Farming</h4>
-                    <div class="cards">
-                        <div class ='grid'>
-                            <div class="container" stlye="width:50%" v-for="matic in pools" v-bind:class="{'larger':matic.type}">
+                    <h4 class="sm-heading center">Yield Farming</h4>
+                    <div class="cards" style="width:100%">
+                        <div class ='grid' style="overflow:auto; width:100%">
+                            <div class="container" style="width:100%"  v-for="matic in pools" v-bind:class="{'larger':matic.type}">
                                 <!-- <div class="card"style="width:50%"> -->
-                                    <div v-if="!matic.type">
+                                    <div v-if="!matic.type" style="width:50%; min-width: 350px;">
                                         <div class="icon">
                                             <img :src="matic.img"> {{matic.name}}
                                         </div>
@@ -124,10 +124,10 @@
                                         <div v-if="matic.balance>0">
                                             <div class="grid2">
                                                 <div class="label colored">
-                                                    <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />
-                                                    <div class="cont sm-text">
-                                                        <button v-if="connected" @click="maxButton(matic)">MAX</button>
-                                                    </div>
+                                                    <input v-if="connected" v-model="matic.amount" placeholder="Amount to stake" />   
+                                                </div>
+                                                <div class="cont sm-text">
+                                                    <button v-if="connected" @click="maxButton(matic)">MAX</button>
                                                 </div>
                                             </div>
                                             <button v-if="connected" @click="confirm(matic)">Stake</button>
@@ -136,9 +136,9 @@
                                             <div class="grid2">
                                                 <div class="label colored">
                                                     <input v-if="connected" v-model="matic.withdrawAmount" placeholder="Amount to withdraw" />
-                                                    <div class="cont sm-text">
-                                                        <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
-                                                    </div>
+                                                </div>
+                                                <div class="cont sm-text">
+                                                    <button v-if="connected" @click="matic.withdrawAmount = matic.stakedBalance;">MAX</button>
                                                 </div>
                                             </div>
                                             <button v-if="connected" @click="Functions.withdraw(matic,account,1)">Withdraw</button>
@@ -147,8 +147,6 @@
                                         <button v-if="!matic.show" @click="matic.show = true" class="btn-sm">Details</button>
                                         <button v-if="matic.show" @click="matic.show = false" class="btn-sm">Hide Details</button>
                                         <div class="info" v-if="matic.show">
-                                            <div class="grid">
-                                            </div>
                                             <div class="grid">
                                                 <div class="label colored">
                                                     Total Liquidity: {{matic.totalLiquidity}}

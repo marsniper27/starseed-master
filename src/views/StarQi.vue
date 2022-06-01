@@ -12,9 +12,9 @@
                     </div>  
                     <div class="card" style="min-width:100%; padding: 10px;">
                         <div class = 'p'>Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
-                        <div class='grid' style="width:100%; justify-content: center;">
-                            <button style="width:30%">Buy STARQI</button>
-                            <button style ="margin: 0 10px; width:30%">STARQI Contract Address</button>
+                        <div class='grid' style="width:100%;justify-content: center;display:inline">
+                            <button style="width:40%; margin:0;">Buy STARQI</button>
+                            <button style ="margin: 0 10px; width:40%;">STARQI Contract Address</button>
                         </div>
                     </div>
                 </div>
