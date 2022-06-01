@@ -15,7 +15,8 @@ body,html {
     font-family: 'Poppins', sans-serif;
   }
   .purple{
-    color: #a700ee !important;
+    color: #d35ff6 !important;
+    text-shadow: 2px -2px 2px #000;
   }
   .larger{
     width: 100% !important;
@@ -378,7 +379,7 @@ canvas{
   justify-content: center;
   position: relative;
   width: 320px;
-  background: rgb(35 35 35 / 51%);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 20px;
   border-color: #3baaeb;
   overflow: hidden;
