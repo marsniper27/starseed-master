@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <button @click="Functions.getStard(web3,account,Mai,pools[0])">Mint Star Dollars</button>
+                    <button @click="Functions.getStard(web3,account,MAI[0],pools[0])">Mint Star Dollars</button>
                     
                     <div class="grid2">
                         <div class="cont sm-text">0.3% Minting fee</div>   

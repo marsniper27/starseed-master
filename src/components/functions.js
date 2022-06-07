@@ -363,7 +363,7 @@ export async function StakeLP(itm,web3,account,chain){
             var rates = await getRates();
             console.log("staking Rates")
             try{
-                var receipt = await lpContractInstance.methods.approve(masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals))
+                var receipt = await lpContractInstance.methods.approve(masterChef.masterChefContractAddress,ethers.utils.parseUnits("100000",itm.decimals))
                     .send({
                         maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
                         maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
@@ -556,11 +556,12 @@ export async function getPrice(address,chain){
 export async function getStard(web3,account,mai,stard){
     var lpContractInstance = new web3.eth.Contract(stard.ABI, stard.address);
     var maiContractInstance = new web3.eth.Contract(mai.ABI, mai.address);
-    var allowance = await maiContractInstance.methods.allowance(account,masterChef.masterChefContractAddress).call()
+    var allowance = await maiContractInstance.methods.allowance(account,stard.address).call()
+    console.log("allowance: " + allowance)
     if(allowance < 10*10**mai.decimals || allowance < mai.amount*10**mai.decimals){
         var rates = await getRates();
         try{
-            var receipt = await maiContractInstance.methods.approve(masterChefContractAddress,ethers.utils.parseUnits("100000",mai.decimals))
+            var receipt = await maiContractInstance.methods.approve(stard.address,ethers.utils.parseUnits("100000",mai.decimals))
                 .send({
                     maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
                     maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
@@ -569,7 +570,7 @@ export async function getStard(web3,account,mai,stard){
                 if(receipt){
                     await sleep(5000);
                     try{
-                        receipt = await  lpContractInstance.methods.swapIn(account,ethers.utils.parseUnits(mai.amount.toString(),mai.decimals))
+                        receipt = await  lpContractInstance.methods.swapIn(account,ethers.utils.parseUnits(mai.Amount.toString(),mai.decimals))
                             .send({
                                 maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
                                 maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
@@ -577,17 +578,17 @@ export async function getStard(web3,account,mai,stard){
                             });
                         return;
                     }catch(error){
-                        console.log("staking after approval error: " +error);
+                        console.log("get stard after approval error: " +error);
                     }
                 }
         }catch(error){
-            console.log(" stake approval error: " +error);
+            console.log(" get stard approval error: " +error);
         }
     }
     else{
         try{
             var rates = await getRates();
-            var receipt = await lpContractInstance.methods.deposit(account,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
+            var receipt = await lpContractInstance.methods.swapIn(account,ethers.utils.parseUnits(mai.Amount.toString(),mai.decimals))
                 .send({
                     maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
                     maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
@@ -595,7 +596,7 @@ export async function getStard(web3,account,mai,stard){
                 });
             return;
         }catch(error){        
-            console.log("staking error poly: " +error);
+            console.log("get stard error poly: " +error);
         }
     }
 }
