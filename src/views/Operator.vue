@@ -639,7 +639,7 @@ export default {
             }
         },
         async allocation(chain){
-            await checkChain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating " +this.allocSelected+" Allocation...";
             setTimeout(d=>{
@@ -1026,19 +1026,19 @@ export default {
             }
         },
         async checkChain(chain){
-                var chainId = new web3.eth.getChainId();
-                if(chain == 0){
-                    if(chainId != 0x89){
-                        awaitFunctions.setChain('0x89')
-                        this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
-                    };
-                }
-                else{
-                    if(chainId != 0xfa){
-                        Functions.setChain('0xfa');
-                        this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
-                    };
-                }
+            var chainId = new this.web3.eth.getChainId();
+            if(chain == 0){
+                if(chainId != 0x89){
+                    await Functions.setChain('0x89')
+                    this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+                };
+            }
+            else{
+                if(chainId != 0xfa){
+                    await Functions.setChain('0xfa');
+                    this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.fantomMasterChefAddress);
+                };
+            }
         }
 
     }

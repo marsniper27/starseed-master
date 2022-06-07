@@ -7,6 +7,7 @@ import mai from "../assets/mai.png"
 
 var pools = require( "../views/pools.js");
 var fantomPools = require( "./fantomPools.js");
+var polygonStard = require( "./stardPoly.js");
 var masterChef = require("./masterchef.js");
 var starStats = require("./starStats.js");
 var stardStats = require("./stardStats.js");
@@ -30,7 +31,6 @@ export async function setChain(chainID){
             chainSet = fasle;
         }
     } catch (switchError) {
-        console.log('switch error: ' + switchError)
         // This error code indicates that the chain has not been added to MetaMask.
         if (switchError.code === 4902) {
             console.log("add chain")
@@ -209,7 +209,7 @@ export async function getPendingStar(pid,account,chain){
         if(chain==0){
             var receipt = await masterChef.masterChefContractInstance.methods.pendingStar(pid,account).call()
         }
-        else if(chain==1){
+        else if(chain==1||chain ==3){
             var receipt = await masterChef.masterChefContractInstance.methods.pendingStard(pid,account).call()
         }
         console.log("pending star: " + receipt);
@@ -248,7 +248,7 @@ export async function compoundReward(itm,account,chain){
             console.log("compounding");
             try{
                 var receipt;
-                if(chain == 0){
+                if(chain == 0||chain ==3){
                     var receipt =masterChef.masterChefContractInstance.methods.compound(itm.pid)
                     .send({
                         maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
@@ -290,7 +290,7 @@ export async function withdraw(itm,account,chain){
    var receipt;
     if(itm.stakedBalance > 0){
         try{
-            if(chain == 0){
+            if(chain == 0||chain ==3){
                 var rates = await getRates();
                 receipt = await masterChef.masterChefContractInstance.methods.withdraw(itm.pid,ethers.utils.parseUnits(itm.withdrawAmount.toString(), itm.decimals))
                 .send({
@@ -315,7 +315,7 @@ export async function emergencyWithdraw(itm,account,chain){
    var rates = await getRates();
     try{
         var receipt;
-        if(chain ==0){
+        if(chain ==0||chain ==3){
             receipt = await masterChef.masterChefContractInstance.methods.emergencyWithdraw(itm.pid)
             .send({
                 maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
@@ -335,7 +335,7 @@ export async function emergencyWithdraw(itm,account,chain){
 export async function harvest(itm,account,chain){
     try{
         var receipt 
-        if(chain==0){
+        if(chain==0||chain ==3){
             var rates = await getRates();
             receipt = await masterChef.masterChefContractInstance.methods.harvestStar(itm.pid)
             .send({
@@ -359,7 +359,7 @@ export async function StakeLP(itm,web3,account,chain){
     var lpContractInstance = new web3.eth.Contract(itm.ABI, itm.address);
     var allowance = await lpContractInstance.methods.allowance(account,masterChef.masterChefContractAddress).call()
     if(allowance < 10*10**itm.decimals || allowance < itm.amount*10**itm.decimals){
-        if(chain == 0){
+        if(chain == 0||chain == 3){
             var rates = await getRates();
             console.log("staking Rates")
             try{
@@ -470,7 +470,7 @@ export async function getUserPoolStats(pools,web3,account,chain){
         await starStats.getDailyEmmission();
         await starStats.getTotalAllocation();
     }
-    else if(chain == 1){
+    else if(chain == 1|| chain == 3){
         await stardStats.getDailyEmmission();
         await stardStats.getTotalAllocation();
     }
@@ -513,6 +513,9 @@ async function getPoolInfo(itm,chain){
         else if(chain == 1){
             itm.apr = (((((stardStats.stats.dailyEmission*(receipt.allocPoint/stardStats.stats.totalAllocation))*fantomPools.Pools[0].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
         }
+        else if(chain == 3){
+            itm.apr = (((((stardStats.stats.dailyEmission*(receipt.allocPoint/stardStats.stats.totalAllocation))*polygonStard.Pools[0].price*365)/((receipt.totalLp/10**itm.decimals)*itm.price))*100).toFixed(4));
+        }
         //console.log("pool: " + itm.name + " APR: " + itm.apr);
     }catch(error){
         console.log("get pool total liquidity  error: " + error);
@@ -522,7 +525,7 @@ async function getPoolInfo(itm,chain){
 export async function getPrice(address,chain){
     //console.log("getting token price: " + address)
     var options;
-    if(chain == 0){
+    if(chain == 0|| chain ==3){
         options = {
             address: address,
             chain: "polygon",
@@ -549,3 +552,51 @@ export async function getPrice(address,chain){
         }
     }
 }
+
+export async function getStard(web3,account,mai,stard){
+    var lpContractInstance = new web3.eth.Contract(stard.ABI, stard.address);
+    var maiContractInstance = new web3.eth.Contract(mai.ABI, mai.address);
+    var allowance = await maiContractInstance.methods.allowance(account,masterChef.masterChefContractAddress).call()
+    if(allowance < 10*10**mai.decimals || allowance < mai.amount*10**mai.decimals){
+        var rates = await getRates();
+        try{
+            var receipt = await maiContractInstance.methods.approve(masterChefContractAddress,ethers.utils.parseUnits("100000",mai.decimals))
+                .send({
+                    maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                    maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
+                    from:account
+                });
+                if(receipt){
+                    await sleep(5000);
+                    try{
+                        receipt = await  lpContractInstance.methods.swapIn(account,ethers.utils.parseUnits(mai.amount.toString(),mai.decimals))
+                            .send({
+                                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
+                                from:account
+                            });
+                        return;
+                    }catch(error){
+                        console.log("staking after approval error: " +error);
+                    }
+                }
+        }catch(error){
+            console.log(" stake approval error: " +error);
+        }
+    }
+    else{
+        try{
+            var rates = await getRates();
+            var receipt = await lpContractInstance.methods.deposit(account,ethers.utils.parseUnits(itm.amount.toString(),itm.decimals))
+                .send({
+                    maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                    maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
+                    from:account
+                });
+            return;
+        }catch(error){        
+            console.log("staking error poly: " +error);
+        }
+    }
+}
+

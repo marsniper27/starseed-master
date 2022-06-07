@@ -261,7 +261,9 @@ export default {
         async getPrice(){
             try{
                 this.currentStarPrice = await Functions.getPrice("0x8440178087C4fd348D43d0205F4574e0348a06F0",0);
+                //console.log("current star price:"+this.currentStarPrice);
             }catch(error){
+                //console.log(error)
                 this.currentStarPrice = (starStats.stats.price).toFixed(4)
                 console.log(error)
             }

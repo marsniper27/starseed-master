@@ -316,6 +316,7 @@ export default {
                 Functions.getMetamask();
             }
         }
+        console.log(this.web3.currentProvider)
     },
     methods: {
         async matics(){
