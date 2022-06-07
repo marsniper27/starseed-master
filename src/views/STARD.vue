@@ -15,13 +15,13 @@
                 </div>            
                 <div class="card" style="min-width:40%">
                     <h4 class="sm-heading center">How to aquire STARD?</h4>
-                    <div class = 'p'>There are a few ways to acquire STARD, please note you must be on the FTM Network to purchase STARD. 2 ways are:</div>
+                    <div class = 'p'>There are a few ways to acquire STARD, please note you must be on the Polygon Network to purchase STARD. 2 ways are:</div>
                     <ul>
                         <li class = 'p'>Mint MAI, then use minted MAI to buy STARD</li>
-                        <li class = 'p'>Swap and FTM tojen into STARD</li>
+                        <li class = 'p'>Swap and FTM token into STARD</li>
                     </ul>
                     <div class = 'p'>Token Address</div>
-                    <div class = 'p'>0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E</div>
+                    <div class = 'p'>0x8f1549718B9Ad2632Dc426EcC89305A83c1F03c8</div>
                 </div>
                 <div class="card" style="min-width:20%">
                 <h4 class="sm-heading center">MINT STAR DOLLARS</h4>
