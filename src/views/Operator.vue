@@ -463,7 +463,7 @@ export default {
             })
         },
         async fund(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "Initiating MasterChef Funding...";
             if(chain == 0){
@@ -587,7 +587,7 @@ export default {
             }
         },
         async emmission(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Emission rate...";
             if(chain == 0){
@@ -694,7 +694,7 @@ export default {
             }
         },
         async operator(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Operator rate...";
             var result;
@@ -730,7 +730,7 @@ export default {
             }
         },
         async setMultiplier(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Bonus Multiplier...";
             try{
@@ -768,11 +768,11 @@ export default {
             }
         },
         async collectFees(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
-                if(chain == 0){
+                if(chain == 0|| chain == 3){
                 var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID)
                     .send({
                         maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
@@ -806,7 +806,7 @@ export default {
             }
         },
         async massUpdate(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
@@ -844,7 +844,7 @@ export default {
             }
         },
         async updatePool(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
@@ -883,7 +883,7 @@ export default {
             }
         },
         async changeMxTxAmount(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates(); 
             const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             try{
@@ -911,7 +911,7 @@ export default {
             }
         },
         async setPool(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
@@ -968,7 +968,7 @@ export default {
             }
         },
         async addPool(chain){
-            await checkChain(chain);
+            await this.checkchain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             console.log(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,)

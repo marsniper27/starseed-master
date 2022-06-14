@@ -457,7 +457,8 @@ function sleep(ms) {
     try{
         var receipt = await lpContractInstance.methods.balanceOf(account).call();
             //console.log(itm.name +" get balance: " + receipt);
-            if(receipt == undefined){receipt = 0;}
+            if(receipt == undefined){
+                receipt = 0;}
             return ethers.utils.formatUnits(receipt,itm.decimals);
     }catch(error){
         console.log("get balance error: " + error);

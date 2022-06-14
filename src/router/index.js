@@ -36,8 +36,8 @@ const routes = [
   },
   {
     path: '/bridge',
-    name: 'Bridge',
-    component: () => import('../views/Bridge.vue')
+    name: 'Star Bridge',
+    component: () => import('../views/StarBridge.vue')
   },
   {
     path: '/info',
