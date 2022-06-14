@@ -463,7 +463,7 @@ export default {
             })
         },
         async fund(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Initiating MasterChef Funding...";
             if(chain == 0){
@@ -476,8 +476,8 @@ export default {
                         console.log("setting fund approval");
                         var receipt = await starContractInstance.methods.approve(this.masterChefContractAddress,ethers.utils.parseEther("100000"))
                             .send({
-                                maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                                maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                                 from:this.account
                             })
                             console.log("stake approval: " +receipt);
@@ -486,8 +486,8 @@ export default {
                                 try{
                                     receipt = await  this.masterChefContractInstance.methods.fundMasterChef(ethers.utils.parseEther(this.fundAmount.toString()))
                                         .send({
-                                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                                             from:this.account
                                         })
                                     console.log("fund: "+receipt);
@@ -587,15 +587,15 @@ export default {
             }
         },
         async emmission(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Emission rate...";
             if(chain == 0){
                 try{
                     var result = await this.masterChefContractInstance.methods.updateEmissionRate(this.emmisionAmount)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                     if(result.status){
@@ -650,8 +650,8 @@ export default {
                     if (chain ==0){
                         var result = await this.masterChefContractInstance.methods.updateAllocPoint(this.allocSelected,this.allocationAmount,true)
                             .send({
-                                maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                                maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                                 from:this.account
                             })
                     }
@@ -663,8 +663,8 @@ export default {
                     if (chain ==0){
                         var result = await this.masterChefContractInstance.methods.updateAllocPoint(this.allocSelected,this.allocationAmount,false)
                             .send({
-                                maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                                maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                                maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                                maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                                 from:this.account
                             })
                     }
@@ -694,7 +694,7 @@ export default {
             }
         },
         async operator(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Operator rate...";
             var result;
@@ -702,8 +702,8 @@ export default {
                 if(chain ==0){
                     result = await this.masterChefContractInstance.methods.transferOperator(this.operatorAddress)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                 }
@@ -730,15 +730,15 @@ export default {
             }
         },
         async setMultiplier(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "Updating Bonus Multiplier...";
             try{
                 if(chain == 0){
                     var result = await this.masterChefContractInstance.methods.updateBonus(this.multiplier)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                 }
@@ -768,15 +768,15 @@ export default {
             }
         },
         async collectFees(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
                 if(chain == 0|| chain == 3){
                 var result = await this.masterChefContractInstance.methods.collectFees(this.collectPID)
                     .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                        maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                         from:this.account
                     })
                 }
@@ -806,15 +806,15 @@ export default {
             }
         },
         async massUpdate(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
                 if(chain == 0){
                 var result = await this.masterChefContractInstance.methods.massUpdatePools()
                     .send({
-                        maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                        maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                        maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                        maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                         from:this.account
                     })
                 }
@@ -844,15 +844,15 @@ export default {
             }
         },
         async updatePool(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
                 if(chain==0){
                     var result = await this.masterChefContractInstance.methods.updatePool(this.updateSelected)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                 }
@@ -883,7 +883,7 @@ export default {
             }
         },
         async changeMxTxAmount(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates(); 
             const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
             try{
@@ -891,8 +891,8 @@ export default {
                     const starContractInstance = new this.web3.eth.Contract(this.starABI,this.starAddress);
                     var receipt = await starContractInstance.methods.setMaxTxAmount(ethers.utils.parseUnits("10000"))
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.masterChefContractInstance.address
                             })
                     console.log("change mx tx amount: " + receipt);
@@ -911,7 +911,7 @@ export default {
             }
         },
         async setPool(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             try{
@@ -919,16 +919,16 @@ export default {
                     if(this.setChecked){ 
                         var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,true)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                     }
                     else{
                         var result = await this.masterChefContractInstance.methods.set(this.setSelected, this.allocationAmount,this.depositFeeBP, this.harvestInterval,false)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                     }
@@ -968,7 +968,7 @@ export default {
             }
         },
         async addPool(chain){
-            await this.checkchain(chain);
+            await this.checkChain(chain);
             var rates = await Functions.getRates();
             this.messages = "collecting fees...";
             console.log(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,)
@@ -977,16 +977,16 @@ export default {
                     if(this.setChecked){ 
                         var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,true)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                     }
                     else{
                         var result = await this.masterChefContractInstance.methods.add(this.allocationAmount,this.tokenAddress,this.depositFeeBP, this.harvestInterval,false)
                         .send({
-                            maxFeePerGas:rates.fast.maxFee.toFixed(9)*10**9,
-                            maxPriorityFeePerGas:rates.fast.maxPriorityFee.toFixed(9)*10**9,
+                            maxFeePerGas:(rates.fast.maxFee*(10**9)).toFixed(0),
+                            maxPriorityFeePerGas:(rates.fast.maxPriorityFee*(10**9)).toFixed(0),
                             from:this.account
                         })
                     }
