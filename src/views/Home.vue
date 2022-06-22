@@ -532,7 +532,7 @@ export default {
                     var numTokens = ethers.utils.formatUnits(receipt.totalLp,pool.decimals);
                     //console.log("tokens staked: " + numTokens);
                      try{
-                        var tokenPrice = await Functions.getPrice(pool.address);
+                        var tokenPrice = await Functions.getPrice(pool.address,0);
                         if (tokenPrice = "no liquidity"){
                             tokenPrice = pool.price;
                         }

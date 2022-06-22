@@ -182,7 +182,7 @@
                                 <div class="input">
                                     <input v-model="fundAmount" placeholder="Amount to fund" />
                                 </div>
-                                <button @click="fund(1)">Fund</button>;
+                                <button @click="fund(3)">Fund</button>;
                             </div>
                         </div>
                         <div class="card"  style="min-width:40%">
@@ -193,7 +193,7 @@
                                 <div class="input">
                                     <input v-model="emmisionAmount" placeholder="New Emmsion Rate" />
                                 </div>
-                                <button @click="emmission(1)">Update Emmission</button>;
+                                <button @click="emmission(3)">Update Emmission</button>;
                             </div>
                         </div>
                         <div class="card"  style="min-width:40%">
@@ -217,7 +217,7 @@
                                     <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                                 </div>
                                 <div>
-                                    <button @click="allocation(1)">Update Pool</button>;
+                                    <button @click="allocation(3)">Update Pool</button>;
                                 </div>
                             </div>
                         </div>
@@ -228,13 +228,13 @@
                             <div class="input">
                                 <input v-model="operatorAddress" placeholder="New Operator Address" />
                             </div>
-                                <button @click="operator(1)">Transfer Operator</button>;
+                                <button @click="operator(3)">Transfer Operator</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
                                 <h2>Mass update Pools </h2>
                             </div>
-                                <button @click="massUpdate(1)">Mass update Pools</button>;
+                                <button @click="massUpdate(3)">Mass update Pools</button>;
                         </div>
                         <div class="card"  style="min-width:40%">
                             <div class="icon">
@@ -247,7 +247,7 @@
                                     </option>
                                 </select>
                             </div>
-                                <button @click="updatePool(1)">update pool</button>;
+                                <button @click="updatePool(3)">update pool</button>;
                         </div>
                     </div>
 
@@ -272,7 +272,7 @@
                                     <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                                 </div>
                                 <div>
-                                    <button @click="addPool(1)">Add Pool</button>;
+                                    <button @click="addPool(3)">Add Pool</button>;
                                 </div>
                             </div>
                         </div>          
@@ -297,7 +297,7 @@
                                         <label>(if doing more then one pool just do massupdate after all pools are done to save on gas)</label>
                                 </div>
                                 <div>
-                                    <button @click="setPool(1)">Update Pool</button>;
+                                    <button @click="setPool(3)">Update Pool</button>;
                                 </div>
                             </div>
                         </div>          
@@ -309,7 +309,7 @@
                                 <div class="input">
                                     <input v-model="multiplier" placeholder="New Bonus Multiplier" />
                                 </div>
-                                <button @click="setMultiplier(1)">Set Multiplier</button>;
+                                <button @click="setMultiplier(3)">Set Multiplier</button>;
                             </div>
                         </div>          
                         <div class="card"  style="min-width:40%">
@@ -324,7 +324,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <button @click="collectFees()">Collect Fees</button>;
+                                <button @click="collectFees(3)">Collect Fees</button>;
                             </div>
                         </div>
                     </div>        

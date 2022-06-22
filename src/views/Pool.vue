@@ -50,7 +50,7 @@
                                 TOTAL TOKENS STAKED: 
                             </div>
                             <div class="cont  large-text">
-                                {{matic.stakedBalance}}
+                                {{(+matic.stakedBalance).toFixed(8)}}
                             </div>
                         </div>
                         <div v-if="connected" class="grid">
@@ -187,6 +187,14 @@ export default {
     async created() {
         await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
+
+            //  window.ethereum.on('accountsChanged', function(account) {
+            //     this.account = account;
+            //     //this.$route.params.account = account;
+            //     Functions.getUserPoolStats(this.pools,this.web3,this.account,0);
+                
+            //  });
+
             window.addEventListener("load", function() {
                 window.ethereum.on('chainChanged', function(networkId){
                     console.log('chainChanged',networkId);

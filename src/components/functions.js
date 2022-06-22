@@ -546,7 +546,7 @@ export async function getPrice(address,chain){
         //console.log(address+" Price: " +price.usdPrice)
         return(price.usdPrice);
     }catch(error){
-        console.log("get price error: " + error)
+        console.log("get price error: " + address + " " +error)
         console.log(error)
         if(error.code == 141){
             return("no liquidity")

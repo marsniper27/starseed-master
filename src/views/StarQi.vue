@@ -13,8 +13,8 @@
                     <div class="card" style="min-width:100%; padding: 10px;">
                         <div class = 'p'>Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
                         <div class='grid' style="width:100%;justify-content: center;display:inline">
-                            <button style="width:40%; margin:0;">Buy STARQI</button>
-                            <button style ="margin: 0 10px; width:40%;">STARQI Contract Address</button>
+                            <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:40%; margin:0;">Buy STARQI</button>
+                            <button @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" style ="margin: 0 10px; width:40%;">STARQI Contract Address</button>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                             <div class='grid'>
                                 <img src="../assets/tap.png"/>
                                 <div>
-                                    <div class="p">XX%</div>
+                                    <div class="p">{{APY}}</div>
                                     <div class="p">APY</div>
                                 </div>
                             </div>
@@ -33,16 +33,15 @@
                             <div class='grid'>
                                 <img src="../assets/tap.png"/>
                                 <div>
-                                    <div class="p">$X.XXX</div>
+                                    <div class="p">${{price}}</div>
                                     <div class="p">Current Price</div>
                                 </div>
                             </div>
                         </div>
                         <div class="card" style="width:100%">
                             <h4 class="heading center">Chart</h4>
-                            <div class="card">
-                                <div class ="priceChart" id="priceChart" ref="priceChart"></div>
-                            </div>
+                                <!-- <div class ="priceChart" id="priceChart" ref="priceChart"></div> -->
+                                <button @click="dextools()">View chart on Dextools</button>
                         </div>
                     </div>
                 </div>
@@ -77,6 +76,7 @@ import getWeb3 from './web3.js';
 import {ethers} from "ethers";
 import logoMain from '../assets/logo.png';
 import { createChart } from 'lightweight-charts';
+import * as Functions from "../components/functions.js";
 
 export default {
     components: {},
@@ -85,6 +85,8 @@ export default {
             stardLogo:logoMain,
             connected:false,
             web3:false,
+            price:"x.xx",
+            APY:"Live update comign soon",
             starqiChart:"not set",
             account: "Not Connected",
             selectedABI:false,
@@ -108,27 +110,36 @@ export default {
     },
     async created() {
         if (typeof window.ethereum !== 'undefined') {
-            window.addEventListener("load", function() {
-                window.ethereum.on('chainChanged', function(networkId){
-                    console.log('chainChanged',networkId);
-                    this.refresh();
-                });
-                window.ethereum.on('accountsChanged', function (accounts) {
-                    console.log('accountsChanges',accounts);
-                    this.refresh();
-                });
-            })
+        //      window.ethereum.on('accountsChanged', function(account) {
+        //         this.account = account;
+        //         this.$route.params.account = account;
+
+        //      });
+            // window.addEventListener("load", function() {
+            //     window.ethereum.on('chainChanged', function(networkId){
+            //         console.log('chainChanged: '+ networkId);
+            //         this.refresh();
+            //     });
+            //      //window.ethereum.on('accountsChanged', this.accountChange(account) );//{
+            //     //     console.log('accountsChanges: '+ accounts);
+            //     //     this.account = accounts;
+            //     //     this.$route.params.account = accounts;
+            //     //     // $router.go();
+            //     //     //this.refresh();
+            //     // });
+            // }) 
             console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
-                console.log("account not set stard");
+                console.log("account not set starqi");
                 await this.metaMaskWallet();
             }
             else{
                 this.messages = "Loading user Details";
-                console.log("account already set stard");
+                console.log("account already set starqi");
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 this.connected = true;
+                this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
             }
         }
         else{
@@ -139,15 +150,15 @@ export default {
         }
     },
     mounted(){
-        const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
-        const chart = createChart(document.getElementById('priceChart'), chartOptions);
-        const areaSeries = chart.addAreaSeries({ lineColor: '#2962FF', topColor: '#2962FF', bottomColor: 'rgba(41, 98, 255, 0.28)' });
+        // const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
+        // const chart = createChart(document.getElementById('priceChart'), chartOptions);
+        // const areaSeries = chart.addAreaSeries({ lineColor: '#2962FF', topColor: '#2962FF', bottomColor: 'rgba(41, 98, 255, 0.28)' });
 
-        const data = [{ value: 0, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922 }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722 }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922 }];
+        // const data = [{ value: 0, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922 }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722 }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922 }];
 
-        areaSeries.setData(data);
+        // areaSeries.setData(data);
 
-        chart.timeScale().fitContent();
+        // chart.timeScale().fitContent();
     },
     methods: {
          async pops(itm){
@@ -169,13 +180,14 @@ export default {
                 this.masterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
                 this.$route.params.web3 = web3;
                 web3.eth.getAccounts()
-                .then((accounts) => {
+                .then(async(accounts) => {
                     if(accounts.length > 0){
                         this.account = accounts[0];
                         this.$route.params.account = accounts[0];
                         this.connected = true;
                         this.messages = false;
                         this.messages = "Loading user Details";
+                        this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
                         setTimeout(d=>{
                             this.messages = false
                         },1000)
@@ -201,9 +213,30 @@ export default {
                 setTimeout(resolve, ms);
             });
          },
-        refresh(){
+        refresh(cause){
+            console.log("Refreshed due to: " + cause)
             this.$router.go();
-        }        
+        },
+        accountChange(account){
+            if(account != this.account && this.account != "Not Connected"){
+                this.account = account;
+                this.$router.go();
+            }
+        },
+        dextools(){
+            console.log(itm)
+            window.open(
+                'https://www.dextools.io/app/polygon/pair-explorer/0x5175a069642dd288af118bd3365b22456ab7bab2',
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        },
+        viewExplorer(site){ 
+            console.log("item: "+itm)
+            window.open(
+                site,
+                '_blank' // <- This is what makes it open in a new window.
+            );           
+        },
     }
 }
 </script>
