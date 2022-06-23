@@ -86,7 +86,7 @@ export default {
             connected:false,
             web3:false,
             price:"x.xx",
-            APY:"Live update comign soon",
+            APY:"Live update coming soon",
             starqiChart:"not set",
             account: "Not Connected",
             selectedABI:false,
