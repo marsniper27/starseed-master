@@ -66,7 +66,6 @@ body,html {
     
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    
     background: #555; 
   } 
 //Header
@@ -200,6 +199,9 @@ body,html {
   height: calc(100% - 120px);
   background: rgb(0 0 0 / 78%);
   width: 200px;
+}
+.submenu{
+  position: fixed;
 }
 
 .sideBar ul {
@@ -682,6 +684,8 @@ canvas{
     z-index: 8888;
   }
   .showMenu{
+    transform: translateX(0%);
+  }.showServant{
     transform: translateX(0%);
   }
 }

@@ -35,6 +35,11 @@ const routes = [
     component: () => import('../views/StarSeed Fleet.vue')
   },
   {
+    path: '/regen',
+    name: 'Regen Protocol',
+    //component: () => import('../views/StarSeed Fleet.vue')
+  },
+  {
     path: '/bridge',
     name: 'Star Bridge',
     component: () => import('../views/StarBridge.vue')
