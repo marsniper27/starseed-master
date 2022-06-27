@@ -161,13 +161,8 @@ export default {
         // chart.timeScale().fitContent();
     },
     methods: {
-         async pops(itm){
-            if(itm.address){
-                this.selectedABI = itm.ABI;
-                this.selectedContractAddress = itm.address;
-                this.showPops = true
-            }
-           
+         async pops(){
+            this.showPops = true
         },
         async metaMaskWallet(){
             this.showPops = false
@@ -217,14 +212,12 @@ export default {
             }
         },
         dextools(){
-            console.log(itm)
             window.open(
                 'https://www.dextools.io/app/polygon/pair-explorer/0x5175a069642dd288af118bd3365b22456ab7bab2',
                 '_blank' // <- This is what makes it open in a new window.
             );
         },
         viewExplorer(site){ 
-            console.log("item: "+itm)
             window.open(
                 site,
                 '_blank' // <- This is what makes it open in a new window.
