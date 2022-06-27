@@ -201,13 +201,6 @@ export default {
                 })
             })
         },
-        viewExplorer(itm){ 
-            console.log("item: "+itm)
-            window.open(
-                'https://polygonscan.com/token/' + itm.address,
-                '_blank' // <- This is what makes it open in a new window.
-            );           
-        },
         sleep(ms) {
             return new Promise((resolve) => {
                 setTimeout(resolve, ms);
