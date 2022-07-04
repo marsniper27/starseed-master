@@ -541,7 +541,7 @@ export async function getPrice(address,chain){
         };
     }
     try{
-        const price = await moralis.fetchPrice(options);//Moralis.Moralis.Web3API.token.getTokenPrice(options);
+        const price = await moralis.fetchPrice(options);
         //console.log(price);
         //console.log(address+" Price: " +price.usdPrice)
         return(price.usdPrice);
