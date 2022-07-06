@@ -5,53 +5,14 @@
         <p class="sm-heading center">A decentralized finance protocol</p>
         <div class="cards">
             <div class="container">
-                <div class="card" style="min-width:40%">
-                    <div>
-                        <div class="icon">
-                            <img :src="logoMain"> Farms & Staking
-                        </div>
-                        <div class="grid">
-                            <div class="label">
-                                Star to Harvest :
-                            </div>
-                            <div class="starHarvest">
-                                {{starHarvest}}
-                            </div>
-                        </div>
-                        <!-- <div class="grid">
-                            <div class="label">
-                                Star Dollars to Harvest :
-                            </div>
-                            <div class="starHarvest">
-                                {{stardHarvest}}
-                            </div>
-                        </div> -->
-                        <div class="grid">
-                            <div class="label">
-                                Star in Wallet :
-                            </div>
-                            <div v-if="availStar" class="availStar">
-                                {{availStar}}
-                            </div>
-                        </div>
-                        <!-- <div class="grid">
-                            <div class="label">
-                                Star Dollars in Wallet :
-                            </div>
-                            <div v-if="availStar" class="availStar">
-                                {{availStar}}
-                            </div>
-                        </div> -->
-                        <button v-if="!connected" @click="matics()">Unlock Wallet</button>
-                    </div>
-                </div>
-                <div class="card"  style="min-width:40%">
+                
+                <!-- <div class="card"  style="min-width:40%">
                     <div style="width:100%;height:100%;">
                         <div class="icon">
                             <img :src="Announcement"> Announcement
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="card"  style="min-width:20%">
                     <router-link :to="{path:'/farm'}">
                         <div class="headings">
@@ -116,7 +77,7 @@
                                 Circulating Supply :
                             </div>
                             <div class="cont">
-                                {{(+currentSupply).toFixed(4)}}
+                                {{currentSupply}}
                             </div>
                         </div>
                         <div class="grid">
@@ -124,7 +85,7 @@
                                Total Burned :
                             </div>
                             <div class="cont">
-                                {{(+burnedStar).toFixed(4)}}
+                                {{burnedStar}}
                             </div>
                         </div>
                         <div class="grid">
@@ -132,7 +93,7 @@
                                 Burn Value
                             </div>
                             <div class="cont">
-                                    ${{(+burnValue).toFixed(4)}}
+                                ${{burnValue}}
                             </div>
                         </div>
                         <div class="grid">
@@ -151,11 +112,59 @@
                                 {{emissionRate}}
                             </div>
                         </div>
+                        <div class="grid">
+                            <div class="label">
+                                TVL :
+                            </div>
+                            <div class="cont">
+                                ${{poolsValue}}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card"  style="min-width:40%">
+                <div class="card" style="min-width:40%">
                     <div>
-                        <!-- <div class="grid"> -->
+                        <div class="icon">
+                            <img :src="logoMain"> Farms & Staking
+                        </div>
+                        <div class="grid">
+                            <div class="label">
+                                Star to Harvest :
+                            </div>
+                            <div class="starHarvest">
+                                {{starHarvest}}
+                            </div>
+                        </div>
+                        <!-- <div class="grid">
+                            <div class="label">
+                                Star Dollars to Harvest :
+                            </div>
+                            <div class="starHarvest">
+                                {{stardHarvest}}
+                            </div>
+                        </div> -->
+                        <div class="grid">
+                            <div class="label">
+                                Star in Wallet :
+                            </div>
+                            <div v-if="availStar" class="availStar">
+                                {{availStar}}
+                            </div>
+                        </div>
+                        <!-- <div class="grid">
+                            <div class="label">
+                                Star Dollars in Wallet :
+                            </div>
+                            <div v-if="availStar" class="availStar">
+                                {{availStar}}
+                            </div>
+                        </div> -->
+                        <button v-if="!connected" @click="matics()">Unlock Wallet</button>
+                    </div>
+                </div>
+                <!-- <div class="card"  style="min-width:40%">
+                    <div>
+                         <div class="grid">
                             <div class="headings">
                                 <span class="purple" >${{poolsValue.toFixed(4)}}</span>
                             </div>
@@ -163,9 +172,9 @@
                                 <br> Across all <br> 
                                 <br> Farms and Pools</br>
                             </div>
-                        <!-- </div> -->
+                       </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -213,6 +222,7 @@ export default {
             starAdded:false,
             DAOAdded: false,
             burnedStar:null,
+            burnedStarFlaot:null,
             currentSupply: 9000,
             burnValue:null,
             starValue:starStats.stats.starPrice,
@@ -305,7 +315,7 @@ export default {
             await this.getEmissionRate();
             //await this.getLpPoolValue();
             await this.getPoolValue();
-            this.poolsValue = this.tempValue;
+            this.poolsValue = commify(this.tempValue.toFixed(4));
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
             await this.getCurrentSupply();
             await this.updateBackup();
@@ -454,8 +464,9 @@ export default {
                 var receipt = await this.moralisStarContractInstance.methods.balanceOf("0x000000000000000000000000000000000000dEaD").call()
                     //console.log("get burned star: " + receipt)
                     if(receipt == undefined){receipt = 0;}
-                    this.burnedStar = ethers.utils.formatUnits(receipt,18);
-                    this.burnValue = this.burnedStar*this.starValue;
+                    this.burnedStarFloat = (parseFloat(ethers.utils.formatUnits(receipt,18)).toFixed(4));
+                    this.burnedStar = commify(this.burnedStarFloat);
+                    this.burnValue = commify((this.burnedStarFloat*this.starValue).toFixed(4));
             }catch(error){
                 console.log("get burned star error: " + error);
                 }
@@ -465,14 +476,15 @@ export default {
                 var receipt = await this.moralisStarContractInstance.methods.totalSupply().call()
                     //console.log("get total supply: " + receipt)
                     if(receipt == undefined){receipt = 0;}
-                    this.totalMinted = ethers.utils.formatUnits(receipt,18);
+                    this.totalMinted = (parseFloat(ethers.utils.formatUnits(receipt,18)));
             }catch(error){
                 console.log("get total supply error: " + error);
             }
         },
         getCurrentSupply(){            
-            this.currentSupply = (+this.totalMinted) - (+this.burnedStar);
+            this.currentSupply = (((+this.totalMinted) - (+this.burnedStarFloat)).toFixed(4));
             this.marketCap = commify((this.currentSupply*this.starValue).toFixed(4));
+            this.currentSupply = commify(this.currentSupply)
             //console.log("currentsupply : " +this.currentSupply);
         },
         getStar(){

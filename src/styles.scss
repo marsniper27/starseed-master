@@ -378,7 +378,7 @@ canvas{
 }
 
 .container .card{
-  justify-content: center;
+  justify-content: top;
   position: relative;
   width: 320px;
   background: rgba(0, 0, 0, 0.7);
@@ -460,7 +460,7 @@ canvas{
     font-size: 20px;
     margin-left: 10px;
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     text-shadow: 1px 1px 1px #000;
   }
   .grid{
