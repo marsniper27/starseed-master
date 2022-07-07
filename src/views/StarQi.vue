@@ -137,7 +137,7 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 this.connected = true;
-                this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
+                //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
             }
         }
         else{
