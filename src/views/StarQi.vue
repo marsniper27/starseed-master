@@ -180,7 +180,7 @@ export default {
                         this.connected = true;
                         this.messages = false;
                         this.messages = "Loading user Details";
-                        this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
+                        //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
                         setTimeout(d=>{
                             this.messages = false
                         },1000)
