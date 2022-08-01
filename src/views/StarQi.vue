@@ -38,7 +38,7 @@
                         </div>
                         <div class="card" style="width:100%">
                             <h4 class="heading center">Chart</h4>
-                                <!-- <div class ="priceChart" id="priceChart" ref="priceChart"></div> -->
+                                <!-- <div class ="Chart" id="priceChart" ref="priceChart"></div> -->
                                 <button @click="dextools()">View chart on Dextools</button>
                         </div>
                     </div>

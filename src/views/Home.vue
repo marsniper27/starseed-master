@@ -297,8 +297,8 @@ export default {
             const NODE_URL = "https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
             const provider = new Web3.providers.HttpProvider(NODE_URL);
             const moralisWeb3 = new Web3(provider)
-            this.moralisStarContractInstance = new moralisWeb3.eth.Contract(this.starContractAbi, this.starContractAddress);
-            this.moralisMasterChefContractInstance = new moralisWeb3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+            this.moralisStarContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);;//new moralisWeb3.eth.Contract(this.starContractAbi, this.starContractAddress);
+            this.moralisMasterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);//new moralisWeb3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
 
             const serverUrl = "https://vwtvxfrruomo.usemoralis.com:2053/server";
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
