@@ -4,6 +4,7 @@ import * as moralis from "./Moralis.js"
 import * as star from "./starStats.js";
 import * as stard  from "./stardStats.js";
 import mai from "../assets/mai.png"
+import * as qs from 'quickswap-sdk';
 
 var pools = require( "../views/pools.js");
 var fantomPools = require( "./fantomPools.js");
@@ -599,6 +600,45 @@ export async function getStard(web3,account,mai,stard){
         }catch(error){        
             console.log("get stard error poly: " +error);
         }
+    }
+}
+
+export async function getSarQi(){
+    const starQiAddress = "0x825A381355A51f50a39a18b7c69627380CA38B80";
+    const qiAddress = "0x580A84C73811E1839F75d86d75d88cCa0c241fF4";
+    var starQi = null;
+    var qi= null
+    // var route =null
+    var pair = null
+    const web3 = new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/uJjqHVVvGuEwNoE5IplgSquR4KrVoDEd")
+
+    try{
+        starQi = await qs.Fetcher.fetchTokenData(137,starQiAddress,web3);
+        qi = await qs.Fetcher.fetchTokenData(137,qiAddress,web3);
+        // console.log(starQi)
+        // console.log(qi)
+        try{
+            pair = await qs.Fetcher.fetchPairData(starQi,qi,web3)
+            // console.log("starQi-QI Pair info")
+            // console.log(pair)
+            console.log("starqi price: " + pair.token0Price)
+            console.log(pair.token1Price.toSignificant(6))
+            return(pair.token1Price.toSignificant(4))
+            // try{
+            //     route = new qs.Route([pair],starQi);
+            //     console.log("route")
+            //     console.log(route.midPrice.toSignificant(6))
+            // }catch(error){
+            //     console.log("get starqi - qi error: " +error)
+            //     console.log(error)
+            // }
+        }catch(error){
+            console.log("get starqi - qi error: " +error)
+            console.log(error)
+        }
+    }catch(error){
+        console.log("Token data error")
+        console.log(error)
     }
 }
 

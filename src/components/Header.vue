@@ -149,7 +149,7 @@ export default {
     },
     computed: {
         accountSet() {
-            console.log("set acount: " + this.account)
+            // console.log("set acount: " + this.account)
             return this.account
         }
     },
@@ -285,7 +285,7 @@ export default {
                             this.$route.params.account = accounts[0];
                             this.connected = true;
                             this.masterChefContractInstance = new web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
-                            console.log(this.account);
+                            // console.log(this.account);
                             this.messages = false;
                             // for( const itm of this.starSeed){
                             //     this.getUserPoolStats(itm);

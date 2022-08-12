@@ -3,19 +3,13 @@
     <div class="content">
         <h4 class="heading center">STARQI PROTOCOL</h4>
         <div class="cards">            
-            <div class="container" style="min-width:100%; " >       
-                <div class="card" style="min-width:45%; padding: 10px">
-                    <h4 class="heading center">What is STAR QI?</h4>
-                    <div class = 'p'>STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
-                    <div class="p">We accomplish this by locking the majority of qi held by QTARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever vault is paying the highest bribers. The bribes we collect increase staking returns by 10-50%.</div>
-                </div>  
-                <div class="card" style="min-width:45%; padding: 10px;">
-                    <div class = 'p'>Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
-                    <div class='grid' style="width:100%;justify-content: center;display:inline">
-                        <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:40%; margin:0;">Buy STARQI</button>
-                        <button @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" style ="margin: 0 10px; width:40%;">STARQI Contract Address</button>
+            <div class="container" style="min-width:100%; " >
+                <div class="card" style="min-width:50%; justify-content: center;">
+                    <div class='grid' style="min-width:100%;justify-content: center;">
+                        <img src="../assets/moon.png" style ="width:10%;padding-top:2.5%"/>
+                        <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">STARQI value: ${{qiPrice*price}}</div>
                     </div>
-                </div>
+                </div>     
                 <div class="grid" style="min-width:50%">
                     <div class = 'container' style="min-width:100%;">
                         <div class="card" style="min-width:45%; justify-content: center;">
@@ -32,16 +26,33 @@
                                 <div >
                                     <div class="p">15K QI liquidity</div>
                                     <div class="p">Current Price: </div>
-                                    <div class="p">${{price}}QI per STARQI</div>
+                                    <div class="p">{{price}}QI per STARQI</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card" style="width:100%">
-                            <h4 class="heading center">Chart</h4>
-                                <!-- <div class ="Chart" id="priceChart" ref="priceChart"></div> -->
-                                <button @click="dextools()">View chart on Dextools</button>
-                        </div>
                     </div>
+                </div>  
+                <div class="card" style="min-width:80%; ">
+                    <div style="width:100%; justify-content: center; display:inline ">
+                        <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
+                    </div>
+                </div>
+                <div class="card" style="min-width:45%; padding: 10px">
+                    <h4 class="heading center">What is STAR QI?</h4>
+                    <div class = 'p'>STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
+                    <div class="p">We accomplish this by locking the majority of qi held by QTARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever vault is paying the highest bribers. The bribes we collect increase staking returns by 10-50%.</div>
+                </div>  
+                <div class="card" style="min-width:45%; padding: 10px;">
+                    <div class = 'p'>Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
+                    <!-- <div style="width:100%; justify-content: center; display:inline ">
+                        <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
+                    </div> -->
+                </div>
+                <div class="card" style="justify-content: center; width:100%">
+                    <h4 class="heading center">Chart</h4>
+                        <!-- <div class ="Chart" id="priceChart" ref="priceChart"></div> -->
+                        <button @click="dextools()">View chart on Dextools</button>
+                        <button @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" style ="margin: 0 20%; width:40%;">STARQI Contract Address</button>
                 </div>
             </div>
         </div>
@@ -84,6 +95,7 @@ export default {
             connected:false,
             web3:false,
             price:"1.077",
+            qiPrice:"",
             APY:"68%",
             starqiChart:"not set",
             account: "Not Connected",
@@ -130,6 +142,8 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set starqi");
                 await this.metaMaskWallet();
+                this.price = await Functions.getSarQi();
+                this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
             }
             else{
                 this.messages = "Loading user Details";
@@ -137,6 +151,9 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 this.connected = true;
+                this.price = await Functions.getSarQi();
+                this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
+
                 //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
             }
         }
@@ -180,6 +197,7 @@ export default {
                         this.connected = true;
                         this.messages = false;
                         this.messages = "Loading user Details";
+                        //Functions.getSarQi(this.web3);
                         //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
                         setTimeout(d=>{
                             this.messages = false

@@ -19,6 +19,7 @@
     "moment": "^2.29.1",
     "moralis": "^0.0.184",
     "parallax-js": "^3.1.0",
+    "quickswap-sdk": "^3.0.9",
     "three": "^0.132.2",
     "vue": "^2.6.11",
     "vue-carousel": "^0.18.0",
