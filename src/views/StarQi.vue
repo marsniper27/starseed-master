@@ -10,28 +10,29 @@
                         <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">STARQI value: ${{qiPrice*price}}</div>
                     </div>
                 </div>     
-                <div class="grid" style="min-width:50%">
+                <!-- <div class="grid" style="min-width:100%"> -->
                     <div class = 'container' style="min-width:100%;">
-                        <div class="card" style="min-width:45%; justify-content: center;">
+                        <!-- <div class="card" style="min-width:45%; justify-content: center;">
                             <div class='grid' style="min-width:100%;">
                                 <img src="../assets/tap.png" style ="width:10%"/>
                                 <div >
                                     <div class="p">APY: {{APY}}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card" style="min-width:45%;">
+                        </div> -->
+                        <div class="card" style="min-width:50%;">
                             <div class='grid' style="min-width:100%;">
                                 <img src="../assets/tap.png" style ="width:10%" />
-                                <div >
-                                    <div class="p">15K QI liquidity</div>
-                                    <div class="p">Current Price: </div>
-                                    <div class="p">{{price}}QI per STARQI</div>
+                                <div style ="width:80%">
+                                    <div class="p">Weekly APY: {{APY}}</div>
+                                    <div class="p">{{qiLocked}} QI liquidity</div>
+                                    <div class="p">Current Price: {{price}}QI per STARQI</div>
+                                    <!-- <div class="p">{{price}}QI per STARQI</div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>  
+                <!-- </div>   -->
                 <div class="card" style="min-width:80%; ">
                     <div style="width:100%; justify-content: center; display:inline ">
                         <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
@@ -96,6 +97,7 @@ export default {
             web3:false,
             price:"1.077",
             qiPrice:"",
+            qiLocked:"",
             APY:"68%",
             starqiChart:"not set",
             account: "Not Connected",
@@ -142,7 +144,7 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set starqi");
                 await this.metaMaskWallet();
-                this.price = await Functions.getSarQi();
+                this.price,this.qiLocked = await Functions.getSarQi();
                 this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
             }
             else{
@@ -151,7 +153,7 @@ export default {
                 this.account = this.$route.params.account;
                 this.web3 = this.$route.params.web3;
                 this.connected = true;
-                this.price = await Functions.getSarQi();
+                this.price,this.qiLocked = await Functions.getSarQi();
                 this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
 
                 //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
