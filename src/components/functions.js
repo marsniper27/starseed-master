@@ -624,7 +624,11 @@ export async function getSarQi(){
             console.log("starqi price: " + pair.token0Price)
             console.log(pair.token1Price.toSignificant(6))
             console.log(pair.reserve0.toSignificant(6))
-            return(pair.token1Price.toSignificant(4),pair.reserve0.toSignificant(6))
+            let prices = {
+                price: pair.token1Price.toSignificant(4),
+                qiLocked: pair.reserve0.toSignificant(6)
+            }
+            return(prices)
             // try{
             //     route = new qs.Route([pair],starQi);
             //     console.log("route")

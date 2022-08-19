@@ -150,7 +150,11 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set starqi");
                 await this.metaMaskWallet();
-                this.price,this.qiLocked = await Functions.getSarQi();
+                let prices = await Functions.getSarQi()
+                console.log(prices)
+                this.price = prices.price;
+                this.qiLocked = prices.qiLocked;
+                console.log(this.price)
                 this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0);
                 await this.getBalance();
             }
