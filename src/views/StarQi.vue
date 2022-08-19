@@ -101,9 +101,9 @@ export default {
             stardLogo:logoMain,
             connected:false,
             web3:false,
-            price:"1.077",
+            price:"1.12",
             qiPrice:"",
-            qiLocked:"",
+            qiLocked:"90195.528437275939187828",
             APY:"68%",
             starqiChart:"not set",
             account: "Not Connected",
@@ -258,7 +258,7 @@ export default {
                     (receipt) => {
                         // console.log("balance: "+receipt)
                         this.messages = "Transaction Successfull.";
-                        this.qiLocked = (parseFloat(this.qiLocked) + parseFloat((receipt/10**18))).toFixed(4) 
+                        this.qiLocked = (parseFloat(this.qiLocked) + parseFloat((receipt/10**18))+90195.528437275939187828).toFixed(4) 
                         try{
                             qiContractInstance.methods.balanceOf('0xCCA659225aDefeA318F0177547dfd580d8424A1d').call()
                             .then (
