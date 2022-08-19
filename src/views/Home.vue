@@ -1,7 +1,7 @@
 <template>
 <main id="main">
     <div class="content">
-        <h4 class="heading center">Welcome to the Starseed's Exchange</h4>
+        <h4 class="heading center">Welcome to the StarSeed's Exchange</h4>
         <p class="sm-heading center">A decentralized finance protocol</p>
         <div class="cards">
             <div class="container">
