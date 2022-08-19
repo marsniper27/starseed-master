@@ -185,7 +185,7 @@ export default {
         }
     },
     async created() {
-        await this.readBackup()
+        //await this.readBackup()
         if (typeof window.ethereum !== 'undefined') {
 
             //  window.ethereum.on('accountsChanged', function(account) {

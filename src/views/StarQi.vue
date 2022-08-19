@@ -6,33 +6,37 @@
             <div class="container" style="min-width:100%; " >
                 <div class="card" style="min-width:50%; justify-content: center;">
                     <div class='grid' style="min-width:100%;justify-content: center;">
-                        <img src="../assets/moon.png" style ="width:10%;padding-top:2.5%"/>
-                        <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">STARQI value: ${{qiPrice*price}}</div>
+                        <img src="../assets/moon.png" style ="width:12%;padding-top:2.5%"/>
+                        <div class="p" style ="font-size: x-large; padding-top:5%">STARQI value: ${{(qiPrice*price).toPrecision(4)}}</div>
                     </div>
                 </div>     
-                <!-- <div class="grid" style="min-width:100%"> -->
+                <div class="grid" style="min-width:100%">
                     <div class = 'container' style="min-width:100%;">
-                        <!-- <div class="card" style="min-width:45%; justify-content: center;">
-                            <div class='grid' style="min-width:100%;">
-                                <img src="../assets/tap.png" style ="width:10%"/>
+                        <div class="card" style="min-width:25%; justify-content: center;">
+                            <div class='grid' style="min-width:100%;justify-content: center;">
+                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%"/>
                                 <div >
-                                    <div class="p">APY: {{APY}}</div>
+                                    <div class="p" style ="width:100%; font-size: x-large; padding-top:20%">APR: {{APY}}</div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="card" style="min-width:50%;">
-                            <div class='grid' style="min-width:100%;">
-                                <img src="../assets/tap.png" style ="width:10%" />
-                                <div style ="width:80%">
-                                    <div class="p">Weekly APY: {{APY}}</div>
-                                    <div class="p">{{qiLocked}} QI liquidity</div>
-                                    <div class="p">Current Price: {{price}}QI per STARQI</div>
-                                    <!-- <div class="p">{{price}}QI per STARQI</div> -->
+                            <div class='grid' style="min-width:100%;justify-content: center;">
+                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%" />
+                                <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">Current Price: 1 STARQI to {{price}}QI</div>   
+                            </div>
+                        </div>
+                        <div class="card" style="min-width:50%;">
+                            <div class='grid' style="min-width:100%;justify-content: center;">
+                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%" />
+                                <div >
+                                    <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">Total QI Locked</div>
+                                    <div class="p" style ="width:100%; font-size: x-large;padding-left:20px;">{{qiLocked}} </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <!-- </div>   -->
+                </div>  
                 <div class="card" style="min-width:80%; ">
                     <div style="width:100%; justify-content: center; display:inline ">
                         <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
@@ -50,6 +54,7 @@
                     </div> -->
                 </div>
                 <div class="card" style="justify-content: center; width:100%">
+                    
                     <h4 class="heading center">Chart</h4>
                         <!-- <div class ="Chart" id="priceChart" ref="priceChart"></div> -->
                         <button @click="dextools()">View chart on Dextools</button>
@@ -87,6 +92,7 @@ import {ethers} from "ethers";
 import logoMain from '../assets/logo.png';
 import { createChart } from 'lightweight-charts';
 import * as Functions from "../components/functions.js";
+import Web3 from 'web3';
 
 export default {
     components: {},
@@ -145,7 +151,8 @@ export default {
                 console.log("account not set starqi");
                 await this.metaMaskWallet();
                 this.price,this.qiLocked = await Functions.getSarQi();
-                this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
+                this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0);
+                await this.getBalance();
             }
             else{
                 this.messages = "Loading user Details";
@@ -155,6 +162,7 @@ export default {
                 this.connected = true;
                 this.price,this.qiLocked = await Functions.getSarQi();
                 this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
+                await this.getBalance();
 
                 //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);
             }
@@ -240,6 +248,67 @@ export default {
                 site,
                 '_blank' // <- This is what makes it open in a new window.
             );           
+        },
+        async getBalance(){
+            var qiContractInstance = new this.web3.eth.Contract([{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}], "0x580A84C73811E1839F75d86d75d88cCa0c241fF4");
+            var vqiContractInstance = new this.web3.eth.Contract([{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}], "0xB424dfDf817FaF38FF7acF6F2eFd2f2a843d1ACA");
+            try{
+                qiContractInstance.methods.balanceOf('0xF826Bc629d859af67736671274BFbF0967E36729').call()
+                .then (
+                    (receipt) => {
+                        // console.log("balance: "+receipt)
+                        this.messages = "Transaction Successfull.";
+                        this.qiLocked = (parseFloat(this.qiLocked) + parseFloat((receipt/10**18))).toFixed(4) 
+                        try{
+                            qiContractInstance.methods.balanceOf('0xCCA659225aDefeA318F0177547dfd580d8424A1d').call()
+                            .then (
+                                (receipt) => {
+                                    // console.log("balance: "+receipt)
+                                    this.messages = "Transaction Successfull.";
+                                    this.qiLocked = (parseFloat(this.qiLocked) + parseFloat((receipt/10**18))).toFixed(4)
+                                    try{
+                                        vqiContractInstance.methods.balanceOf('0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7').call()
+                                        .then (
+                                            (receipt) => {
+                                                // console.log("balance: "+receipt)
+                                                this.messages = "Transaction Successfull.";
+                                                this.qiLocked = (parseFloat(this.qiLocked) + parseFloat((receipt/10**18))).toFixed(4)
+                                            setTimeout(d=>{
+                                                    this.messages = false
+                                            },1000)
+                                            //this.$router.go();
+                                        })
+                                    }catch (error) {
+                                        console.log(error);
+                                        this.messages = "Get balance: " +error
+                                        setTimeout(d=>{
+                                            this.messages = false
+                                        },5000)
+                                    }
+                                setTimeout(d=>{
+                                        this.messages = false
+                                },1000)
+                                //this.$router.go();
+                            })
+                        }catch (error) {
+                            console.log(error);
+                            this.messages = "Get balance: " +error
+                            setTimeout(d=>{
+                                this.messages = false
+                            },5000)
+                        }
+                    setTimeout(d=>{
+                            this.messages = false
+                    },1000)
+                    //this.$router.go();
+                })
+            }catch (error) {
+                console.log(error);
+                this.messages = "Get balance: " +error
+                setTimeout(d=>{
+                    this.messages = false
+                },5000)
+            }
         },
     }
 }
