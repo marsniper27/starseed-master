@@ -576,6 +576,21 @@ canvas{
     padding: 10px;
     cursor: pointer;
   }
+  .addStar{
+    background: #48c2f8;
+    background-color: #48c2f8; /* For browsers that do not support gradients */
+    background-image: linear-gradient(to right, #48c2f8 , #009bf2);
+    color: #fff;
+    border: none;
+    padding: 3px 11px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    img{
+      padding: 0px;
+      margin-left: 10px;
+    }
+  }
   .btn-sm{
     background: none;
     color: white;
