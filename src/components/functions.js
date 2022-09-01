@@ -530,7 +530,7 @@ export async function getPrice(address,chain){
     if(chain == 0|| chain ==3){
         options = {
             address: address,
-            chain: "polygon",
+            chain: 0x89,
             exchange: "quickswap"
         };
     }
@@ -545,7 +545,7 @@ export async function getPrice(address,chain){
         const price = await moralis.fetchPrice(options);
         //console.log(price);
         //console.log(address+" Price: " +price.usdPrice)
-        return(price.usdPrice);
+        return(price.data.usdPrice);
     }catch(error){
         console.log("get price error: " + address + " " +error)
         console.log(error)

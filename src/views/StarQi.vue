@@ -3,67 +3,57 @@
     <div class="content">
         <h4 class="heading center">STARQI PROTOCOL</h4>
         <div class="cards">            
-            <div class="container" style="min-width:100%; " >
-                <div class="card" style="min-width:50%; justify-content: center;">
+            <div class="container" style="max-width:1600px; overflow:visible;" >
+                <div class="card" style="min-width:320px; justify-content: center; margin-bottom: 40px;">
                     <div class='grid' style="min-width:100%;justify-content: center;">
-                        <img src="../assets/moon.png" style ="width:12%;padding-top:2.5%"/>
-                        <div class="p" style ="font-size: x-large; padding-top:5%">STARQI value: ${{(qiPrice*price).toPrecision(4)}}</div>
-                    </div>
-                </div>     
-                <div class="grid" style="min-width:100%">
-                    <div class = 'container' style="min-width:100%;">
-                        <div class="card" style="min-width:25%; justify-content: center;">
-                            <div class='grid' style="min-width:100%;justify-content: center;">
-                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%"/>
-                                <div >
-                                    <div class="p" style ="width:100%; font-size: x-large; padding-top:20%">APR: {{APY}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card" style="min-width:50%;">
-                            <div class='grid' style="min-width:100%;justify-content: center;">
-                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%" />
-                                <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">Current Price: 1 STARQI to {{price}}QI</div>   
-                            </div>
-                        </div>
-                        <div class="card" style="min-width:50%;">
-                            <div class='grid' style="min-width:100%;justify-content: center;">
-                                <img src="../assets/tap.png" style ="width:10%;padding-top:2.5%" />
-                                <div >
-                                    <div class="p" style ="width:100%; font-size: x-large; padding-top:5%">Total QI Locked</div>
-                                    <div class="p" style ="width:100%; font-size: x-large;padding-left:20px;">{{qiLocked}} </div>
-                                </div>
-                            </div>
+                        <img src="../assets/icon-flag.png" style ="width:10%;padding-top:2.5%"/>
+                        <div style="justify-content: center;">
+                            <div class="p" style ="width:100%; font-size: x-large; font-weight: 600; padding-top:20%">{{APY}}</div>
+                            <div style ="padding-left: 10px;">APR</div>
                         </div>
                     </div>
+                </div>
+                <div class="card" style="width:320px; justify-content: center; margin-left: 50px; margin-bottom: 40px;">
+                    <div class='grid' style="min-width:100%;justify-content: center;">
+                        <img src="../assets/icon-invoice-dollar.png" style ="width:12%;padding-top:2.5%"/>
+                        <div>
+                            <div class="p" style ="font-size: x-large;font-weight: 600; padding-top:5%">${{(qiPrice*price).toPrecision(4)}}</div>
+                            <div style ="padding-left: 10px;">Current Price</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="width:700px; justify-content: center; text-align: center; margin-left: 50px; margin-bottom: 40px;">
+                    <div style="width:580px; display: flex; justify-content: space-between; padding-top: 10px;">
+                        <button @click="Functions.AddStar()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                        <button @click="Functions.AddStar()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                    </div>
+                    <div class="p" style ="width:100%; font-size: x-large;  text-align: center;">Current Price: 1 STARQI to {{price}}QI</div>
+                    <div class="p" style ="width:100%; font-size: x-large; text-align: center;">Total QI Locked: {{qiLocked}}</div>
+                </div>
+                <div class="card" style="max-width:700px; width:700px;vertical-align: middle !important; margin-bottom: 40px;">
+                    <div style="padding:40px">
+                        <div class = 'p' style="font-size: large;">Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
+                        <div class = 'p' style="font-size: large;margin-top:30px; vertical-align: middle;">To reduce slippage costs when trading Star, break your trade up into smaller units.</div>
+                    </div>
+                    <div style="width:580px; display:flex; margin-top:30px; justify-content: space-between;">
+                        <button class="contractButton" @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" >Trade STARQI</button> 
+                        <button class="contractButton" @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" >STARQI Contract Address</button>
+                    </div>
+                </div>
+                <div class="card" style="width:700px;margin-left: 50px; height: 400px; margin-bottom: 40px;">
+                    <img style="margin-top: -50px; width:750px; margin-left: -28px;" src="../assets/new chart.png"/>
+                </div>
+                <div class="card" style="width: 1460px; padding: 40px; min-height: 300px;margin-top: 50;">
+                    <h4 style="color:white;">What is STAR QI?</h4>
+                    <div class = 'p' style="font-size: large;margin-top: 30px;">STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
+                    <div class="p" style="font-size: large;margin-top: 30px;">We accomplish this by locking the majority of qi held by QTARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever vault is paying the highest bribers. The bribes we collect increase staking returns by over 200%*.</div>
+                    <div class="p"></div>
+                    <div class="p" style="padding-top: 10px; font-size: small;">*Accurate as of 8/23/2022</div>
                 </div>  
-                <div class="card" style="min-width:80%; ">
-                    <div style="width:100%; justify-content: center; display:inline ">
-                        <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
-                    </div>
-                </div>
-                <div class="card" style="min-width:45%; padding: 10px">
-                    <h4 class="heading center">What is STAR QI?</h4>
-                    <div class = 'p'>STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
-                    <div class="p">We accomplish this by locking the majority of qi held by QTARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever vault is paying the highest bribers. The bribes we collect increase staking returns by 10-50%.</div>
-                </div>  
-                <div class="card" style="min-width:45%; padding: 10px;">
-                    <div class = 'p'>Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
-                    <!-- <div style="width:100%; justify-content: center; display:inline ">
-                        <button @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" style="width:80%;font-size: xx-large; margin:30px 0 0 0;">Trade STARQI</button>
-                    </div> -->
-                </div>
-                <div class="card" style="justify-content: center; width:100%">
-                    
-                    <h4 class="heading center">Chart</h4>
-                        <!-- <div class ="Chart" id="priceChart" ref="priceChart"></div> -->
-                        <button @click="dextools()">View chart on Dextools</button>
-                        <button @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" style ="margin: 0 20%; width:40%;">STARQI Contract Address</button>
-                </div>
             </div>
         </div>
     </div>
-
+<!-- style="width: 250px;font-size: large;padding:0;height: 55px;" -->
     <div class="pops" v-if="showPops">
         <div class="head">
             <h6>Connect to a wallet</h6>

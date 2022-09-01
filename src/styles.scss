@@ -209,9 +209,9 @@ body,html {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
   height: calc(100% - 70px);
   margin: 0;
-  flex-direction: column;
   margin: 0;
   padding: 0;
   padding-top: 20px
@@ -576,19 +576,33 @@ canvas{
     padding: 10px;
     cursor: pointer;
   }
-  .addStar{
+  .addToken{
     background: #48c2f8;
     background-color: #48c2f8; /* For browsers that do not support gradients */
     background-image: linear-gradient(to right, #48c2f8 , #009bf2);
     color: #fff;
     border: none;
-    padding: 3px 11px;
     border-radius: 20px;
     justify-content: center;
     align-items: center;
+    width: 250px;
+    height: 50px;
     img{
       padding: 0px;
-      margin-left: 10px;
+    }
+  }
+  .contractButton{
+    background-color:purple;
+    background-image: linear-gradient(to right, #d35ff6 , #a700ee);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 50px;
+    img{
+      padding: 0px;
     }
   }
   .btn-sm{
