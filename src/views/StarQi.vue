@@ -97,7 +97,7 @@ export default {
             price:"1.12",
             qiPrice:"",
             qiLocked:"90195.528437275939187828",
-            APY:"68%",
+            APY:"58%",
             starqiChart:"not set",
             account: "Not Connected",
             selectedABI:false,
