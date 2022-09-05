@@ -442,10 +442,19 @@ export default {
         },
         dextools(itm){
             console.log(itm)
-            window.open(
-                'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
-                '_blank' // <- This is what makes it open in a new window.
-            );
+            if(itm.name =="STAR")
+            {
+                window.open(
+                    'https://www.dextools.io/app/polygon/pair-explorer/0xee334207453191f4594836dc6c4546dfc2bd08c5',
+                    '_blank' // <- This is what makes it open in a new window.
+                );
+            }
+            else{
+                window.open(
+                    'https://www.dextools.io/app/polygon/pair-explorer/' + (itm.address).toLowerCase(),
+                    '_blank' // <- This is what makes it open in a new window.
+                );
+            }
         },
         async updateBackup(){
             //console.log("update backup")

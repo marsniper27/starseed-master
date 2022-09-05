@@ -27,12 +27,15 @@
                         <button @click="Functions.AddStar()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                         <button @click="Functions.AddStar()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                     </div>
-                    <div class="p" style ="width:100%; font-size: x-large;  text-align: center;">Current Price: 1 STARQI to {{price}}QI</div>
+                    <div class="p" style ="width:100%; font-size: x-large;  text-align: center;">Current Ratio: 1 STARQI to {{price}}QI</div>
                     <div class="p" style ="width:100%; font-size: x-large; text-align: center;">Total QI Locked: {{qiLocked}}</div>
                 </div>
                 <div class="card" style="max-width:700px; width:700px;vertical-align: middle !important; margin-bottom: 40px;">
                     <div style="padding:40px">
-                        <div class = 'p' style="font-size: large;">Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div>
+                        <div class = 'p' style="font-size: large;margin-top: 30px;">STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
+                        <div class="p" style="font-size: large;margin-top: 30px;">We accomplish this by locking the majority of QI held by STARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever proposals are paying the highest bribes. The bribes we collect increase staking returns by over 200%*.</div>
+                        <div class="p" style="padding-top: 10px; font-size: small;">*Accurate as of 8/23/2022.</div>
+                        <!-- <div class = 'p' style="font-size: large;">Every week the QI interest generated is used to buy STARQI. this means STARQI becomes worth more and more QI over time. the longer you hold STARQI the more QI you have. you collect your returns by converting your STARQI into QI.</div> -->
                         <div class = 'p' style="font-size: large;margin-top:30px; vertical-align: middle;">To reduce slippage costs when trading Star, break your trade up into smaller units.</div>
                     </div>
                     <div style="width:580px; display:flex; margin-top:30px; justify-content: space-between;">
@@ -43,13 +46,13 @@
                 <div class="card" style="width:700px;margin-left: 50px; height: 400px; margin-bottom: 40px;">
                     <img style="margin-top: -50px; width:750px; margin-left: -28px;" src="../assets/new chart.png"/>
                 </div>
-                <div class="card" style="width: 1460px; padding: 40px; min-height: 300px;margin-top: 50;">
+                <!-- <div class="card" style="width: 1460px; padding: 40px; min-height: 300px;margin-top: 50;">
                     <h4 style="color:white;">What is STAR QI?</h4>
                     <div class = 'p' style="font-size: large;margin-top: 30px;">STARQI is a liquid wrapper for Qi that provides higher returns than a 4 year stake on QiDAO, without having to lock your money for any amount of time.</div>
-                    <div class="p" style="font-size: large;margin-top: 30px;">We accomplish this by locking the majority of qi held by QTARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever vault is paying the highest bribers. The bribes we collect increase staking returns by over 200%*.</div>
-                    <div class="p"></div>
-                    <div class="p" style="padding-top: 10px; font-size: small;">*Accurate as of 8/23/2022</div>
-                </div>  
+                    <div class="p" style="font-size: large;margin-top: 30px;">We accomplish this by locking the majority of QI held by STARQI inside of a renewing 4 year lock, we then vote every 2 weeks on whatever proposals are paying the highest bribes. The bribes we collect increase staking returns by over 200%*.</div>
+
+                    <div class="p" style="padding-top: 10px; font-size: small;">*Accurate as of 8/23/2022.</div>
+                </div>   -->
             </div>
         </div>
     </div>

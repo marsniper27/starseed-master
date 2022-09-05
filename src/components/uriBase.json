@@ -1,0 +1,9 @@
+{
+    "name": "Gouda Cheese",
+    "description": "A sweet and creamy cheese from the Netherlands; one of the oldest recorded cheeses in the world still made today.",
+    "image": "https://cheese.example/gouda.png",
+    "attributes": {
+       "trait_type": "Tastiness",
+       "value": 100
+    }
+ }

@@ -1,7 +1,7 @@
 <template>
 <main id="main">
     <div class="content">
-        <h4 class="heading center">Welcome to the StarSeed's Exchange</h4>
+        <h4 class="heading center">StarSeed's Exchange</h4>
         <p class="sm-heading center">A decentralized finance protocol</p>
         <div class="cards">
             <div class="container">
@@ -314,7 +314,7 @@ export default {
             await this.getTotalSupply();
             await this.getEmissionRate();
             //await this.getLpPoolValue();
-            await this.getPoolValue();
+            // await this.getPoolValue();
             this.poolsValue = commify(this.tempValue.toFixed(4));
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
             await this.getCurrentSupply();

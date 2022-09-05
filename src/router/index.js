@@ -55,6 +55,11 @@ const routes = [
     component: () => import('../views/Operator.vue')
   },
   {
+    path: '/starStations',
+    name: 'Star Stations',
+    component: () => import('../views/StarStations.vue')
+  },
+  {
     path: '*',
     name: '404',
     component: () => import('../views/404.vue')
