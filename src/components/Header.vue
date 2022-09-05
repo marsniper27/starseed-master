@@ -156,7 +156,7 @@ export default {
     watch: {
         "$route.params": {
             handler(newValue, oldValue) {
-                console.log(this.$route.path)
+                // console.log(this.$route.path)
                 if(this.$route.name == 'Pool'||this.$route.path == '/'){
                     this.pool = true;
                     this.stard = false;
@@ -171,20 +171,20 @@ export default {
     },
     created() {
         this.webGL()
-        console.log(this.$route.name)
-        console.log(this.pool)
-        console.log(this.stard)
+        // console.log(this.$route.name)
+        // console.log(this.pool)
+        // console.log(this.stard)
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.on('accountsChanged', () => {
                 window.location.reload();
             })
-            console.log('MetaMask is installed!');
+            // console.log('MetaMask is installed!');
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
                 this.MetaMask();
             }
             else{
-                console.log("account already set");
+                // console.log("account already set");
                 this.account = this.$route.params.account;
                 this.connected = true;
                 this.getPrice();
@@ -302,7 +302,7 @@ export default {
         },
         chart(){
             window.open(
-                'https://www.dextools.io/app/polygon/pair-explorer/0xa740f2d3a26fc0e5ea730efa319086801f27b389',
+                'https://www.dextools.io/app/polygon/pair-explorer/0xee334207453191f4594836dc6c4546dfc2bd08c5',
                 '_blank' // <- This is what makes it open in a new window.
             );
         },
