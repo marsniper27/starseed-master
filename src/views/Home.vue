@@ -294,15 +294,19 @@ export default {
             }
         
             /* Moralis init code */
-            const NODE_URL = "https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
+            const NODE_URL = "https://polygon-mainnet.g.alchemy.com/v2/uJjqHVVvGuEwNoE5IplgSquR4KrVoDEd";//"https://speedy-nodes-nyc.moralis.io/3e80fd791515a22ed9b5992f/polygon/mainnet";
             const provider = new Web3.providers.HttpProvider(NODE_URL);
             const moralisWeb3 = new Web3(provider)
-            this.moralisStarContractInstance = new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);;//new moralisWeb3.eth.Contract(this.starContractAbi, this.starContractAddress);
-            this.moralisMasterChefContractInstance = new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);//new moralisWeb3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);
+            this.moralisStarContractInstance = new moralisWeb3.eth.Contract(this.starContractAbi, this.starContractAddress);//new this.web3.eth.Contract(this.starContractAbi, this.starContractAddress);
+            this.moralisMasterChefContractInstance = new moralisWeb3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);//new this.web3.eth.Contract(this.masterChefContractAbi, this.masterChefContractAddress);//
 
             const serverUrl = "https://vwtvxfrruomo.usemoralis.com:2053/server";
             const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
-            Moralis.start({ serverUrl, appId });
+            //Moralis.start({ serverUrl, appId });
+            
+            Moralis.start({
+                apiKey: "8osEXQq8FCwInCoL504Jdun6hZyX2cjpjirBUepPi7YRRrkqqlOFBRWTnY6uyBC2",
+            });
             var price =  await Functions.getPrice(this.starContractAddress,0);
             if(price != undefined){
                 this.starValue = price;
@@ -314,7 +318,7 @@ export default {
             await this.getTotalSupply();
             await this.getEmissionRate();
             //await this.getLpPoolValue();
-            // await this.getPoolValue();
+            await this.getPoolValue();
             this.poolsValue = commify(this.tempValue.toFixed(4));
             //setTimeout(()=>{this.getCurrentSupply()}, 1000);
             await this.getCurrentSupply();
@@ -472,16 +476,17 @@ export default {
                 }
         },
         async getTotalSupply(){
-            try{
-                var receipt = await this.moralisStarContractInstance.methods.totalSupply().call()
-                    //console.log("get total supply: " + receipt)
-                    if(receipt == undefined){receipt = 0;}
-                    this.totalMinted = (parseFloat(ethers.utils.formatUnits(receipt,18)));
-            }catch(error){
-                console.log("get total supply error: " + error);
-            }
+            // try{
+            //     var receipt = await this.moralisStarContractInstance.methods.totalSupply().call()
+            //         //console.log("get total supply: " + receipt)
+            //         if(receipt == undefined){receipt = 0;}
+            //         this.totalMinted = (parseFloat(ethers.utils.formatUnits(receipt,18)));
+            // }catch(error){
+            //     console.log("get total supply error: " + error);
+            // }
+            this.totalMinted = 111111
         },
-        getCurrentSupply(){            
+        async getCurrentSupply(){            
             this.currentSupply = (((+this.totalMinted) - (+this.burnedStarFloat)).toFixed(4));
             this.marketCap = commify((this.currentSupply*this.starValue).toFixed(4));
             this.currentSupply = commify(this.currentSupply)

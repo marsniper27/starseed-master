@@ -537,7 +537,7 @@ export async function getPrice(address,chain){
     if(chain == 1){
         options = {
             address: address,
-            chain: "fantom",
+            chain: 0xFA,
             exchange: "spookyswap"
         };
     }
