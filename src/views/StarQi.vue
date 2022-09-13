@@ -39,7 +39,7 @@
                         <div class = 'p' style="font-size: large;margin-top:30px; vertical-align: middle;">To reduce slippage costs when trading Star, break your trade up into smaller units.</div>
                     </div>
                     <div style="width:580px; display:flex; margin-top:30px; justify-content: space-between;">
-                        <button class="contractButton" @click="viewExplorer('https://quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" >Trade STARQI</button> 
+                        <button class="contractButton" @click="viewExplorer('https://legacy.quickswap.exchange/#/swap?inputCurrency=0x580A84C73811E1839F75d86d75d88cCa0c241fF4&outputCurrency=0x825A381355A51f50a39a18b7c69627380CA38B80')" >Trade STARQI</button> 
                         <button class="contractButton" @click="viewExplorer('https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80')" >STARQI Contract Address</button>
                     </div>
                 </div>
