@@ -9,30 +9,34 @@
                 <button v-if="stard" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
             
-                <button style="background-color:purple;
-                    background-image: linear-gradient(to right, #d35ff6 , #a700ee);
-                    color: #fff;
-                    border: none;
-                    box-shadow: 0px 0px 7px -1px #000;
-                    padding: 6px 11px;
-                    border-radius: 20px;
-                    font-size: 15px;
-                    text-transform: uppercase;
-                    font-weight: bold;
-                    width: fit-content;
-                    margin-left: 10px;">STAR Balance: {{balance}}
-                </button>
-                <h3 class="account">
-                <!-- Connected Account: <span id="account" class="purple">{{accountSet}}</span> -->
-                <!-- <button v-if="pool" @click="Functions.AddStar()" class="addStar">Add STAR to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                
+                <!-- <h3 class="account">
+                Connected Account: <span id="account" class="purple">{{accountSet}}</span>
+                <button v-if="pool" @click="Functions.AddStar()" class="addStar">Add STAR to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="pool" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="stard" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button> -->
-<!--                     
-                <button>STAR Balance: {{balance}}</button> -->
-            </h3>
+                <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                    
+                <button>STAR Balance: {{balance}}</button>
+            </h3> -->
+            <button style="background-color:purple;
+                background-image: linear-gradient(to right, #d35ff6 , #a700ee);
+                color: #fff;
+                border: none;
+                box-shadow: 0px 0px 7px -1px #000;
+                padding: 6px 11px;
+                border-radius: 20px;
+                font-size: 15px;
+                text-transform: uppercase;
+                font-weight: bold;
+                width: fit-content;
+                margin-left: 10px;
+                position: fixed;
+                right: 12em;">
+                STAR Balance: {{balance}}
+            </button>
             <div v-if="!connected" class="connect">
-                <button width="30px" @click="MetaMask()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
+                <button @click="MetaMask()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
             </div>
             <div v-if="connected" class="disconnect">
                 <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>

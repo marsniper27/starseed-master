@@ -168,6 +168,7 @@ export default {
                 this.connected = true;
                 this.price,this.qiLocked = await Functions.getSarQi();
                 this.qiPrice = await Functions.getPrice("0x580A84C73811E1839F75d86d75d88cCa0c241fF4",0)
+                this.qiPrice = await Functions.getPrice("0x5175a069642dd288af118bd3365b22456ab7bab2",0)
                 await this.getBalance();
 
                 //this.price = await Functions.getPrice("0x825A381355A51f50a39a18b7c69627380CA38B80",1);

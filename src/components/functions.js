@@ -622,6 +622,7 @@ export async function getSarQi(){
             // console.log("starQi-QI Pair info")
             // console.log(pair)
             console.log("starqi price: " + pair.token0Price)
+            console.log(pair.token0Price.toSignificant(6))
             console.log(pair.token1Price.toSignificant(6))
             console.log(pair.reserve0.toSignificant(6))
             let prices = {
