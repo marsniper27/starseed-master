@@ -15,7 +15,7 @@
                             <div>Weight: {{station.attributes[0].value}}</div>
                             <div>Class: {{classes[station.Class].class}}</div>
                             <div>{{classes[station.Class].description}}</div>
-                            <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="updateWeight(station)">Update Weight</button>
+                            <!-- <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="updateWeight(station)">Update Weight</button> -->
                         </div>
                     </div>
                 </div>
