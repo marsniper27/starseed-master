@@ -15,9 +15,14 @@ const appId = "z1N9pHNcRMvVK7QAvDi13firPwgNaoNuzb1fYD9T";
 // Moralis.start({ serverUrl, appId })
 Moralis.start({
     apiKey: "8osEXQq8FCwInCoL504Jdun6hZyX2cjpjirBUepPi7YRRrkqqlOFBRWTnY6uyBC2",
-  });
+});
 
 export async function fetchPrice(options){
     // return Moralis.Web3API.token.getTokenPrice(options);
-     return await Moralis.EvmApi.token.getTokenPrice(options);
+    try{
+      var price = await Moralis.EvmApi.token.getTokenPrice(options);
+      return price.data
+    }catch(error){
+      console.log("fetch price error: " + error)
+    }
 }

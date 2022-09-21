@@ -628,6 +628,21 @@ canvas{
     border: 1px solid #ccc;
   }
 }
+.addToken{
+  background: #48c2f8;
+  background-color: #48c2f8; /* For browsers that do not support gradients */
+  background-image: linear-gradient(to right, #48c2f8 , #009bf2);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  img{
+    padding: 0px;
+  }
+}
 .fgVjtZ svg {
   fill: rgb(143, 128, 186);
 }
@@ -723,7 +738,11 @@ canvas{
   }
   .showMenu{
     transform: translateX(0%);
-  }.showServant{
+  }
+  .showServant{
+    transform: translateX(0%);
+  }
+  .showButtons{
     transform: translateX(0%);
   }
 }

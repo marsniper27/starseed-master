@@ -56,8 +56,13 @@ const routes = [
   },
   {
     path: '/starStations',
-    name: 'Star Stations',
+    name: 'Nexus Star Stations',
     component: () => import('../views/StarStations.vue')
+  },
+  {
+    path: '/starStationsWallet',
+    name: 'Nexus Star Stations',
+    component: () => import('../views/StarStationsWallet.vue')
   },
   {
     path: '*',

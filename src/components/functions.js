@@ -504,7 +504,7 @@ async function getPoolInfo(itm,chain){
         itm.stakedLP = receipt.totalLp;
         if(itm.pid>4){
             var price = await getPrice(itm.address,chain);
-            if(price != "no liquidity"){
+            if(price != "no liquidity" && price != undefined){
                 itm.price = price;
             }
         }
@@ -544,8 +544,8 @@ export async function getPrice(address,chain){
     try{
         const price = await moralis.fetchPrice(options);
         //console.log(price);
-        //console.log(address+" Price: " +price.usdPrice)
-        return(price.data.usdPrice);
+        console.log(address+" Price: " +price.usdPrice)
+        return(price.usdPrice);
     }catch(error){
         console.log("get price error: " + address + " " +error)
         console.log(error)

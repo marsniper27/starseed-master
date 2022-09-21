@@ -340,8 +340,8 @@ var tokenPools = [
          supply: null,
          decimals:18,
          stakedLP:null,
-         apr: null,
-         price:10
+         apr: 7.84,
+         price:9.6198
      },
     //  {
     //      name: "STARQI - QI",

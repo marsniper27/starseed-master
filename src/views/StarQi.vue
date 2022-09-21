@@ -2,7 +2,16 @@
 <main id="main">
     <div class="content">
         <h4 class="heading center">STARQI PROTOCOL</h4>
-        <div class="cards">            
+        <div class="cards">       
+            
+            <div class="container" style="max-width:1600px; overflow:visible;" >
+                <div style="display: flex; justify-content: center; padding-top: 10px; width:50%; padding-left: 12%;">
+                    <button @click="Functions.AddStar()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                </div>
+                <div style="display: flex; justify-content: center; padding-top: 10px; width:50%; padding-right: 12%;">
+                    <button @click="Functions.AddStar()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                </div>    
+            </div> 
             <div class="container" style="max-width:1600px; overflow:visible;" >
                 <div class="card" style="min-width:320px; justify-content: center; margin-bottom: 40px;">
                     <div class='grid' style="min-width:100%;justify-content: center;">
@@ -22,12 +31,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" style="width:700px; justify-content: center; text-align: center; margin-left: 50px; margin-bottom: 40px;">
-                    <div style="width:580px; display: flex; justify-content: space-between; padding-top: 10px;">
-                        <button @click="Functions.AddStar()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                        <button @click="Functions.AddStar()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
-                    </div>
-                    <div class="p" style ="width:100%; font-size: x-large;  text-align: center;">Current Ratio: 1 STARQI to {{price}}QI</div>
+                <div class="card" style="min-width:320px; justify-content: center; margin-bottom: 40px;">
+                    <div class="p" style ="width:95%; font-size: x-large;  text-align: center;">Current Ratio:</div>
+                    <div class="p" style ="width:95%; font-size: x-large;  text-align: center;">1 STARQI to {{price}}QI</div>
+                </div>
+                <!-- <div class="card" style="width:700px; justify-content: center; text-align: center; margin-left: 50px; margin-bottom: 40px;"> -->
+                <div class="card" style="width:320px; justify-content: center; margin-left: 50px; margin-bottom: 40px;">
                     <div class="p" style ="width:100%; font-size: x-large; text-align: center;">Total QI Locked: {{qiLocked}}</div>
                 </div>
                 <div class="card" style="max-width:700px; width:700px;vertical-align: middle !important; margin-bottom: 40px;">
@@ -97,7 +106,7 @@ export default {
             price:"1.12",
             qiPrice:"",
             qiLocked:"90195.528437275939187828",
-            APY:"58%",
+            APY:"51%",
             starqiChart:"not set",
             account: "Not Connected",
             selectedABI:false,
