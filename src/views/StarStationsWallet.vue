@@ -16,7 +16,7 @@
                             <div>Weight: {{station.weight}}</div>
                             <div>Class: {{station.attributes[0].value}}</div>
                             <div>{{station.description}}</div>
-                            <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="transferStation(station)">Transfer</button>
+                            <!-- <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="transferStation(station)">Transfer</button> -->
                         </div>
                     </div>
                 </div>
