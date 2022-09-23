@@ -7,15 +7,15 @@
                 <div class="container" style="width:90%">
                     <div class="card" v-for="station in starStations" v-bind:class="{'larger':station.type}" style="align-items:center; overflow: visible;min-height:600px;text-align: center; ">
                         <div>
-                            <div style="font-size:x-large">{{station.name}}</div>
+                            <div style="font-size:x-large">{{station.name}} #{{station.TokenId}}</div>
                             <video controls width="300" height="300"
                                             autoplay loop muted preload="auto"
                                             poster="poster.png">
                                         <source :src=station.image type="video/mp4">
                             </video>
-                            <div>Weight: {{station.attributes[0].value}}</div>
-                            <div>Class: {{classes[station.Class].class}}</div>
-                            <div>{{classes[station.Class].description}}</div>
+                            <div>Weight: {{station.weight/1000}}</div>
+                            <div>Class: {{station.attributes[0].value}}</div>
+                            <div>{{station.description}}</div>
                             <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="transferStation(station)">Transfer</button>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
                             .then((response) =>response.json())
                             .then((data) => {
                                 data.TokenId = nftId;
-                                data.Class = stationInfo[nftId].class;
+                                data.weight = stationInfo[nftId].weight;
                                 this.starStations.push(data);
                             })
                     }
