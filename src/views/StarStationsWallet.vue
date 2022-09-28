@@ -13,7 +13,8 @@
                                             poster="poster.png">
                                         <source :src=station.image type="video/mp4">
                             </video>
-                            <div>Weight: {{station.weight}}</div>
+                            <div>APR: {{station.apr}}%</div>
+                            <!-- <div>Weight: {{station.weight}}</div> -->
                             <div>Class: {{station.attributes[0].value}}</div>
                             <div>{{station.description}}</div>
                             <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="transferClick(station.TokenId)">Transfer</button>
@@ -230,19 +231,24 @@ import { AddressZero } from '@ethersproject/constants';
                                     case 'Freighter Class':
                                         data.upgradeRate = this.classes[0].upgradeRate
                                         data.weight = this.classes[0].startingWeight
+                                        data.apr = this.classes[0].startApr
                                     case 'Meteor Class':
                                         data.upgradeRate = this.classes[1].upgradeRate
                                         data.weight = this.classes[1].startingWeight
+                                        data.apr = this.classes[1].startApr
                                     case 'City Class':
                                         data.upgradeRate = this.classes[2].upgradeRate
                                         data.weight = this.classes[2].startingWeight
+                                        data.apr = this.classes[2].startApr
                                     case 'Planet Class':
                                         data.upgradeRate = this.classes[3].upgradeRate
                                         data.weight = this.classes[3].startingWeight
+                                        data.apr = this.classes[3].startApr
                                 }
                                 data.TokenId = nftId;
                                 var addedWeight = (data.upgradeRate*(this.totalStations-nftId-1))*data.weight/100
-                                data.weight += addedWeight;
+                                data.apr = (((data.weight + addedWeight)/data.weight)*data.apr)
+                                data.apr = data.apr.toFixed(2)
                                 this.starStations.push(data);
                             })
                     }

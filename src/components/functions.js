@@ -112,6 +112,68 @@ export async function AddStar() {
     }
 }
 
+export async function AddSTARQI() {
+    const tokenAddress = '0x5175a069642dd288af118bd3365b22456ab7bab2';
+    const tokenSymbol = 'STARQI';
+    const tokenDecimals = 18;
+    const tokenImage = 'https://storageapi2.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/logo-1.png';
+
+    try {
+        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        const wasAdded = await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                options: {
+                    address: tokenAddress, // The address that the token is at.
+                    symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                    decimals: tokenDecimals, // The number of decimals in the token
+                    image: tokenImage, // A string url of the token logo
+                },
+            },
+        });
+
+        if (wasAdded) {
+            console.log('Thanks for your interest!');
+        } else {
+            console.log('Your loss!');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function AddQi() {
+    const tokenAddress = '0x580A84C73811E1839F75d86d75d88cCa0c241fF4';
+    const tokenSymbol = 'QI';
+    const tokenDecimals = 18;
+    const tokenImage = 'https://polygonscan.com/token/images/qidao_32.png';
+
+    try {
+        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        const wasAdded = await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                options: {
+                    address: tokenAddress, // The address that the token is at.
+                    symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                    decimals: tokenDecimals, // The number of decimals in the token
+                    image: tokenImage, // A string url of the token logo
+                },
+            },
+        });
+
+        if (wasAdded) {
+            console.log('Thanks for your interest!');
+        } else {
+            console.log('Your loss!');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export async function AddDao() {
     const tokenAddress = '0x17840DF7CAa07e298b16E8612157B90ED231C973';
     const tokenSymbol = 'DAO';

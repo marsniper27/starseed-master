@@ -6,10 +6,10 @@
             
             <div class="container" style="max-width:1600px; overflow:visible;" >
                 <div style="display: flex; justify-content: center; padding-top: 10px; width:50%; padding-left: 12%;">
-                    <button @click="Functions.AddStar()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                    <button @click="Functions.AddSTARQI()" class="addToken">Add STARQI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 </div>
                 <div style="display: flex; justify-content: center; padding-top: 10px; width:50%; padding-right: 12%;">
-                    <button @click="Functions.AddStar()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
+                    <button @click="Functions.AddQi()" class="addToken">Add QI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 </div>    
             </div> 
             <div class="container" style="max-width:1600px; overflow:visible;" >
@@ -100,6 +100,7 @@ export default {
     components: {},
     data() {
         return {
+            Functions:Functions,
             stardLogo:logoMain,
             connected:false,
             web3:false,

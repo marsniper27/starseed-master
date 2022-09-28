@@ -9,6 +9,7 @@ var classes=[
         price:2,
         maxUpgrade:2000,
         apr: "22-29%",
+        startApr:22.08,
         pid:0
     },
     //METEOR STATION
@@ -22,6 +23,7 @@ var classes=[
         price:11,
         maxUpgrade:20,
         apr: "28-37%",
+        startApr:28.10,
         pid:1
     },
     //CITY STATION
@@ -35,6 +37,7 @@ var classes=[
         price:33,  
         maxUpgrade:66,
         apr: "29-39%",
+        startApr:29.44,
         pid:2
     },
     //PLANET STATION
@@ -48,6 +51,7 @@ var classes=[
         price:111,
         maxUpgrade:240,
         apr: "30-41%",
+        startApr:30.50,
         pid:3
     }
 ]
