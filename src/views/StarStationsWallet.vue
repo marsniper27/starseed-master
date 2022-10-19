@@ -98,7 +98,7 @@
     import meteor from '../assets/videos/square-Space junker.mp4'
     import city from '../assets/videos/Square-Automated Planet.mp4'
     import planet from '../assets/videos/Atlantean Mothership.mp4'
-import { AddressZero } from '@ethersproject/constants';
+    import { AddressZero } from '@ethersproject/constants';
     
     var pools = require( "./pools.js");
     const classes = require( "../components/StationClasses.js");
@@ -237,21 +237,25 @@ import { AddressZero } from '@ethersproject/constants';
                                         data.weight = this.classes[0].startingWeight
                                         data.apr = this.classes[0].startApr
                                         data.image = freighter
+                                        break
                                     case 'Meteor Class':
                                         data.upgradeRate = this.classes[1].upgradeRate
                                         data.weight = this.classes[1].startingWeight
                                         data.apr = this.classes[1].startApr
                                         data.image = meteor
+                                        break
                                     case 'City Class':
                                         data.upgradeRate = this.classes[2].upgradeRate
                                         data.weight = this.classes[2].startingWeight
                                         data.apr = this.classes[2].startApr
                                         data.image = city
+                                        break
                                     case 'Planet Class':
                                         data.upgradeRate = this.classes[3].upgradeRate
                                         data.weight = this.classes[3].startingWeight
                                         data.apr = this.classes[3].startApr
                                         data.image = planet
+                                        break
                                 }
                                 data.TokenId = nftId;
                                 var addedWeight = (data.upgradeRate*(this.totalStations-nftId-1))*data.weight/100
