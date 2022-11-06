@@ -191,14 +191,15 @@ body,html {
 .sideBar {
   position: fixed;
   top: 70px;
-  left: 0;
+  left: 0;	
+  z-index: 9999;	
   z-index: 2;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   height: calc(100% - 120px);
   background: rgb(0 0 0 / 78%);
-  width: 200px;
+  width: 300px;
 }
 .submenu{
   position: fixed;
@@ -731,10 +732,10 @@ canvas{
   .sideBar{
     transform: translateX(-100%);
     transition: all 500ms;
-    z-index: 2;
+    z-index: 20;
     height: calc(100% - 69px);
     top:69px;
-    width: 200px;
+    width: 300px;
   }
   .earning{
     width: 100%;

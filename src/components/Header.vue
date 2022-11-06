@@ -4,11 +4,11 @@
         <div class="topBar">
             <!-- <i class="fas fa-layer-minus toggle" @click="toggleMenu"></i> -->
             <img src="../assets/Starseed-Dimension3.jpg" class="logo" @click="toggleMenu">
+            <div v-bind:class = "{'showMenu':showMenu}" style = "overflow:auto;">
                 <button v-if="pool" @click="Functions.AddStar()" class="addStar">Add STAR to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="pool" @click="Functions.AddDao()" class="addStar">Add DAO to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="stard" @click="Functions.AddStard()" class="addStar">Add STARD to <img width="30px" src="../assets/metamask-fox.svg"></button>
                 <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
-            
                 
                 <!-- <h3 class="account">
                 Connected Account: <span id="account" class="purple">{{accountSet}}</span>
@@ -18,43 +18,45 @@
                 <button v-if="stard" @click="Functions.AddMai()" class="addStar">Add MAI to <img width="30px" src="../assets/metamask-fox.svg"></button>
                     
                 <button>STAR Balance: {{balance}}</button>
-            </h3> -->
-            <button style="background-color:purple;
-                background-image: linear-gradient(to right, #d35ff6 , #a700ee);
-                color: #fff;
-                border: none;
-                box-shadow: 0px 0px 7px -1px #000;
-                padding: 6px 11px;
-                border-radius: 20px;
-                font-size: 15px;
-                text-transform: uppercase;
-                font-weight: bold;
-                width: fit-content;
-                margin-left: 10px;
-                position: fixed;
-                right: 12em;">
-                STAR Balance: {{balance}}
-            </button>
-            <div v-if="!connected" class="connect">
-                <button @click="MetaMask()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
-            </div>
-            <div v-if="connected" class="disconnect">
-                <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
+                </h3> -->
+                <button style="background-color:purple;
+                    background-image: linear-gradient(to right, #d35ff6 , #a700ee);
+                    color: #fff;
+                    border: none;
+                    box-shadow: 0px 0px 7px -1px #000;
+                    padding: 6px 11px;
+                    border-radius: 20px;
+                    font-size: 15px;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    width: fit-content;
+                    margin-left: 10px;
+                    position: fixed;
+                    right: 12em;">
+                    STAR Balance: {{balance}}
+                </button>
+                <div v-if="!connected" class="connect">
+                    <button @click="MetaMask()" class="connectWallet"><i width="30px" class="fas fa-network-wired"></i>Connect</button>
+                </div>
+                <div v-if="connected" class="disconnect">
+                    <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
+                </div>
             </div>
         </div>
-        <div class="sideBar" v-bind:class = "{'showMenu':showMenu}" style = "overflow:auto; width:200px;">
-            <div style = "width:200px;">
-                <ul style = "width:200px;">
+        <div class="sideBar" v-bind:class = "{'showMenu':showMenu}" style = "overflow:auto; width:240px;">
+            <div style = "width:220px;">
+                <ul style = "width:220px;">
                     <li @click="toggleMenu" v-bind:class="{'active':$route.path == '/'}">
                         <router-link :to="{path:'/'}">
                             <!-- <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG" ><path d="../assets/StarQi-Icons/EPS/01-home.eps"></path></svg><path d="M9.99998 19V14H14V19C14 19.55 14.45 20 15 20H18C18.55 20 19 19.55 19 19V12H20.7C21.16 12 21.38 11.43 21.03 11.13L12.67 3.59997C12.29 3.25997 11.71 3.25997 11.33 3.59997L2.96998 11.13C2.62998 11.43 2.83998 12 3.29998 12H4.99998V19C4.99998 19.55 5.44998 20 5.99998 20H8.99998C9.54998 20 9.99998 19.55 9.99998 19Z"></path></svg> -->
                             <img height=24 src="../assets/StarQi-Icons/PNG/01-home-01.png">
                             <span>Home</span>
                         </router-link>
-                    </li><li @click="stations" v-bind:class="{'active':showStations||$route.path == '/starStations'||$route.path == '/starStationsWallet'}">
+                    </li>
+                    <li @click="stations" v-bind:class="{'active':showStations||$route.path == '/starStations'||$route.path == '/starStationsWallet'}">
                         <router-link :to="$route.path">
                             <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
-                            <span>Nexus Star Stations</span>
+                            <span>Star Stations</span>
                         </router-link>
                     </li>
                     <div v-if="showStations" class="subMenu" v-bind:class = "{'showStations':showStations}">
@@ -78,6 +80,33 @@
                             </a>
                         </li> 
                     </div>
+                    <li @click="command" v-bind:class="{'active':showCommand||$route.path == '/starCommand'||$route.path == '/starCommandWallet'}">
+                        <router-link :to="$route.path">
+                            <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
+                            <span>Star Command Bridge</span>
+                        </router-link>
+                    </li>
+                    <div v-if="showCommand" class="subMenu" v-bind:class = "{'showCommand':showCommand}">
+                        <li  v-bind:class="{'active':$route.path == '/starCommand'}">
+                            <router-link :to="{path:'/starCommand'}">
+                                <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
+                                <span>Mint Command Bridge</span>
+                            </router-link>
+                        </li>
+                        <li  v-bind:class="{'active':$route.path == '/starCommandWallet'}">
+                            <router-link :to="{path:'/starCommandWallet'}">
+                                <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M7.5 13C7.5 11.8954 8.39543 11 9.5 11H12.5C13.6046 11 14.5 11.8954 14.5 13V15C14.5 16.1046 13.6046 17 12.5 17H9.5C8.39543 17 7.5 16.1046 7.5 15V13Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 2C8.39543 2 7.5 2.89543 7.5 4V6.49482C7.5 6.93167 7.2113 7.30895 6.81834 7.49981C5.15004 8.31009 4 10.0207 4 12V17C4 19.2091 5.79086 21 8 21H14C16.2091 21 18 19.2091 18 17V12C18 11.4175 17.9004 10.8583 17.7173 10.3385L17.7892 10.297C19.4786 9.32167 20.0574 7.16153 19.082 5.47221C18.1552 3.86682 16.1534 3.25957 14.5 4.05146V4C14.5 2.89543 13.6046 2 12.5 2H9.5ZM9.5 6.25V4H12.5V6.25H9.5ZM9.22663 7.75C8.89473 8.46917 8.30318 9.00205 7.69211 9.29884C6.68638 9.78731 6 10.8154 6 12V17C6 18.1046 6.89543 19 8 19H14C15.1046 19 16 18.1046 16 17V12C16 10.8154 15.3136 9.78731 14.3079 9.29884C13.6968 9.00205 13.1053 8.46917 12.7734 7.75H9.22663ZM14.5 6.3226V6.49482C14.5 6.93167 14.7887 7.30895 15.1817 7.49981C15.7529 7.77726 16.2634 8.16029 16.6878 8.62352L16.7892 8.56495C17.522 8.1419 17.773 7.20495 17.35 6.47221C16.9346 5.75269 16.0213 5.49542 15.2914 5.89229L14.5 6.3226Z"></path></svg>
+                                <span>Command Bridge Wallet</span>
+                            </router-link>
+                        </li>
+                         <li  v-bind:class="{'active':$route.path == '/stard'}"> 
+                            <a href="https://opensea.io/collection/nexus-star-station-v3" target="_new">
+                                <!-- <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M5 7C5 6.44772 4.55228 6 4 6C3.44772 6 3 6.44772 3 7V18C3 19.1046 3.89543 20 5 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H5V7Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19 17H7C6.44772 17 6 16.5523 6 16V12C6 11.4477 6.44772 11 7 11H10V10C10 9.44772 10.4477 9 11 9H14V7C14 6.44772 14.4477 6 15 6H19C19.5523 6 20 6.44772 20 7V16C20 16.5523 19.5523 17 19 17ZM16 8H18V15H16V8ZM12 15H14V11H12V15ZM10 13H8V15H10V13Z"></path></svg> -->
+                                <img height=24 src="../assets/StarQi-Icons/PNG/05-Trade-Star-01.png">
+                                <span>NFT Marketplace</span>
+                            </a>
+                        </li> 
+                    </div>
                     <li @click="toggleMenu" v-bind:class="{'active':$route.path == '/pool'}">
                         <router-link :to="{path:'/pool'}">
                             <!-- <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M7.5 13C7.5 11.8954 8.39543 11 9.5 11H12.5C13.6046 11 14.5 11.8954 14.5 13V15C14.5 16.1046 13.6046 17 12.5 17H9.5C8.39543 17 7.5 16.1046 7.5 15V13Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 2C8.39543 2 7.5 2.89543 7.5 4V6.49482C7.5 6.93167 7.2113 7.30895 6.81834 7.49981C5.15004 8.31009 4 10.0207 4 12V17C4 19.2091 5.79086 21 8 21H14C16.2091 21 18 19.2091 18 17V12C18 11.4175 17.9004 10.8583 17.7173 10.3385L17.7892 10.297C19.4786 9.32167 20.0574 7.16153 19.082 5.47221C18.1552 3.86682 16.1534 3.25957 14.5 4.05146V4C14.5 2.89543 13.6046 2 12.5 2H9.5ZM9.5 6.25V4H12.5V6.25H9.5ZM9.22663 7.75C8.89473 8.46917 8.30318 9.00205 7.69211 9.29884C6.68638 9.78731 6 10.8154 6 12V17C6 18.1046 6.89543 19 8 19H14C15.1046 19 16 18.1046 16 17V12C16 10.8154 15.3136 9.78731 14.3079 9.29884C13.6968 9.00205 13.1053 8.46917 12.7734 7.75H9.22663ZM14.5 6.3226V6.49482C14.5 6.93167 14.7887 7.30895 15.1817 7.49981C15.7529 7.77726 16.2634 8.16029 16.6878 8.62352L16.7892 8.56495C17.522 8.1419 17.773 7.20495 17.35 6.47221C16.9346 5.75269 16.0213 5.49542 15.2914 5.89229L14.5 6.3226Z"></path></svg> -->
@@ -88,7 +117,7 @@
                     <li @click="servant" v-bind:class="{'active':showServant||$route.path == '/starqi'||$route.path == '/regen'||$route.path == '/stard'}">
                         <router-link :to="$route.path">
                             <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M5 7C5 6.44772 4.55228 6 4 6C3.44772 6 3 6.44772 3 7V18C3 19.1046 3.89543 20 5 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H5V7Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19 17H7C6.44772 17 6 16.5523 6 16V12C6 11.4477 6.44772 11 7 11H10V10C10 9.44772 10.4477 9 11 9H14V7C14 6.44772 14.4477 6 15 6H19C19.5523 6 20 6.44772 20 7V16C20 16.5523 19.5523 17 19 17ZM16 8H18V15H16V8ZM12 15H14V11H12V15ZM10 13H8V15H10V13Z"></path></svg>
-                            <span>StarSeed Protocols</span>
+                            <span>Star Protocols</span>
                         </router-link>
                     </li>
                     <div v-if="showServant" class="subMenu" v-bind:class = "{'showServant':showServant}">
@@ -116,7 +145,7 @@
                         <a href="https://starseed-command.web.app/" target="_new">
                             <!-- <svg viewBox="0 0 24 24" width="24px" color="text" xmlns="http://www.w3.org/2000/svg" class="sc-bdfBwQ eNHRIG"><path d="M7.5 13C7.5 11.8954 8.39543 11 9.5 11H12.5C13.6046 11 14.5 11.8954 14.5 13V15C14.5 16.1046 13.6046 17 12.5 17H9.5C8.39543 17 7.5 16.1046 7.5 15V13Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 2C8.39543 2 7.5 2.89543 7.5 4V6.49482C7.5 6.93167 7.2113 7.30895 6.81834 7.49981C5.15004 8.31009 4 10.0207 4 12V17C4 19.2091 5.79086 21 8 21H14C16.2091 21 18 19.2091 18 17V12C18 11.4175 17.9004 10.8583 17.7173 10.3385L17.7892 10.297C19.4786 9.32167 20.0574 7.16153 19.082 5.47221C18.1552 3.86682 16.1534 3.25957 14.5 4.05146V4C14.5 2.89543 13.6046 2 12.5 2H9.5ZM9.5 6.25V4H12.5V6.25H9.5ZM9.22663 7.75C8.89473 8.46917 8.30318 9.00205 7.69211 9.29884C6.68638 9.78731 6 10.8154 6 12V17C6 18.1046 6.89543 19 8 19H14C15.1046 19 16 18.1046 16 17V12C16 10.8154 15.3136 9.78731 14.3079 9.29884C13.6968 9.00205 13.1053 8.46917 12.7734 7.75H9.22663ZM14.5 6.3226V6.49482C14.5 6.93167 14.7887 7.30895 15.1817 7.49981C15.7529 7.77726 16.2634 8.16029 16.6878 8.62352L16.7892 8.56495C17.522 8.1419 17.773 7.20495 17.35 6.47221C16.9346 5.75269 16.0213 5.49542 15.2914 5.89229L14.5 6.3226Z"></path></svg> -->
                             <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
-                            <span>StarSeed Command</span>
+                            <span>StarSeed Command MMO</span>
                         </a>
                     </li>            
                     <li  @click="toggleMenu">
@@ -189,6 +218,7 @@ export default {
             showMenu:false,
             showServant:false,
             showStations:false,
+            showCommand:false,
             connected:false,
             web3:null,
             masterChefContractAbi : [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"BonusMupltiplier","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"previousAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAmount","type":"uint256"}],"name":"EmissionRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBalance","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOperator","type":"address"},{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amountLockedUp","type":"uint256"}],"name":"RewardLockedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_DEPOSIT_FEE_RATE","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_HARVEST_INTERVAL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_STAR_PER_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"canHarvest","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"collectFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"compound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"fundMasterChef","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getDepositFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvestStar","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingStar","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accStarPerShare","type":"uint256"},{"internalType":"uint16","name":"depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"harvestInterval","type":"uint256"},{"internalType":"uint256","name":"totalLp","type":"uint256"},{"internalType":"uint256","name":"depositFees","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"remainingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint16","name":"_depositFeeBP","type":"uint16"},{"internalType":"uint256","name":"_harvestInterval","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_devAddress","type":"address"}],"name":"setDevAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"setStarId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"setstarContractAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"star","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"starPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startFarming","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocation","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLockedUpRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStarInPools","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOperator","type":"address"}],"name":"transferOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"bool","name":"_withUpdate","type":"bool"}],"name":"updateAllocPoint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bonus","type":"uint256"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_starPerBlock","type":"uint256"}],"name":"updateEmissionRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"rewardLockedUp","type":"uint256"},{"internalType":"uint256","name":"nextHarvestUntil","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}],
@@ -253,28 +283,50 @@ export default {
             if(this.showMenu){
                 if(this.showServant){this.showServant=false}
                 if(this.showStations){this.showStations=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showMenu = false
             }
             else{
                 if(this.showServant){this.showServant=false}
                 if(this.showStations){this.showStations=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showMenu = true
             }
         },
         servant(){
             if(this.showServant){
+                if(this.showStations){this.showStations=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showServant = false
             }
             else{
+                if(this.showStations){this.showStations=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showServant = true
             }
         },
         stations(){
             if(this.showStations){
+                if(this.showServant){this.showServant=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showStations = false
             }
             else{
+                if(this.showServant){this.showServant=false}
+                if(this.showCommand){this.showCommand=false}
                 this.showStations = true
+            }
+        },
+        command(){
+            if(this.showCommand){
+                if(this.showServant){this.showServant=false}
+                if(this.showStations){this.showStations=false}
+                this.showCommand = false
+            }
+            else{
+                if(this.showServant){this.showServant=false}
+                if(this.showStations){this.showStations=false}
+                this.showCommand = true
             }
         },
         webGL() {

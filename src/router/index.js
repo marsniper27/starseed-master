@@ -65,6 +65,16 @@ const routes = [
     component: () => import('../views/StarStationsWallet.vue')
   },
   {
+    path: '/starCommand',
+    name: 'Star Comand Bridge',
+    component: () => import('../views/StarCommand.vue')
+  },
+  {
+    path: '/starCommandWallet',
+    name: 'Star Command Brdige Wallet',
+    component: () => import('../views/StarCommandWallet.vue')
+  },
+  {
     path: '*',
     name: '404',
     component: () => import('../views/404.vue')
