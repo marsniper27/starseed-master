@@ -187,6 +187,17 @@ body,html {
   padding: 10px 10px;
   box-shadow: 0px 0px 7px -2px #fff;
 }
+.buttonBar {
+  position: fixed;
+  top: 0;
+  left: 200px;
+  width: 100%;
+  background: rgb(0 0 0 / 68%);
+  height: 70px;
+  display: flex;
+  align-items: center;
+  z-index:20;
+}
 
 .sideBar {
   position: fixed;
@@ -271,7 +282,7 @@ a:hover{
   left: 0;
   color: #040304;
   height: 50px;
-  width: 200px;
+  width: 240px;
   text-align: center;
   background: rgb(0 0 0 / 78%);
   padding: 9px;
@@ -303,6 +314,79 @@ a:hover{
 .earning div:nth-child(1){
   font-size: 14px;
 }
+// Right
+
+.sideBarRight {
+  position: fixed;
+  top: 70px;
+  right: 0;	
+  z-index: 9999;	
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: calc(100% - 120px);
+  background: rgb(0 0 0 / 78%);
+  width: 300px;
+}
+.submenuRight{
+  position: fixed;
+}
+
+.sideBarRight ul {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: calc(100% - 70px);
+  margin: 0;
+  margin: 0;
+  padding: 0;
+  padding-top: 20px
+}
+
+.sideBarRight li {
+  list-style: none;
+  color: #fff;
+  padding: 20px 15px;
+  border-radius: 20px;
+  margin: 20px;
+  /* border: 1px solid #ddd; */
+  font-size: 11px;
+  box-shadow: 0px 2px 2px -1px rgb(255 255 255 / 37%);
+  display: flex;
+  flex-direction: row;
+  min-width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  height: 45px;
+}
+
+.sideBarRight .active {
+  background-color:purple;
+  background-image: linear-gradient(to right, #d35ff6 , #a700ee);
+}
+
+.sideBarRight li:hover{
+  background-color:purple;
+}
+
+a:hover{
+  color: purple;
+  fill: purple;
+}
+
+.sideBarRight li span {
+  margin-top: 5px
+}
+
+.sideBarRight li img {
+  width: 30px;
+  margin-right: 10px;
+}
+
 
 #scene,
 .fw,
@@ -729,8 +813,22 @@ canvas{
   .topBar .toggle {
       min-width: 64px;
   }
+  .buttonBar{
+    transform: translateY(-100%);
+    transition: all 500ms;
+    z-index: 20;
+    height: 70px;
+  }
   .sideBar{
     transform: translateX(-100%);
+    transition: all 500ms;
+    z-index: 20;
+    height: calc(100% - 69px);
+    top:69px;
+    width: 300px;
+  }
+  .sideBarRight{
+    transform: translateX(+100%);
     transition: all 500ms;
     z-index: 20;
     height: calc(100% - 69px);
@@ -749,6 +847,9 @@ canvas{
     z-index: 3;
   }
   .showMenu{
+    transform: translateX(0%);
+  }
+  .showButton{
     transform: translateX(0%);
   }
   .showServant{

@@ -53,6 +53,20 @@ var classes=[
         apr: "30-41%",
         startApr:30.50,
         pid:3
+    },
+    //Guardian STATION
+    {
+        name:"StarSeed’s InterDimensional Guardian",
+        class:"Guardian",
+        description:"",
+        image:"https://storageapi.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/videos/Martian Destroyer NFT compressed(1).mp4",
+        startingWeight:1150,
+        upgradeRate:1,
+        price:1111,
+        maxUpgrade:2400,
+        apr: "30-41%",
+        startApr:30.47,
+        pid:4
     }
 ]
 

@@ -193,7 +193,7 @@
                 var totalStations = await this.controllerContractInstance.methods.getStations().call();
                 console.log(totalStations)
                 var allowance = await this.starContractInstance.methods.allowance(this.account,this.controllerContractAddress).call();
-                if(allowance < 122*10**18){
+                if(allowance < 1222*10**18){
                     var rates = await Functions.getRates();
                     try{
                         var receipt = await this.starContractInstance.methods.approve(this.controllerContractAddress,ethers.utils.parseUnits("100000",18))
