@@ -95,7 +95,7 @@
     import Moralis1 from 'moralis-v1';
     import Modal from './modal.vue'
     import freighter from '../assets/videos/square-Space junker.mp4'
-    import meteor from '../assets/videos/square-Space junker.mp4'
+    import meteor from '../assets/videos/astroid Colony.mp4'
     import city from '../assets/videos/Square-Automated Planet.mp4'
     import planet from '../assets/videos/Atlantean Mothership.mp4'
     import { AddressZero } from '@ethersproject/constants';
