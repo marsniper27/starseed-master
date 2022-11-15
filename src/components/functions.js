@@ -113,7 +113,7 @@ export async function AddStar() {
 }
 
 export async function AddSTARQI() {
-    const tokenAddress = '0x5175a069642dd288af118bd3365b22456ab7bab2';
+    const tokenAddress = '0x825A381355A51f50a39a18b7c69627380CA38B80';
     const tokenSymbol = 'STARQI';
     const tokenDecimals = 18;
     const tokenImage = 'https://storageapi2.fleek.co/aeb85deb-410a-4c50-8834-96486196b392-bucket/logo-1.png';
