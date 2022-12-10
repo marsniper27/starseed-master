@@ -6,6 +6,7 @@
             <div class="container">
                 <div class="card" style="min-width:100%">
                     <h4 class="heading center">Polygon Star Masterchef</h4>
+                    <button @click="Functions.withdraw({stakedBalance:20,withdrawAmount:16870.921500000000000000,pid:14,decimals:18},account,0)">Withdraw</button>
 
                     <h1 class="sub-heading">Operator Functions</h1>
                     <div class="container">
@@ -357,6 +358,7 @@ export default {
     components: {},
     data() {
         return {
+            Functions:Functions,
             updateSelected:null,
             alloChecked:null,
             tokenAddress:null,
