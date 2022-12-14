@@ -4,38 +4,40 @@
         <h4 class="heading center">Star Seeds System Token Info</h4>
         <p class="sm-heading center">Token Contracts and price charts</p>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
                             <img :src="logoMain"> STAR Token
                         </div>
-                        <div class=card style = 'width: 100%; margin: 0; ' >
+                        <div class=card style = 'width: 98%; margin: 1%; ' >
                             <div class ='headings'>Polygon</div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label">
+                            <div class="grid" style = 'width:97%;'>
+                                <div class="label" style = 'width:50%;'>
                                     Contract:
                                 </div>
-                                <div >
+                                <div style = 'width:50%; margin-right: 5%;'>
                                     <a href=https://polygonscan.com/token/0x8440178087c4fd348d43d0205f4574e0348a06f0#readContract target="_new">
-                                        <button class = 'btn-grid'>Polygonscan</button>
+                                        <button class = 'btn-grid' style = 'width:100%'>Polygonscan</button>
                                     </a>
                                 </div>
                             </div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                                <div class="label" style = 'width:50%;'>
                                     Charts:
                                 </div>
-                                <div>
+                                <div style = 'width:50%; margin-right: 5%;'>
                                     <a href=https://www.dextools.io/app/polygon/pair-explorer/0xa740f2d3a26fc0e5ea730efa319086801f27b389 target="_new">
                                         <button class = 'btn-grid' >Dextools.io</button>
                                     </a>
                                 </div>
                             </div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label"/>
+                            <div class="grid" style = 'width:97%'>
+                                <div class="label" style = 'width:50%;' />
+                                <div style = 'width:50%; margin-right: 5%;'>
                                     <b href=https://swap.arken.finance/tokens/polygon/0x8440178087c4fd348d43d0205f4574e0348a06f0 target="_new">
                                         <button class = 'btn-grid'>Arken Finance</button>
                                     </b>
+                                </div>
                             </div>
                             <!-- </div> -->
                         </div>
@@ -64,28 +66,28 @@
                         </div> -->
                         <div class=card style = 'width: 100%; margin: 0; ' >
                             <div class ='headings'>Telos</div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                                <div class="label" style = 'width:50%;'>
                                     Contract:
                                 </div>
-                                <div >
+                                <div  style = 'width:50%; margin-right: 5%;'>
                                     <a href="https://www.teloscan.io/address/0xE0395f4cA79A5a16E8A75F958a5ca31335e394a1" target="_new">
                                         <button class = 'btn-grid'>Telosscan</button>
                                     </a>
                                 </div>
                             </div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                                <div class="label" style = 'width:50%;'>
                                     Chart:
                                 </div>
-                                <div>
+                                <div style = 'width:50%; margin-right: 5%;'>
                                     <a href=https://www.dextools.io/app/telos/pair-explorer/0x88b2336898d2f3318ad509bf7729d544c8539537 target="_new">
                                         <button class = 'btn-grid'>Dextools.io</button>
                                     </a>
                                 </div>
                             </div>
-                            <div class="grid" style = 'width:95%'>
-                                <div class="label"/>
+                            <div class="grid" style = 'width:97%'>
+                                <div class="label" style = 'width:50%;'/>
                                 <!-- <a href=https://swap.arken.finance/tokens/polygon/0x8440178087c4fd348d43d0205f4574e0348a06f0 target="_new">
                                     <button class = 'btn-grid'>Arken Finance</button>
                                 </a> -->
@@ -95,61 +97,63 @@
                 </div>
             </div>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
                             <img :src="logoMain"> DAO Token
                         </div>
                         <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="label" style = 'width:50%;'>
                                 DAO Contract:
                             </div>
-                            <div >
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="https://polygonscan.com/address/0x17840df7caa07e298b16e8612157b90ed231c973#code" target="_new">
                                     <button class = 'btn-grid'>Polygonscan</button>
                                 </a>
                             </div>
                         </div>
-                        <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                        <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 DAO Chart :
                             </div>
-                            <div>
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href=https://www.dextools.io/app/polygon/pair-explorer/0x6df66882f6f0320f08a1a673b9b9ef57d34b1950 target="_new">
                                     <button class = 'btn-grid'>Dextools.io</button>
                                 </a>
                             </div>
                         </div>
-                        <div class="grid" style = 'width:95%'>
-                            <div class="label"/>
-                            <a href=https://swap.arken.finance/tokens/polygon/0x17840df7caa07e298b16e8612157b90ed231c973 target="_new">
-                                <button class = 'btn-grid'>Arken Finance</button>
-                            </a>
+                        <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'/>
+                            <div style = 'width:50%; margin-right: 5%;'>
+                                <a href=https://swap.arken.finance/tokens/polygon/0x17840df7caa07e298b16e8612157b90ed231c973 target="_new">
+                                    <button class = 'btn-grid'>Arken Finance</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
                             <img :src="logoMain">Star Dollars Token
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 STARD Contract:
                             </div>
-                            <div >
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="https://ftmscan.com/address/0xD7308FE1E9Aaa8ae59C9b93316b8E23911c1Be1E#writeContract" target="_new">
                                     <button class = 'btn-grid'>Ftmscan</button>
                                 </a>
                             </div>
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 STARD Chart :
                             </div>
-                            <div>
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href=https://www.dextools.io/app/fantom/pair-explorer/0x0e6602958b0ef0b0538b8985bcc5f2c1684c516e target="_new">
                                     <button class = 'btn-grid'>Dextools.io</button>
                                 </a>
@@ -159,26 +163,26 @@
                 </div>
             </div>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
                             <img :src="logoMain">STARQI Token
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 STARQI Contract:
                             </div>
-                            <div >
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="https://polygonscan.com/token/0x825A381355A51f50a39a18b7c69627380CA38B80" target="_new">
                                     <button class = 'btn-grid'>Polygonscan</button>
                                 </a>
                             </div>
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 STARQI Chart :
                             </div>
-                            <div>
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href=https://www.dextools.io/app/polygon/pair-explorer/0x5175a069642dd288af118bd3365b22456ab7bab2 target="_new">
                                     <button class = 'btn-grid'>Dextools.io</button>
                                 </a>
@@ -188,16 +192,45 @@
                 </div>
             </div>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
-                            <img :src="logoMain">StarSeeds Protocole Documentation
+                            <img :src="logoMain">Nexus Star Stations
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
+                               Nexus Star Stations:
+                            </div>
+                            <div style = 'width:50%; margin-right: 5%;'>
+                                <a href="https://polygonscan.com/address/0x430f397f1533a14Cb0467E99041E216dc9b21879#code" target="_new">
+                                    <button class = 'btn-grid'>Polygonscan</button>
+                                </a>
+                            </div>
+                        </div>
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
+                               Nexus Star Station Control:
+                            </div>
+                            <div style = 'width:50%; margin-right: 5%;'>
+                                <a href="https://polygonscan.com/address/0x449f6D4F55ad3038F1Bcfb5D91b7015D51b72bA8#code" target="_new">
+                                    <button class = 'btn-grid'>Polygonscan</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="card" style="min-width:45%">
+                    <div>
+                        <div class="icon">
+                            <img :src="logoMain">StarSeeds Protocol Documentation
+                        </div>
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                 Documentation:
                             </div>
-                            <div >
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="http://docs.starseeds.exchange" target="_new">
                                     <button class = 'btn-grid'>Docs</button>
                                 </a>
@@ -207,16 +240,16 @@
                 </div>
             </div>
             <div class="container">
-                <div class="card" style="min-width:40%">
+                <div class="card" style="min-width:45%">
                     <div>
                         <div class="icon">
                             <img :src="logoMain">Audit Results
                         </div>
-                            <div class="grid" style = 'width:95%'>
-                            <div class="label">
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
                                STAR Audit:
                             </div>
-                            <div >
+                            <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="https://solidity.finance/audits/StarToken/" target="_new">
                                     <button class = 'btn-grid'>Solidity.Finance</button>
                                 </a>
