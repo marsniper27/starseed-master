@@ -17,7 +17,7 @@
                                 </div>
                                 <div style = 'width:50%; margin-right: 5%;'>
                                     <a href=https://polygonscan.com/token/0x8440178087c4fd348d43d0205f4574e0348a06f0#readContract target="_new">
-                                        <button class = 'btn-grid' style = 'width:100%'>Polygonscan</button>
+                                        <button class = 'btn-grid'>Polygonscan</button>
                                     </a>
                                 </div>
                             </div>
@@ -213,6 +213,35 @@
                             </div>
                             <div style = 'width:50%; margin-right: 5%;'>
                                 <a href="https://polygonscan.com/address/0x449f6D4F55ad3038F1Bcfb5D91b7015D51b72bA8#code" target="_new">
+                                    <button class = 'btn-grid'>Polygonscan</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="card" style="min-width:45%">
+                    <div>
+                        <div class="icon">
+                            <img :src="logoMain">Star Command
+                        </div>
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
+                               Star Command Bridge:
+                            </div>
+                            <div style = 'width:50%; margin-right: 5%;'>
+                                <a href="https://polygonscan.com/address/0x9e0E40e4Fc049df4Ab73140900DBfE9b0245DbbA#code" target="_new">
+                                    <button class = 'btn-grid'>Polygonscan</button>
+                                </a>
+                            </div>
+                        </div>
+                            <div class="grid" style = 'width:97%'>
+                            <div class="label" style = 'width:50%;'>
+                               Star Command Controller:
+                            </div>
+                            <div style = 'width:50%; margin-right: 5%;'>
+                                <a href="https://polygonscan.com/address/0x2b4cF5D2dEB7305e5d9C2009Bc1D3b9b60d36c2f#code" target="_new">
                                     <button class = 'btn-grid'>Polygonscan</button>
                                 </a>
                             </div>
