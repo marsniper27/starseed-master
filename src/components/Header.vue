@@ -141,7 +141,7 @@
                         font-size: 15px;
                         text-transform: uppercase;
                         font-weight: bold;">
-                    <span>Disonnect</span>
+                    <span>Disconnect</span>
                     <!-- <div v-if="connected" class="disconnect">
                         <button @click="disconnect()" class="connectWallet"><i class="fas fa-network-wired" width="30px"></i>Disconnect</button>
                     </div> -->

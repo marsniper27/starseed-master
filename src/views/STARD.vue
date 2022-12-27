@@ -6,7 +6,7 @@
             <div class="container" style="min-width:100%" >                
                 <div class="card" style="min-width:40%">
                     <h4 class="sm-heading center">What are STAR DOLLARS?</h4>
-                    <div class = 'p'>STARD is an algorithmic stablecoin that optimizes stable-coin yields across the crypto Multi-verse to get the best rewards. STARD is able to stay at the $1 mark through:</div>
+                    <div class = 'p'>STARD is an overcollateralized stablecoin that optimizes stable-coin yields across the crypto industry to get the best rewards. STARD is able to stay at the $1 mark through:</div>
                     <ul>
                         <li class = 'p'>Providing Liquidity to small cap tokens</li>
                         <li class = 'p'>Automatically burning STAR once it reaches a variable threshold to keep the dollar peg consistent, as well as regulating the supply of STAR</li>
@@ -44,18 +44,23 @@
                             {{(+pools[0].balance).toFixed(4)}}
                         </div>
                     </div>
-                    <div class="grid2">
+                    <!-- <div class="grid2">
                         <div class="label colored">
                             <input  v-model="MAI[0].Amount" placeholder="Amount to Mint" />
                             <div class="cont sm-text">
                                 <button  @click="maxButton(MAI[0])">MAX</button>
                             </div>
                         </div>
-                    </div>
-                    <button @click="Functions.getStard(web3,account,MAI[0],pools[0])">Mint Star Dollars</button>
+                    </div> -->
+                    <!-- <button @click="Functions.getStard(web3,account,MAI[0],pools[0])">Mint Star Dollars</button> -->
                     
                     <div class="grid2">
                         <div class="cont sm-text">0.3% Minting fee</div>   
+                    </div>                 
+                    <div class="grid2">
+                        <div class="label large-text">
+                            COMING SOON
+                        </div>
                     </div>                 
                 </div>
                 <div class="card" style="min-width:60%">
