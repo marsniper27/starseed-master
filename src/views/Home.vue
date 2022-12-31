@@ -275,7 +275,7 @@ export default {
             if(this.$route.params.web3 == null || this.$route.params.account == null){
                 console.log("account not set");
                 await this.matics();
-                initMasterchef(this.web3,0);
+                // initMasterchef(this.web3,0);
             }
             else{
                 console.log("account already set");
@@ -355,6 +355,7 @@ export default {
                             this.account = accounts[0];
                             //this.messages = " Account: " + this.account;
                             setTimeout(d=>{this.messages = false},1000);
+                            initMasterchef(this.web3,0)
 
                             this.starContractInstance = new web3.eth.Contract(this.starContractAbi, this.starContractAddress);
                             

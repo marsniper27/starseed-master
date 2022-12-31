@@ -22,7 +22,7 @@
             </div>
             <div v-if="transfer">
                 <Modal>
-                    <div style="width: 300px;
+                    <!-- <div style="width: 300px;
                                 height: 200px;
                                 border-radius: 10px;
                                 background-color: white;
@@ -65,7 +65,7 @@
                             font-weight: bold;
                             width:200px;
                             z-index: 8;" @click="transfer=false">Cancel</button>
-                    </div>
+                    </div> -->
                 </Modal>
             </div>
         </div>

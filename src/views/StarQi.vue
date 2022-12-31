@@ -1,5 +1,6 @@
 <template>
 <main id="main">
+                    <!-- <div id="tradingview-chart"></div> -->
     <div class="content">
         <h4 class="heading center">STARQI PROTOCOL</h4>
         <div class="cards">       
@@ -53,7 +54,8 @@
                     </div>
                 </div>
                 <div class="card" style="width:700px;margin-left: 50px; height: 400px; margin-bottom: 40px;">
-                    <img style="margin-top: -50px; width:750px; margin-left: -28px;" src="../assets/new chart.png"/>
+                    <!-- <img style="margin-top: -50px; width:750px; margin-left: -28px;" src="../assets/new chart.png"/> -->
+                    <div id="tradingview-chart"></div>
                 </div>
                 <!-- <div class="card" style="width: 1460px; padding: 40px; min-height: 300px;margin-top: 50;">
                     <h4 style="color:white;">What is STAR QI?</h4>
@@ -87,12 +89,11 @@
     </div>
 </main>
 </template>
-
 <script>
 import getWeb3 from './web3.js';
 import {ethers} from "ethers";
 import logoMain from '../assets/logo.png';
-import { createChart } from 'lightweight-charts';
+// import { createChart } from 'lightweight-charts';
 import * as Functions from "../components/functions.js";
 import Web3 from 'web3';
 
@@ -130,6 +131,8 @@ export default {
         }
     },
     async created() {
+        // createChart('tradingview-chart', '0x825A381355A51f50a39a18b7c69627380CA38B80'
+        console.log('CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         if (typeof window.ethereum !== 'undefined') {
         //      window.ethereum.on('accountsChanged', function(account) {
         //         this.account = account;
@@ -182,17 +185,20 @@ export default {
             }
         }
     },
-    mounted(){
-        // const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
-        // const chart = createChart(document.getElementById('priceChart'), chartOptions);
-        // const areaSeries = chart.addAreaSeries({ lineColor: '#2962FF', topColor: '#2962FF', bottomColor: 'rgba(41, 98, 255, 0.28)' });
+    // mounted() {
+    //     console.log("Mounted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    //     createChart('tradingview-chart', '0x825A381355A51f50a39a18b7c69627380CA38B80');
+    //     // const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
+    //     // const chart = createChart(document.getElementById('priceChart'), chartOptions);
+    //     // const areaSeries = chart.addAreaSeries({ lineColor: '#2962FF', topColor: '#2962FF', bottomColor: 'rgba(41, 98, 255, 0.28)' });
 
-        // const data = [{ value: 0, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922 }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722 }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922 }];
+    //     // const data = [{ value: 0, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922 }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722 }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922 }];
 
-        // areaSeries.setData(data);
+    //     // areaSeries.setData(data);
 
-        // chart.timeScale().fitContent();
-    },
+    //     // chart.timeScale().fitContent();
+    // },
+    
     methods: {
          async pops(){
             this.showPops = true
@@ -317,8 +323,23 @@ export default {
                     this.messages = false
                 },5000)
             }
-        },
+        }
     }
+    
 }
-</script>
+function createChart(containerId, tokenAddress) {
+  var chart = new TradingView.widget({
+    // use the "ETH" exchange and the token's address as the symbol
+    // symbol: 'ETH:' + tokenAddress,
+    
+    symbol: "NASDAQ:AAPL",
+    // use the "line" chart type
+    chartType: 'line',
+    // other options go here
+    container_id: containerId
+  });
+}
 
+</script>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
