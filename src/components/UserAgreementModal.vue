@@ -67,11 +67,10 @@ export default {
         this.showModal = false;
         this.$parent.userAgreementAccepted = true;
       }
-    }
-    
-  }
-}
-function openAgreement(){
+    },
+    openAgreement(){
       window.open('https://storageapi.fleek.one/aeb85deb-410a-4c50-8834-96486196b392-bucket/StarSeeds/Starseeds%20Membership%20Agreement-1.pdf','_blank');
     }
+  }
+}
 </script>
