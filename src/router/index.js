@@ -34,11 +34,11 @@ const routes = [
     name: 'StarSeed Fleet',
     component: () => import('../views/StarSeed Fleet.vue')
   },
-  {
-    path: '/regen',
-    name: 'Regen Protocol',
-    //component: () => import('../views/StarSeed Fleet.vue')
-  },
+  // {
+  //   path: '/regen',
+  //   name: 'Regen Protocol',
+  //   //component: () => import('../views/StarSeed Fleet.vue')
+  // },
   {
     path: '/bridge',
     name: 'Star Bridge',
