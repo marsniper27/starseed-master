@@ -69,5 +69,20 @@ var classes=[
         pid:4
     }
 ]
+var WorldOfUnity=[
+    {
+        name:"Star Abundance Pointsettia",
+        class:"Guardian",
+        description:"",
+        image:"../assets/world of unity nft.png",
+        startingWeight:9.4,
+        upgradeRate:0,
+        price:11,
+        maxUpgrade:9.4,
+        apr: "25%",
+        startApr:25.00,
+        pid:5
+    }
+]
 
-export{classes}
+export{classes,WorldOfUnity}
