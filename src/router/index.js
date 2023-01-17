@@ -73,6 +73,11 @@ const routes = [
     path: '/starCommandWallet',
     name: 'Star Command Brdige Wallet',
     component: () => import('../views/StarCommandWallet.vue')
+  }, 
+  {
+    path: '/worldOfUnity',
+    name: 'World Of Unity',
+    component: () => import('../views/WorldOfUnity.vue')
   },
   {
     path: '*',
