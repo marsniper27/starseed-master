@@ -75,6 +75,11 @@ const routes = [
     component: () => import('../views/StarCommandWallet.vue')
   }, 
   {
+    path: '/stationLock',
+    name: 'Station Lock',
+    component: () => import('../views/StationLock.vue')
+  }, 
+  {
     path: '/worldOfUnity',
     name: 'World Of Unity',
     component: () => import('../views/WorldOfUnity.vue')
