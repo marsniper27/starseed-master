@@ -80,6 +80,11 @@ const routes = [
     component: () => import('../views/StationLock.vue')
   }, 
   {
+    path: '/daoStation',
+    name: 'Dao Station Program',
+    component: () => import('../views/DaoStations.vue')
+  }, 
+  {
     path: '/worldOfUnity',
     name: 'World Of Unity',
     component: () => import('../views/WorldOfUnity.vue')

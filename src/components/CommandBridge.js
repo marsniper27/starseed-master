@@ -6,7 +6,7 @@ var classes=[
         class:"Freighter",
         description:"This virtual item grants its holder voting power in the StarSeed's DAO.",
         image:vid,
-        price:22,
+        price:99,
         maxUpgrade:2000,
     }
 ]

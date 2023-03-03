@@ -206,7 +206,7 @@ var tokenPools = [
         starEarned:"--",
         totalLiquidity: "--",
         harvestTime:"--",
-        pool:'https://legacy.quickswap.exchange/#/swap?outputCurrency=0x8440178087C4fd348D43d0205F4574e0348a06F0',
+        pool:'https://quickswap.exchange/#/swap?outputCurrency=0x8440178087C4fd348D43d0205F4574e0348a06F0&swapIndex=0&currency0=0x17840DF7CAa07e298b16E8612157B90ED231C973',
         decimals:18,
         stakedLP:null,
         apr: null,
