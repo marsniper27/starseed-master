@@ -23,14 +23,14 @@
                 </div>
             </div>
             <div v-if="transfer">
-                <Modal>
+                <!-- <Modal> -->
                     <div style="width: 300px;
                                 height: 200px;
                                 border-radius: 10px;
                                 background-color: white;
                                 padding: 20px 20px;
                                 z-index: 1200;
-                                top: calc(50em - 400px);
+                                top: calc(50vh - 400px);
                                 left: calc(50%);
                                 display: flex;
                                 flex-direction:column;
@@ -52,7 +52,7 @@
                             z-index: 8;
                             margin-bottom:10px;
                             margin-top:10px;" 
-                            @click="transferStation(station)">
+                            @click="transferStation()">
                             Transfer
                         </button>
                         <button style=" background-color:purple;
@@ -68,7 +68,7 @@
                             width:200px;
                             z-index: 8;" @click="transfer=false">Cancel</button>
                     </div>
-                </Modal>
+                <!-- </Modal> -->
             </div>
         </div>
         <div v-if="messages" class="messages">
@@ -93,7 +93,7 @@
     import * as Functions from "../components/functions.js";
     import {initMasterchef} from "../components/masterchef";
     import Moralis1 from 'moralis-v1';
-    import Modal from './modal.vue'
+    // import Modal from './modal.vue'
     import freighter from '../assets/videos/square-Space junker.mp4'
     import meteor from '../assets/videos/astroid Colony.mp4'
     import city from '../assets/videos/Square-Automated Planet.mp4'
@@ -108,7 +108,7 @@
     var fs = require('fs');
 
     export default {
-        components: {Modal},
+        // components: {Modal},
         data() {
             return {
                 Functions:Functions,

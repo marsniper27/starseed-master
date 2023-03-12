@@ -21,14 +21,14 @@
                 </div>
             </div>
             <div v-if="transfer">
-                <Modal>
-                    <!-- <div style="width: 300px;
+                <!-- <Modal> -->
+                    <div style="width: 300px;
                                 height: 200px;
                                 border-radius: 10px;
                                 background-color: white;
                                 padding: 20px 20px;
                                 z-index: 1200;
-                                top: calc(50em - 400px);
+                                top: calc(50vh - 400px);
                                 left: calc(50%);
                                 display: flex;
                                 flex-direction:column;
@@ -50,7 +50,7 @@
                             z-index: 8;
                             margin-bottom:10px;
                             margin-top:10px;" 
-                            @click="transferStation(station)">
+                            @click="transferStation()">
                             Transfer
                         </button>
                         <button style=" background-color:purple;
@@ -65,8 +65,8 @@
                             font-weight: bold;
                             width:200px;
                             z-index: 8;" @click="transfer=false">Cancel</button>
-                    </div> -->
-                </Modal>
+                    </div>
+                <!-- </Modal> -->
             </div>
         </div>
         <div v-if="messages" class="messages">
