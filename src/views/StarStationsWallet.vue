@@ -2,7 +2,7 @@
     <main id="main">
         <div class="content">
             <h4 class="heading center">Nexus Star Stations</h4>
-            <p class="xsm-heading center">Stations can take a couple minutes to appear after mint</p>
+            <p class="xsm-heading center">Stations can take a couple minutes to appear after Create</p>
             <div class="cards" style=" color:white; ">
                 <div class="container" style="width:90%">
                     <div class="card" v-for="station in starStations" v-bind:class="{'larger':station.type}" style="align-items:center; overflow: visible;min-height:600px;text-align: center; ">
@@ -20,6 +20,9 @@
                             <button style=" width:200px; position:absolute; bottom:5px; margin-left:-100px; left:50%; " @click="transferClick(station.TokenId)">Transfer</button>
                         </div>
                     </div>
+                    <iframe data-aa='2196220' src='//ad.a-ads.com/2196220?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196218' src='//acceptable.a-ads.com/2196218' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196223' src='//ad.a-ads.com/2196223?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
                 </div>
             </div>
             <div v-if="transfer">

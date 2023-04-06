@@ -66,6 +66,9 @@
                 </div>   -->
             </div>
         </div>
+                    <iframe data-aa='2196220' src='//ad.a-ads.com/2196220?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196218' src='//acceptable.a-ads.com/2196218' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196223' src='//ad.a-ads.com/2196223?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     </div>
 <!-- style="width: 250px;font-size: large;padding:0;height: 55px;" -->
     <div class="pops" v-if="showPops">

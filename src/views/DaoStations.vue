@@ -37,7 +37,7 @@
                             <div>APR: {{stationClass.apr}}</div>
                             <div>Class: {{stationClass.class}}</div>
                             <div style="padding-top:10px; padding-bottom: 10px; text-align:left">{{stationClass.description}}</div>
-                            <button style="left:0%; " @click="mintStation(stationClass.pid,selected)">Mint {{stationClass.name}}</button>
+                            <button style="left:0%; " @click="mintStation(stationClass.pid,selected)">Create {{stationClass.name}}</button>
                         </div>
                     </div>
                 </div>
@@ -75,10 +75,13 @@
                             <!-- <div>APR: {{stationClass.apr}}</div>
                             <div>Class: {{stationClass.class}}</div> -->
                             <div style="padding-top:10px; padding-bottom: 10px; text-align:left">{{stationClass.description}}</div>
-                            <button style="left:0%; " @click="mintCommand(selected)">Mint {{stationClass.name}}</button>
+                            <button style="left:0%; " @click="mintCommand(selected)">Create {{stationClass.name}}</button>
                         </div>
                     </div>
                 </div>
+                    <iframe data-aa='2196220' src='//ad.a-ads.com/2196220?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196218' src='//acceptable.a-ads.com/2196218' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196223' src='//ad.a-ads.com/2196223?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
             </div>
         </div>
         <div v-if="messages" class="messages">

@@ -17,14 +17,14 @@
                     <h4 class="sm-heading center">How to aquire STARD?</h4>
                     <div class = 'p'>There are a few ways to acquire STARD, please note you must be on the Polygon Network to purchase STARD. 2 ways are:</div>
                     <ul>
-                        <li class = 'p'>Mint MAI, then use minted MAI to buy STARD</li>
+                        <li class = 'p'>Create MAI, then use Createed MAI to buy STARD</li>
                         <li class = 'p'>Buy it on Quickswap</li>
                     </ul>
                     <div class = 'p'>Token Address</div>
                     <div class = 'p'>0x8f1549718B9Ad2632Dc426EcC89305A83c1F03c8</div>
                 </div>
                 <div class="card" style="min-width:20%">
-                <h4 class="sm-heading center">MINT STAR DOLLARS</h4>
+                <h4 class="sm-heading center">Create STAR DOLLARS</h4>
                     <div class="icon">
                         <img :src=stardLogo> Star Dollars
                     </div>
@@ -55,7 +55,7 @@
                     <!-- <button @click="Functions.getStard(web3,account,MAI[0],pools[0])">Mint Star Dollars</button> -->
                     
                     <div class="grid2">
-                        <div class="cont sm-text">0.3% Minting fee</div>   
+                        <div class="cont sm-text">0.3% Creating fee</div>   
                     </div>                 
                     <div class="grid2">
                         <div class="label large-text">
@@ -183,6 +183,9 @@
                         </div>
                     </div>
                 </div>
+                    <iframe data-aa='2196220' src='//ad.a-ads.com/2196220?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196218' src='//acceptable.a-ads.com/2196218' style='border:0px; padding:0; width:100%; height:100%; overflow:hidden; background-color: transparent;'></iframe>
+                    <iframe data-aa='2196223' src='//ad.a-ads.com/2196223?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
             </div>
             </div>
         </div>

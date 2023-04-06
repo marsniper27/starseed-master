@@ -167,7 +167,7 @@
                         <li  @click="toggleMenu" v-bind:class="{'active':$route.path == '/starStations'}">
                             <router-link :to="{path:'/starStations'}">
                                 <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
-                                <span>Mint Stations</span>
+                                <span>Create Stations</span>
                             </router-link>
                         </li>
                         <li  @click="toggleMenu" v-bind:class="{'active':$route.path == '/starStationsWallet'}">
@@ -200,7 +200,7 @@
                         <li  v-bind:class="{'active':$route.path == '/starCommand'}">
                             <router-link :to="{path:'/starCommand'}">
                                 <img height=24 src="../assets/StarQi-Icons/PNG/04-Starseed-Command-01.png">
-                                <span>Mint Command Bridge</span>
+                                <span>Create Command Bridge</span>
                             </router-link>
                         </li>
                         <li  @click="toggleMenu" v-bind:class="{'active':$route.path == '/starCommandWallet'}">
