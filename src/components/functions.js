@@ -16,7 +16,7 @@ const masterChefContractAbi = masterChef.masterChefContractAbi;
 const masterChefContractAddress = "0x16E76500f1E6C943FEd150bF56403d91A91dCD55";
 
 export async function getRates(){
-    var rates =  await fetch('https://gasstation-mainnet.matic.network/v2').then(response => response.json());
+    var rates =  await fetch('https://gasstation.polygon.technology/v2').then(response => response.json());
   return (rates);
 }
 
